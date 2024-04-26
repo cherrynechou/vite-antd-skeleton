@@ -18,4 +18,23 @@ export default defineConfig(({ mode }) => ({
     open: true,
     proxy: proxy[mode]
   },
+  build: {
+    outDir: 'dist',
+    //minify: 'esbuild',
+    // esbuild 打包更快，但是不能去除 console.log，去除 console 使用 terser 模式
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
+    rollupOptions: {
+      output: {
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+      },
+    },
+  }
 }))

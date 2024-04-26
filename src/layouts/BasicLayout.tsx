@@ -6,7 +6,7 @@ import {  useLocation, Outlet } from 'react-router-dom';
 import Footer from '@/components/Footer';
 
 import Settings from '~/config/defaultSettings'
-import logoImg from '@/assets/images/logo.jpg'
+import logoSvg from '@/assets/images/logo.svg'
 
 
 const BasicLayout: FC = (props: any) => {
@@ -25,7 +25,7 @@ const BasicLayout: FC = (props: any) => {
         >
             <ProLayout
                 siderWidth={216}
-                logo={logoImg}
+                logo={logoSvg}
                 location={{
                     pathname,
                 }}
