@@ -7,7 +7,8 @@
     "skipLibCheck": true,
     "baseUrl": ".", //查询的基础路径
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "~/*": ["./*"]
     }, //路径映射,配合别名使用
 
     /* Bundler mode */
@@ -20,8 +21,8 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,  /* 检查未使用的变量 */
+    "noUnusedParameters": false,  /* 检查未使用的函数参数 */
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true
   },

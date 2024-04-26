@@ -38,6 +38,9 @@ importers:
       axios:
         specifier: ^1.6.8
         version: 1.6.8
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
       i18next:
         specifier: ^23.11.2
         version: 23.11.2
@@ -68,6 +71,9 @@ importers:
       react-router-dom:
         specifier: ^6.23.0
         version: 6.23.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      screen:
+        specifier: ^0.2.10
+        version: 0.2.10
     devDependencies:
       '@types/node':
         specifier: ^20.12.7
@@ -1839,6 +1845,9 @@ packages:
   scheduler@0.23.0:
     resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
 
+  screen@0.2.10:
+    resolution: {integrity: sha512-T6viduhAMpKFJgnsCmdde25n1QRao5mpRqJ4MyKHD3Y2f1sLP4XVzJJfYeyxsOFcTieVcaB6B61KwS65OVMN/g==}
+
   screenfull@5.2.0:
     resolution: {integrity: sha512-9BakfsO2aUQN2K9Fdbj87RJIEZ82Q9IGim7FqM5OsebfoFC6ZHXgDq/KvniuLTPdeM8wY2o6Dj3WQ7KeQCj3cA==}
     engines: {node: '>=0.10.0'}
@@ -2033,6 +2042,10 @@ packages:
 
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
+
+  xtend@1.0.3:
+    resolution: {integrity: sha512-wv78b3q8kHDveC/C7Yq/UUrJXsAAM1t/j5m28h/ZlqYy0+eqByglhsWR88D2j3VImQzZlNIDsSbZ3QItwgWEGw==}
+    engines: {node: '>=0.4'}
 
   xtend@2.1.2:
     resolution: {integrity: sha512-vMNKzr2rHP9Dp/e1NQFnLQlwlhp9L/LfvnsVdHxN1f+uggyVI3i08uD14GPvCToPkdsRfyPqIyYGmIk58V98ZQ==}
@@ -4104,6 +4117,10 @@ snapshots:
     dependencies:
       loose-envify: 1.4.0
 
+  screen@0.2.10:
+    dependencies:
+      xtend: 1.0.3
+
   screenfull@5.2.0: {}
 
   scroll-into-view-if-needed@3.1.0:
@@ -4242,6 +4259,8 @@ snapshots:
       isexe: 2.0.0
 
   wrappy@1.0.2: {}
+
+  xtend@1.0.3: {}
 
   xtend@2.1.2:
     dependencies:

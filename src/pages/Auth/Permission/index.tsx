@@ -1,6 +1,6 @@
-import { FC } from "react";
 
-const Permission: FC = () =>{
+
+const Permission = () =>{
     return (
         <></>
     )

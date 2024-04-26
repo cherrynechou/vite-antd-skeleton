@@ -1,6 +1,5 @@
-import { FC } from "react";
 
-const Menu: FC = () =>{
+const Menu = (props: any) =>{
     return (
         <></>
     )

@@ -1,6 +1,5 @@
-import { FC } from "react";
 
-const Role: FC = () =>{
+const Role = () =>{
     return (
         <></>
     )

@@ -10,6 +10,10 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],
   rules: {
+    "@typescript-eslint/no-explicit-any": ['off'],
+    '@typescript-eslint/no-unused-vars': ['off'],
+    'no-var': 'warn', // 禁止出现var用let和const代替
+    quotes: ['warn', 'single', 'avoid-escape'], // 要求统一使用单引号符号
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
