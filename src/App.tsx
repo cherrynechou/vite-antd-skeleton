@@ -5,7 +5,6 @@ import type { ThemeConfig } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import { ConfigProvider } from 'antd';
 
-
 const config: ThemeConfig = {
   token: {
     colorPrimary: '#1890ff',

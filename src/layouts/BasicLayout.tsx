@@ -5,11 +5,9 @@ import { ProCard } from '@ant-design/pro-components';
 import {  useLocation, Outlet } from 'react-router-dom';
 import Footer from '@/components/Footer';
 
-
 import Settings from '~/config/defaultSettings'
 import logoImg from '@/assets/images/logo.jpg'
 
-const loginPath = '/admin/login';
 
 const BasicLayout: FC = (props: any) => {
     const [ pathname, setPathname ] = useState(window.location.pathname)
@@ -17,6 +15,7 @@ const BasicLayout: FC = (props: any) => {
 
     useEffect(() => {
         setPathname(window.location.pathname)
+        console.log(1);
     }, [window.location.pathname])
 
     return (

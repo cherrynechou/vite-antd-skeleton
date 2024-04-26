@@ -1,4 +1,5 @@
-import axios, { AxiosInstance,AxiosResponse ,AxiosError, AxiosRequestHeaders, InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosInstance,AxiosResponse ,AxiosError, InternalAxiosRequestConfig, HttpStatusCode } from "axios";
+import localforage from 'localforage';
 
 const request: AxiosInstance = axios.create(<{
     baseURL: any
@@ -12,10 +13,55 @@ const request: AxiosInstance = axios.create(<{
     }
 });
 
+type accessTokenType = {
+    access_token: string;
+    token_type: string;
+}
+
+
+/**
+ * 获取凭证
+ */
+const getAccessToken = async () =>{
+    const access_token = await localforage.getItem('access_token');
+    const token_type = await localforage.getItem('token_type');
+
+    if (!token_type || !access_token) {
+        return '';
+    }
+
+    return `${token_type} ${access_token}`;
+}
+
+
+/**
+ * 设置凭证
+ * @param data
+ */
+const setAccessToken = async (data: accessTokenType) =>{
+    await localforage.setItem('access_token', data.access_token);
+    await localforage.setItem('token_type', data.token_type);
+}
+
 
 
 // Add a request interceptor
 request.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
+    const accessToken = await getAccessToken();
+
+    if(accessToken && config && config?.headers){
+        config.headers.Authorization = accessToken;
+    }
+
+    //删除属性值 为空 或者 undefined
+    if(config.data){
+        Object.keys(config.data).forEach((val: string) => {
+            if( config.data[val] === null || config.data[val] === undefined){
+                delete config.data[val]
+            }
+        });
+    }
+
     return config;
 
 },  (error: AxiosError) => {
@@ -28,7 +74,7 @@ request.interceptors.response.use( (response: AxiosResponse) => {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
 
-    if(response.status === 200){
+    if(response.status === HttpStatusCode.Ok){
         return response.data;
     }
 
@@ -38,9 +84,7 @@ request.interceptors.response.use( (response: AxiosResponse) => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
 
-
     return Promise.reject(error);
 });
-
 
 export default request;
