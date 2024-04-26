@@ -1,5 +1,5 @@
-
-const Role = () =>{
+import { FC } from 'React';
+const Role: FC = () =>{
     return (
         <></>
     )

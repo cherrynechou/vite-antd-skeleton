@@ -1,5 +1,5 @@
-
-const User = () =>{
+import { FC } from 'React';
+const User: FC = () =>{
     return (
         <></>
     )

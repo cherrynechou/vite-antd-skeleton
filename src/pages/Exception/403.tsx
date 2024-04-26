@@ -4,13 +4,13 @@ import {
 } from 'antd';
 import {
     useNavigate
-} from "react-router-dom";
+} from 'react-router-dom';
 
 export default () => {
 
     const navigate = useNavigate();
     const goHome = () => {
-        navigate("/home");
+        navigate('/home');
     };
     return (
         <Result

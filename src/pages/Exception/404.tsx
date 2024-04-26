@@ -10,7 +10,7 @@ export default () => {
 
     const navigate = useNavigate();
     const goHome = () => {
-        navigate("/home");
+        navigate('/home');
     };
 
     return (
