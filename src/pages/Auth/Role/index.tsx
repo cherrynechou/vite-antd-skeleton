@@ -1,9 +1,9 @@
 import { FC, useRef, useState, } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
-import { Button, Popconfirm, Space, Tag, message } from "antd";
+import { Button, Popconfirm, Space, message } from 'antd';
 import { omit } from 'lodash-es';
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from '@ant-design/icons';
 import {queryRoles, destroyRole} from '@/services/admin/auth/role';
 
 export type TableListItem = {
@@ -55,7 +55,7 @@ const Role: FC = () =>{
     const confirmDel = async (id: number) => {
         const res = await destroyRole(id);
         if(res.status === 200){
-            message.success("删除成功");
+            message.success('删除成功');
         }
     };
 
@@ -72,14 +72,7 @@ const Role: FC = () =>{
             title: '标识',
             width: 80,
             align: 'center',
-            dataIndex: 'slug',
-            render: (_, record) => (
-                <Space>
-                    <Tag color='#586cb1'>
-                        {record.slug}
-                    </Tag>
-                </Space>
-            )
+            dataIndex: 'slug'
         }, {
             title: '名称',
             width: 80,
@@ -136,7 +129,6 @@ const Role: FC = () =>{
                     </Button>,
                 ]}
             />
-
         </PageContainer>
     )
 }

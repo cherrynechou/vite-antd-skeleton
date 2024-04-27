@@ -5,8 +5,9 @@ import { ProConfigProvider } from '@ant-design/pro-provider';
 import { ProCard } from '@ant-design/pro-components';
 import { useLocation,matchRoutes, Outlet ,useNavigate} from 'react-router-dom';
 import { routes } from '@/routes/routes';
+import { loginPath } from '@/constants/page'
 import { getMenuList } from '@/services/admin/system/basic'
-import fixMenuItemIcon from "@/utils/fixMenuItemIcon";
+import fixMenuItemIcon from '@/utils/fixMenuItemIcon';
 
 import useStore from '@/stores'
 
@@ -23,8 +24,6 @@ export type menuProType={
 };
 
 
-const loginPath = '/admin/login';
-
 const BasicLayout: FC = (props: any) => {
     const [ pathname, setPathname ] = useState(window.location.pathname)
     const location = useLocation();
@@ -37,11 +36,6 @@ const BasicLayout: FC = (props: any) => {
     useEffect(() => {
         setPathname(window.location.pathname)
     }, [window.location.pathname])
-
-
-
-
-
 
 
     return (

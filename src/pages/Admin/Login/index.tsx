@@ -11,13 +11,13 @@ import {
     message
 } from 'antd';
 import type { FormProps } from 'antd';
-import { HttpStatusCode } from "axios";
+import { HttpStatusCode } from 'axios';
 import localforage from 'localforage';
 import { useNavigate } from 'react-router-dom'
 import useStore from '@/stores'
 
 import { login } from '@/services/admin/system/basic';
-import { queryCurrentUser } from "@/services/admin/auth/user";
+import { queryCurrentUser } from '@/services/admin/auth/user';
 
 import logoSvg from '@/assets/images/logo.svg'
 
@@ -55,6 +55,10 @@ const Login = ()=>{
         }
     }
 
+    /**
+     * 用户登录
+     * @param values
+     */
     const onFinish: FormProps<TLoginFieldType>['onFinish'] = async (values) => {
         try {
             const res = await login(values);

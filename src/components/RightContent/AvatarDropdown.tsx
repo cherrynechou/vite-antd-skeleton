@@ -4,6 +4,7 @@ import { createStyles } from 'antd-style';
 import React, { useCallback } from 'react';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import HeaderDropdown from '../HeaderDropdown';
+import { loginPath } from '@/constants/page'
 import useStore from '@/stores'
 
 
@@ -45,7 +46,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
         /** 此方法会跳转到 redirect 参数所在的位置 */
         const redirect = urlParams.get('redirect');
         // Note: There may be security issues, please note
-        if (window.location.pathname !== '/admin/login' && !redirect) {
+        if (window.location.pathname !== loginPath && !redirect) {
 
         }
     };

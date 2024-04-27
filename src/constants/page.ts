@@ -1,0 +1,1 @@
+export const loginPath: string = '/admin/login'

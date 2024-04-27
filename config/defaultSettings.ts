@@ -8,7 +8,8 @@ const Settings: LayoutSettings = {
     fixSiderbar: true,
     iconfontUrl: '',
     colorPrimary: '#1677FF',
-    splitMenus: false
+    splitMenus: false,
+    title: '后台管理系统',
 }
 
 export default Settings
