@@ -1,93 +1,128 @@
-import { FC } from 'react';
 import {
-    AlipayCircleOutlined,
     LockOutlined,
-    MobileOutlined,
-    TaobaoCircleOutlined,
     UserOutlined,
-    WeiboCircleOutlined,
 } from '@ant-design/icons';
-import { Space, Tabs, message, theme } from 'antd';
+import { useTranslation } from 'react-i18next';
 import {
-    LoginFormPage,
-    ProFormText
-} from '@ant-design/pro-components'
+    Row,
+    Form,
+    Input,
+    Button,
+    message
+} from 'antd';
+import type { FormProps } from 'antd';
+import { HttpStatusCode } from "axios";
+import localforage from 'localforage';
+import { useNavigate } from 'react-router-dom'
+import useStore from '@/stores'
 
-const Login: FC=()=>{
-    const { token } = theme.useToken();
+import { login } from '@/services/admin/system/basic';
+import { queryCurrentUser } from "@/services/admin/auth/user";
+
+import logoSvg from '@/assets/images/logo.svg'
+
+type TLoginFieldType = {
+    username?: string;
+    password?: string;
+};
+
+type TAccessTokenEntity = {
+    access_token: string;
+    token_type: string;
+}
+
+import './index.less';
+
+/**
+ * 设置凭证
+ * @param data
+ */
+const setAccessToken = async (data: TAccessTokenEntity) =>{
+    await localforage.setItem('access_token', data.access_token);
+    await localforage.setItem('token_type', data.token_type);
+}
+
+const Login = ()=>{
+    const setCurrentUser = useStore(state=>state.setCurrentUser);
+    const navigate = useNavigate()
+    const { t } = useTranslation();
+
+
+    const fetchUserInfo = async ()=>{
+        const userInfo = await queryCurrentUser();
+        if(userInfo){
+            await setCurrentUser(userInfo);
+        }
+    }
+
+    const onFinish: FormProps<TLoginFieldType>['onFinish'] = async (values) => {
+        try {
+            const res = await login(values);
+
+            if(res.status === HttpStatusCode.Ok){
+                const loginRes = res.data;
+                await setAccessToken(loginRes);
+                message.success(t('system.loginSuccess'));
+
+                await fetchUserInfo();
+
+                navigate( '/')
+
+            }
+        }catch (error){
+
+        }
+    }
 
 
     return (
-        <div style={{ backgroundColor: 'white', height: '100vh' }}>
-            <LoginFormPage
-                backgroundImageUrl="https://gw.alipayobjects.com/zos/rmsportal/FfdJeJRQWjEeGTpqgBKj.png"
-                logo="https://jinpika-1308276765.cos.ap-shanghai.myqcloud.com/images/logo.png"
-                title="JinPiKa"
-                subTitle="全球最大的代码托管平台"
+        <div className="login-main">
+            <Row
+                align="top"
+                justify="center"
+                className="px-3"
+                style={{ minHeight: '100vh', background: '#fff' }}
             >
-                <ProFormText
-                    name="username"
-                    fieldProps={{
-                        size: 'large',
-                        prefix: <UserOutlined className={'prefixIcon'} />,
-                    }}
-                    placeholder={'用户名: admin or user'}
-                    rules={[
-                        {
-                            required: true,
-                            message: '请输入用户名!',
-                        },
-                    ]}
-                />
+                <div className="login-box">
+                    <div className="login-page-header flex align-center">
+                        <img className="login-logo" src={logoSvg} alt="logo" />
+                        <span className="login-page-desc">{t('system.title')}</span>
+                    </div>
 
-                <ProFormText.Password
-                    name="password"
-                    fieldProps={{
-                        size: 'large',
-                        prefix: <LockOutlined className={'prefixIcon'} />,
-                        strengthText:
-                            'Password should contain numbers, letters and special characters, at least 8 characters long.',
-                        statusRender: (value) => {
-                            const getStatus = () => {
-                                if (value && value.length > 12) {
-                                    return 'ok';
-                                }
-                                if (value && value.length > 6) {
-                                    return 'pass';
-                                }
-                                return 'poor';
-                            };
-                            const status = getStatus();
-                            if (status === 'pass') {
-                                return (
-                                    <div style={{ color: token.colorWarning }}>
-                                        强度：中
-                                    </div>
-                                );
-                            }
-                            if (status === 'ok') {
-                                return (
-                                    <div style={{ color: token.colorSuccess }}>
-                                        强度：强
-                                    </div>
-                                );
-                            }
-                            return (
-                                <div style={{ color: token.colorError }}>强度：弱</div>
-                            );
-                        },
-                    }}
-                    placeholder={'密码: ant.design'}
-                    rules={[
-                        {
-                            required: true,
-                            message: '请输入密码！',
-                        },
-                    ]}
-                />
+                    <Form
+                        onFinish={onFinish}
+                        autoComplete="off"
+                    >
+                        <Form.Item
+                            name="username"
+                            rules={[{ required: true, message: '用户名是必填项！' }]}
+                        >
+                            <Input
+                                size="large"
+                                prefix={<UserOutlined/>}
+                                placeholder="请输入用户名"
+                            />
+                        </Form.Item>
 
-            </LoginFormPage>
+                        <Form.Item
+                            name="password"
+                            rules={[{ required: true, message: '密码是必填项！' }]}
+                        >
+                            <Input.Password
+                                size="large"
+                                prefix={<LockOutlined/>}
+                                placeholder="请输入密码"
+                            />
+                        </Form.Item>
 
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" block>
+                                登录
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </div>
+            </Row>
         </div>
     )
 }

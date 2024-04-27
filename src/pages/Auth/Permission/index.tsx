@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 const Permission: FC = () =>{
     return (
-        <></>
+        <>2</>
     )
 }
 

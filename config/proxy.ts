@@ -9,7 +9,7 @@
 export default {
     dev:{
         '/api': {
-            target: 'https://smartapi.ysxinyi.com/',
+            target: 'https://smartapi.ysxinyi.com',
             changeOrigin: true,
             secure: true,
             rewrite: (path: string) => path.replace(/^\/api/, ''),

@@ -3,40 +3,68 @@ import { Footer, AvatarDropdown, AvatarName } from '@/components';
 import { ProLayout } from '@ant-design/pro-layout';
 import { ProConfigProvider } from '@ant-design/pro-provider';
 import { ProCard } from '@ant-design/pro-components';
-import {  useLocation, Outlet } from 'react-router-dom';
+import { useLocation,matchRoutes, Outlet ,useNavigate} from 'react-router-dom';
+import { routes } from '@/routes/routes';
+import { getMenuList } from '@/services/admin/system/basic'
+import fixMenuItemIcon from "@/utils/fixMenuItemIcon";
 
+import useStore from '@/stores'
 
 import Settings from '~/config/defaultSettings'
 import logoSvg from '@/assets/images/logo.svg'
 
-import useStore from '@/stores'
+export type menuProType={
+    isUrl: any;
+    path: any;
+    target: string;
+    pro_layout_parentKeys?: string | any[];
+    icon: any;
+    onClick: ()=> void
+};
+
 
 const loginPath = '/admin/login';
 
 const BasicLayout: FC = (props: any) => {
     const [ pathname, setPathname ] = useState(window.location.pathname)
     const location = useLocation();
-    const currentUser = useStore();
+    const navigate = useNavigate();
+    const matchRoute = matchRoutes(routes, location)
+    const currentUser = useStore(state=>state.currentUser);
+
+
 
     useEffect(() => {
         setPathname(window.location.pathname)
-        console.log(1);
     }, [window.location.pathname])
 
+
+
+
+
+
+
     return (
-        <ProConfigProvider
-            dark={false}
-            hashed={false}
-        >
+        <ProConfigProvider dark={false} hashed={false}>
             <ProLayout
                 siderWidth={216}
                 logo={logoSvg}
                 location={{
                     pathname,
                 }}
+                menu={{
+                    params: {
+                        username: currentUser?.username,
+                    },
+                    request: async () => {
+                        const menuData = await getMenuList();
+                        return fixMenuItemIcon(menuData.data);
+                    },
+                }}
                 avatarProps={{
-                    src: "123",
                     title: <AvatarName />,
+                    size: 'small',
+                    src: currentUser?.avatar,
                     render: (_, avatarChildren) => {
                         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
                     },
@@ -49,6 +77,11 @@ const BasicLayout: FC = (props: any) => {
                     }
                 }}
                 menuHeaderRender = {undefined}
+                menuProps={{
+                    onClick: ({ key }) => {
+                        navigate(key || '/')
+                    }
+                }}
                 footerRender={() => <Footer />}
                 {...Settings}
             >

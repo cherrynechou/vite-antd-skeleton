@@ -30,7 +30,7 @@ export const routes: RouteObject[] = [
                         path: '/auth/permissions',
                         element: lazyLoad(lazy(() => import('@/pages/Auth/Permission'))),
                     },{
-                        path: '/auth/menus',
+                        path: '/auth/menu',
                         element: lazyLoad(lazy(() => import('@/pages/Auth/Menu'))),
                     }
                 ]
