@@ -4,7 +4,7 @@ import { createStyles } from 'antd-style';
 import React, { useCallback } from 'react';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import HeaderDropdown from '../HeaderDropdown';
-import { loginPath } from '@/constants/page'
+import { loginPath } from '@/constants/pages'
 import useStore from '@/stores'
 
 

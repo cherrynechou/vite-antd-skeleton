@@ -5,6 +5,7 @@ import { Button, Popconfirm, Space, message } from 'antd';
 import { omit } from 'lodash-es';
 import { PlusOutlined } from '@ant-design/icons';
 import {queryRoles, destroyRole} from '@/services/admin/auth/role';
+import CreateOrEdit from './components/CreateOrEdit'
 
 export type TableListItem = {
     id: number;
@@ -129,6 +130,16 @@ const Role: FC = () =>{
                     </Button>,
                 ]}
             />
+            
+            {isModalVisible &&
+                <CreateOrEdit
+                  isModalVisible={isModalVisible}
+                  isShowModal={isShowModal}
+                  actionRef = {actionRef}
+                  editId = {editId}
+                />
+            }
+            
         </PageContainer>
     )
 }

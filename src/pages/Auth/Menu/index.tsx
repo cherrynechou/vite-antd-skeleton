@@ -1,11 +1,11 @@
 import { FC,  useRef, useState } from 'react';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
-import { PageContainer } from '@ant-design/pro-layout';
-import { ProTable } from '@ant-design/pro-components';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { Button, Popconfirm, Switch, message, Space } from 'antd';
 import { queryMenus, switchMenu, destroyMenu } from '@/services/admin/auth/menu';
 import Icon, { PlusOutlined } from '@ant-design/icons';
 import * as icons from '@ant-design/icons';
+import CreateOrEdit from './components/CreateOrEdit'
 
 export type TableListItem = {
     id: number;
@@ -25,7 +25,7 @@ export type TableListItem = {
 
 
 
-const Menu: FC = (props: any) =>{
+const Menu: FC = () =>{
 
     const [ menuData, setMenuData ] = useState([]);
     const [ isModalVisible, setIsModalVisible ] = useState(false);
@@ -93,7 +93,7 @@ const Menu: FC = (props: any) =>{
             align: 'center',
             dataIndex: 'icon',
             render:(_,record)=>(
-                record.icon && <Icon component={icons[record.icon]} style={{ fontSize: '16px' }} />
+                record.icon && <Icon component={(icons as any)[record.icon]} style={{ fontSize: '16px' }} />
             )
         }, {
             title: '名称',
@@ -167,6 +167,17 @@ const Menu: FC = (props: any) =>{
                     </Button>,
                 ]}
             />
+    
+            {isModalVisible &&
+                <CreateOrEdit
+                  isModalVisible={isModalVisible}
+                  isShowModal={isShowModal}
+                  actionRef = {actionRef}
+                  menuData={menuData}
+                  editId = {editId}
+                />
+            }
+            
         </PageContainer>
     )
 }

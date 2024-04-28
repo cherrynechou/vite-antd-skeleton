@@ -1,10 +1,10 @@
 import { FC, useRef, useState } from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { PageContainer } from '@ant-design/pro-layout';
-import { ProTable } from '@ant-design/pro-components';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { Button, message, Popconfirm, Space, Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { queryPermissions, destroyPermission } from '@/services/admin/auth/permission';
+import CreateOrEdit from './components/CreateOrEdit'
 
 
 export type TableListItem = {
@@ -153,6 +153,16 @@ const Permission: FC = () =>{
                     </Button>,
                 ]}
             />
+            
+            {isModalVisible &&
+                <CreateOrEdit
+                  isModalVisible={isModalVisible}
+                  isShowModal={isShowModal}
+                  actionRef = {actionRef}
+                  permissionTreeData = {permissionTreeData}
+                  editId = {editId}
+                />
+            }
         </PageContainer>
     )
 }

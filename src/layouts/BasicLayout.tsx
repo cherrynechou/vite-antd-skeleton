@@ -5,7 +5,7 @@ import { ProConfigProvider } from '@ant-design/pro-provider';
 import { ProCard } from '@ant-design/pro-components';
 import { useLocation,matchRoutes, Outlet ,useNavigate} from 'react-router-dom';
 import { routes } from '@/routes/routes';
-import { loginPath } from '@/constants/page'
+import { loginPath } from '@/constants/pages'
 import { getMenuList } from '@/services/admin/system/basic'
 import fixMenuItemIcon from '@/utils/fixMenuItemIcon';
 
@@ -14,25 +14,13 @@ import useStore from '@/stores'
 import Settings from '~/config/defaultSettings'
 import logoSvg from '@/assets/images/logo.svg'
 
-export type menuProType={
-    isUrl: any;
-    path: any;
-    target: string;
-    pro_layout_parentKeys?: string | any[];
-    icon: any;
-    onClick: ()=> void
-};
-
-
-const BasicLayout: FC = (props: any) => {
+const BasicLayout: FC = () => {
     const [ pathname, setPathname ] = useState(window.location.pathname)
     const location = useLocation();
     const navigate = useNavigate();
     const matchRoute = matchRoutes(routes, location)
     const currentUser = useStore(state=>state.currentUser);
-
-
-
+    
     useEffect(() => {
         setPathname(window.location.pathname)
     }, [window.location.pathname])

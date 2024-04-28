@@ -5,6 +5,7 @@ import { Button, Space, Tag, message, Switch, Popconfirm } from 'antd';
 import { queryUsers, blockUser, resetPassword, destroyUser } from '@/services/admin/auth/user';
 import { omit } from 'lodash-es';
 import { PlusOutlined } from '@ant-design/icons';
+import CreateOrEdit from './components/CreateOrEdit';
 
 
 export type TableListItem = {
@@ -226,6 +227,15 @@ const User: FC = () =>{
                     </Button>,
                 ]}
             />
+    
+            {isModalVisible &&
+                <CreateOrEdit
+                  isModalVisible={isModalVisible}
+                  isShowModal={isShowModal}
+                  actionRef={actionRef}
+                  editId={editId}
+                />
+            }
         </PageContainer>
     )
 }
