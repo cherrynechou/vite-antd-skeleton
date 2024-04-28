@@ -54,6 +54,7 @@ const BasicLayout: FC = () => {
                 onPageChange={() => {
                     // 如果没有登录，重定向到 login
                     // 如果没有登录，重定向到 login
+                    console.log(currentUser)
                     if ( !currentUser?.username && location.pathname !== loginPath) {
                         //window.location.href = loginPath;
                     }

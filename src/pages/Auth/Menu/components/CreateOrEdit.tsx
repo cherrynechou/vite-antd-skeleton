@@ -2,9 +2,9 @@ import { FC,  useEffect, useState } from 'react';
 import { Form, Input, Modal, Select, message, Switch, InputNumber, Skeleton } from 'antd';
 import {createMenu, getMenu, updateMenu } from '@/services/admin/auth/menu'
 import { SelectIcon } from '@/components'
-import { queryAllRoles } from "@/services/admin/auth/role";
+import { queryAllRoles } from '@/services/admin/auth/role';
 import { treeToOrderList, queryListMaxValue } from '@/utils/utils';
-import { routeList } from "./routeListData";
+import { routeList } from './routeListData';
 import { useNavigate } from 'react-router-dom';
 
 interface menuModalProps  {

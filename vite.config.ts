@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => ({
     proxy: proxy[mode]
   },
   build: {
-    outDir: "dist",
+    outDir: 'dist',
     //minify: "esbuild",
     // esbuild 打包更快，但是不能去除 console.log，去除 console 使用 terser 模式
     minify: 'terser',
@@ -39,9 +39,9 @@ export default defineConfig(({ mode }) => ({
     },
     rollupOptions: {
       output: {
-        chunkFileNames: "assets/js/[name]-[hash].js",
-        entryFileNames: "assets/js/[name]-[hash].js",
-        assetFileNames: "assets/[ext]/[name]-[hash].[ext]",
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
       },
     }
   },

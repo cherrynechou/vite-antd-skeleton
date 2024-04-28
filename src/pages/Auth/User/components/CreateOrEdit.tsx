@@ -1,8 +1,8 @@
-import {FC, useEffect, useRef, useState} from "react";
+import {FC, useEffect, useRef, useState} from 'react';
 import { Button, Modal, Form, Input, Select, Upload, message, Skeleton } from 'antd';
 import type { TreeProps } from 'antd/es/tree';
 
-import { filterTreeLeafNode, listToTree } from "@/utils/utils";
+import { filterTreeLeafNode, listToTree } from '@/utils/utils';
 import { PlusOutlined } from '@ant-design/icons';
 
 import type { UploadFile } from 'antd/es/upload/interface';
@@ -11,11 +11,11 @@ import type { RcFile, UploadProps } from 'antd/es/upload';
 import { queryAllRoles } from '@/services/admin/auth/role';
 import { getUser, createUser, updateUser } from '@/services/admin/auth/user';
 import { queryAllPermissions } from '@/services/admin/auth/permission';
-import { uploadImageFile } from "@/services/admin/system/basic";
+import { uploadImageFile } from '@/services/admin/system/basic';
 
 import { ITreeOption } from '@/interfaces/treeOptions';
 import { ICreateOrEditModalProps } from '@/interfaces/modalProps'
-import {pick} from "lodash-es";
+import {pick} from 'lodash-es';
 
 
 type TUserEntity = {

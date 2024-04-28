@@ -1,8 +1,9 @@
-import { RouterProvider} from 'react-router-dom'
-import router from '@/routes';
+import { routes } from '@/routes/routes';
 import dayjs from 'dayjs'
 import type { ThemeConfig } from 'antd';
+import {  useRoutes } from 'react-router-dom';
 import zhCN from 'antd/locale/zh_CN';
+import RouterGuard from '@/routes/RouterGuard';
 import { ConfigProvider } from 'antd';
 
 import './global.less'
@@ -16,13 +17,14 @@ const config: ThemeConfig = {
 dayjs.locale('zh-cn')
 
 function App() {
-
   return (
       <ConfigProvider
           locale={zhCN}
           theme={config}
       >
-        <RouterProvider router={router} />
+          <RouterGuard key="guard">
+              {useRoutes(routes)}
+          </RouterGuard>
     </ConfigProvider>
   )
 }

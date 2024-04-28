@@ -1,12 +1,12 @@
-import { FC , useEffect, useState } from "react";
+import { FC , useEffect, useState } from 'react';
 import type { TreeProps } from 'antd/es/tree';
 import { ICreateOrEditModalProps } from '@/interfaces/modalProps'
 import { Form, Modal, Input, Tree, Skeleton, message} from 'antd';
 import { queryAllPermissions } from '@/services/admin/auth/permission';
 import { createRole, getRole, updateRole } from '@/services/admin/auth/role';
-import { filterTreeLeafNode, listToTree } from "@/utils/utils";
+import { filterTreeLeafNode, listToTree } from '@/utils/utils';
 import { nanoid } from 'nanoid'
-import {ITreeOption} from "@/interfaces/treeOptions";
+import {ITreeOption} from '@/interfaces/treeOptions';
 
 const CreateOrEdit: FC<ICreateOrEditModalProps> = (props:any) =>{
     const [ initialValues, setInitialValues ] = useState<any>({});

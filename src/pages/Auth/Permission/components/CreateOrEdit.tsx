@@ -1,7 +1,7 @@
-import { FC, useEffect, useState} from "react";
+import { FC, useEffect, useState} from 'react';
 import { Modal, Form, Select, Input, Skeleton, message } from 'antd';
 import { treeToOrderList } from '@/utils/utils';
-import { createPermission, queryAllPermissionRoutes, queryPermission, updatePermission } from "@/services/admin/auth/permission";
+import { createPermission, queryAllPermissionRoutes, queryPermission, updatePermission } from '@/services/admin/auth/permission';
 
 
 interface permissionModalProps  {
