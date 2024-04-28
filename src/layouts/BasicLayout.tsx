@@ -3,9 +3,10 @@ import { Footer, AvatarDropdown, AvatarName } from '@/components';
 import { ProLayout } from '@ant-design/pro-layout';
 import { ProConfigProvider } from '@ant-design/pro-provider';
 import { ProCard } from '@ant-design/pro-components';
-import { useLocation,matchRoutes, Outlet ,useNavigate} from 'react-router-dom';
-import { routes } from '@/routes/routes';
+import { useLocation, Outlet ,useNavigate} from 'react-router-dom';
+
 import { loginPath } from '@/constants/pages'
+import localforage from 'localforage';
 import { getMenuList } from '@/services/admin/system/basic'
 import fixMenuItemIcon from '@/utils/fixMenuItemIcon';
 
@@ -14,11 +15,11 @@ import useStore from '@/stores'
 import Settings from '~/config/defaultSettings'
 import logoSvg from '@/assets/images/logo.svg'
 
+
 const BasicLayout: FC = () => {
     const [ pathname, setPathname ] = useState(window.location.pathname)
     const location = useLocation();
     const navigate = useNavigate();
-    const matchRoute = matchRoutes(routes, location)
     const currentUser = useStore(state=>state.currentUser);
     
     useEffect(() => {
@@ -51,12 +52,12 @@ const BasicLayout: FC = () => {
                         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
                     },
                 }}
-                onPageChange={() => {
+                onPageChange={async () => {
                     // 如果没有登录，重定向到 login
                     // 如果没有登录，重定向到 login
-                    console.log(currentUser)
-                    if ( !currentUser?.username && location.pathname !== loginPath) {
-                        //window.location.href = loginPath;
+                    const accessToken = await localforage.getItem('access_token');
+                    if ( !currentUser?.username  && accessToken && location.pathname !== loginPath) {
+                        window.location.href = loginPath;
                     }
                 }}
                 menuHeaderRender = {undefined}

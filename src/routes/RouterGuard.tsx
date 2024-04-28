@@ -18,7 +18,7 @@ const RouterGuard = (props: any) =>{
 
         if(accessToken){
             if (route.pathname != loginPath) {
-                if(!currentUser?.name){
+                if(!currentUser?.name){  //没有用户信息
                     const userInfo = await queryCurrentUser();
                     if(userInfo){
                         await setCurrentUser(userInfo.data);
