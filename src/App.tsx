@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import type { ThemeConfig } from 'antd';
 import {  useRoutes } from 'react-router-dom';
 import zhCN from 'antd/locale/zh_CN';
-import RouterGuard from '@/routes/RouterGuard';
+import RouterGuard from '@/routes/routerGuard';
 import { ConfigProvider } from 'antd';
 
 import './global.less'
