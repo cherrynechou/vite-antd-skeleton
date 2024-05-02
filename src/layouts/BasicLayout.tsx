@@ -52,14 +52,6 @@ const BasicLayout: FC = () => {
                         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
                     },
                 }}
-                onPageChange={async () => {
-                    // 如果没有登录，重定向到 login
-                    // 如果没有登录，重定向到 login
-                   const accessToken = await localforage.getItem('access_token');
-                    if ( !currentUser?.username  && !accessToken  && location.pathname !== loginPath) {
-                        window.location.href = loginPath;
-                    }
-                }}
                 menuHeaderRender = {undefined}
                 menuItemRender={(item, dom) => (
                     <div

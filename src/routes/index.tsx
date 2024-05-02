@@ -1,5 +1,6 @@
 import { lazy } from 'react'
 import type { RouteObject } from 'react-router-dom'
+import { Navigate } from 'react-router-dom';
 import BasicLayout from '@/layouts/BasicLayout'
 import lazyLoad from './lazyLoad'
 
@@ -41,3 +42,5 @@ export const routes: RouteObject[] = [
         element: lazyLoad(lazy(() => import('@/pages/Exception/404'))),
     }
 ];
+
+export default routes;

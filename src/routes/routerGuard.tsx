@@ -32,12 +32,11 @@ const RouterGuard = (props: any) =>{
           }
         }
       }
-    }else {
+    }else{
       navigate( loginPath, { replace: true });
     }
 
-  },[route.pathname,navigate])
-  
+  },[route.pathname, navigate])
 
   return (
     <>

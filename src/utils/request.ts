@@ -1,6 +1,7 @@
 import axios, { AxiosInstance,AxiosResponse ,AxiosError, InternalAxiosRequestConfig, HttpStatusCode } from "axios";
 import { message } from 'antd';
 import localforage from 'localforage';
+import { loginPath } from '@/constants/pages'
 
 const request: AxiosInstance = axios.create(<{
     baseURL: any

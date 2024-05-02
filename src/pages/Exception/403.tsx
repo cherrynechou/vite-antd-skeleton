@@ -1,12 +1,9 @@
-import {
-    Button,
-    Result
-} from 'antd';
-import {
-    useNavigate
-} from 'react-router-dom';
+import { FC } from 'react';
+import { Button, Result } from 'antd';
+import { useNavigate  } from 'react-router-dom';
 
-export default () => {
+
+const NoAuthorize: FC =  () => {
 
     const navigate = useNavigate();
     const goHome = () => {
@@ -25,4 +22,6 @@ export default () => {
         />
     )
 }
+
+export default NoAuthorize;
 

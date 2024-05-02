@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import {
   Button,
   Result
@@ -6,8 +7,8 @@ import {
   useNavigate
 } from 'react-router-dom';
 
-export default () => {
 
+const NotFound : FC = () => {
     const navigate = useNavigate();
     const goHome = () => {
         navigate('/home');
@@ -27,4 +28,5 @@ export default () => {
     )
 }
 
+export default NotFound;
 
