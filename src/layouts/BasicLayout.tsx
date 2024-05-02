@@ -3,10 +3,7 @@ import { Footer, AvatarDropdown, AvatarName } from '@/components';
 import { ProLayout } from '@ant-design/pro-layout';
 import { ProConfigProvider } from '@ant-design/pro-provider';
 import { ProCard } from '@ant-design/pro-components';
-import { useLocation, Outlet ,useNavigate} from 'react-router-dom';
-
-import { loginPath } from '@/constants/pages'
-import localforage from 'localforage';
+import { useLocation, Outlet ,useNavigate } from 'react-router-dom';
 
 import { getMenuList } from '@/services/admin/system/basic'
 import fixMenuItemIcon from '@/utils/fixMenuItemIcon';
