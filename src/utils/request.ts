@@ -1,6 +1,6 @@
 import axios, { AxiosInstance,AxiosResponse ,AxiosError, InternalAxiosRequestConfig, HttpStatusCode } from "axios";
-import localforage from 'localforage';
 import { message } from 'antd';
+import localforage from 'localforage';
 
 const request: AxiosInstance = axios.create(<{
     baseURL: any
@@ -19,7 +19,7 @@ const request: AxiosInstance = axios.create(<{
  */
 const getAccessToken = async () =>{
     const access_token = await localforage.getItem('access_token');
-    const token_type = await localforage.getItem('token_type');
+    const token_type =  await localforage.getItem('token_type');
 
     if (!token_type || !access_token) {
         return '';

@@ -135,6 +135,24 @@ const filterTreeLeafNode=(
     return leafRecords;
 }
 
+
+/**
+ *
+ * @param originalData
+ */
+const removeEmptyOrUndefinedField = (originalData: any) =>{
+    const newData: any = {};
+    for (const key in originalData) {
+        //如果对象属性的值不为空，就保存该属性（这里我做了限制，如果属性的值为0，保存该属性。如果属性的值全部是空格，属于为空。）
+        if (originalData[key] !== 0 && originalData[key] !== '' && originalData[key] !== undefined && originalData[key] !== null) {
+            //记录属性
+            newData[key] = originalData[key];
+        }
+    }
+    //返回对象
+    return newData;
+}
+
 /**
  * 获取数组某一列最大值
  * @param list
@@ -159,6 +177,7 @@ export {
     treeToOrderList,
     listToTree,
     queryListMaxValue,
+    removeEmptyOrUndefinedField,
     filterTreeLeafNode
 }
 

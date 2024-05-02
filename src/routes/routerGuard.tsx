@@ -1,9 +1,10 @@
-import { useAsyncEffect } from 'ahooks';
-import localforage from 'localforage';
 import { useLocation, useNavigate  } from 'react-router-dom'
+import {useAsyncEffect} from 'ahooks';
 import useStore from '@/stores'
 import { loginPath } from '@/constants/pages';
 import { queryCurrentUser } from '@/services/admin/auth/user';
+import localforage from 'localforage';
+
 
 const RouterGuard = (props: any) =>{
   
@@ -12,28 +13,37 @@ const RouterGuard = (props: any) =>{
   
   const route = useLocation();
   const navigate = useNavigate();
-  
+
   useAsyncEffect(async()=>{
     const accessToken = await localforage.getItem('access_token');
-    
+
     if(accessToken){
-      if (route.pathname != loginPath) {
+      if (route.pathname === loginPath) {
+        navigate('/', { replace: true });
+      }else{
         if(!currentUser?.name){  //没有用户信息
-          const userInfo = await queryCurrentUser();
-          if(userInfo){
-            await setCurrentUser(userInfo.data);
+          try {
+            const userInfo = await queryCurrentUser();
+            if(userInfo){
+              await setCurrentUser(userInfo.data);
+            }
+          }catch (error){
+            navigate( loginPath, { replace: true });
           }
         }
-      }else{
-        navigate('/',{replace:true});
       }
-    }else{
-      navigate(loginPath);
+    }else {
+      navigate( loginPath, { replace: true });
     }
-    
-  }, [route.pathname])
+
+  },[route.pathname,navigate])
   
-  return props.children;
+
+  return (
+    <>
+      {props.children}
+    </>
+  )
 }
 
 export default RouterGuard;

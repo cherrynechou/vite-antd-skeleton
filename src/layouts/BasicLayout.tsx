@@ -7,6 +7,7 @@ import { useLocation, Outlet ,useNavigate} from 'react-router-dom';
 
 import { loginPath } from '@/constants/pages'
 import localforage from 'localforage';
+
 import { getMenuList } from '@/services/admin/system/basic'
 import fixMenuItemIcon from '@/utils/fixMenuItemIcon';
 
@@ -15,7 +16,6 @@ import useStore from '@/stores'
 import Settings from '~/config/defaultSettings'
 import logoSvg from '@/assets/images/logo.svg'
 
-
 const BasicLayout: FC = () => {
     const [ pathname, setPathname ] = useState(window.location.pathname)
     const location = useLocation();
@@ -23,8 +23,8 @@ const BasicLayout: FC = () => {
     const currentUser = useStore(state=>state.currentUser);
     
     useEffect(() => {
-        setPathname(window.location.pathname)
-    }, [window.location.pathname])
+        setPathname(location.pathname)
+    }, [location.pathname])
 
 
     return (
@@ -55,12 +55,21 @@ const BasicLayout: FC = () => {
                 onPageChange={async () => {
                     // 如果没有登录，重定向到 login
                     // 如果没有登录，重定向到 login
-                    const accessToken = await localforage.getItem('access_token');
-                    if ( !currentUser?.username  && accessToken && location.pathname !== loginPath) {
+                   const accessToken = await localforage.getItem('access_token');
+                    if ( !currentUser?.username  && !accessToken  && location.pathname !== loginPath) {
                         window.location.href = loginPath;
                     }
                 }}
                 menuHeaderRender = {undefined}
+                menuItemRender={(item, dom) => (
+                    <div
+                        onClick={() => {
+                            setPathname(item.path || '/');
+                        }}
+                    >
+                        {dom}
+                    </div>
+                )}
                 menuProps={{
                     onClick: ({ key }) => {
                         navigate(key || '/')

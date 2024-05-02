@@ -12,10 +12,8 @@ import {
 } from 'antd';
 import type { FormProps } from 'antd';
 import { HttpStatusCode } from 'axios';
-import localforage from 'localforage';
 import { useNavigate } from 'react-router-dom'
 import useStore from '@/stores'
-
 import { login } from '@/services/admin/system/basic';
 import { queryCurrentUser } from '@/services/admin/auth/user';
 
@@ -33,13 +31,14 @@ type TAccessTokenEntity = {
 
 import './index.less';
 
+
 /**
  * 设置凭证
  * @param data
  */
 const setAccessToken = async (data: TAccessTokenEntity) =>{
-    await localforage.setItem('access_token', data.access_token);
-    await localforage.setItem('token_type', data.token_type);
+     await localStorage.setItem('access_token', data.access_token);
+     await localStorage.setItem('token_type', data.token_type);
 }
 
 const Login = ()=>{
