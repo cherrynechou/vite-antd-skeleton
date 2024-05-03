@@ -6,9 +6,11 @@ import { useNavigate  } from 'react-router-dom';
 const NoAuthorize: FC =  () => {
 
     const navigate = useNavigate();
+    
     const goHome = () => {
-        navigate('/home');
+        navigate('/');
     };
+    
     return (
         <Result
             status="403"

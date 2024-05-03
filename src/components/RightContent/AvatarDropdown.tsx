@@ -1,11 +1,12 @@
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Spin } from 'antd';
 import { createStyles } from 'antd-style';
 import React, { useCallback } from 'react';
 import type { MenuInfo } from 'rc-menu/lib/interface';
+import { useNavigate } from 'react-router-dom'
 import HeaderDropdown from '../HeaderDropdown';
 import { loginPath } from '@/constants/pages'
 import useStore from '@/stores'
+import localforage from 'localforage';
 
 
 export type GlobalHeaderRightProps = {
@@ -36,7 +37,16 @@ const useStyles = createStyles(({ token }) => {
     };
 });
 
+/**
+ * 清除accesstoken
+ */
+const clearAccessToken = async () =>{
+  await localforage.removeItem('access_token');
+  await localforage.removeItem('token_type');
+}
+
 export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, children }) => {
+    const navigate = useNavigate();
     /**
      * 退出登录，并且将当前的 url 保存
      */
@@ -47,32 +57,23 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
         const redirect = urlParams.get('redirect');
         // Note: There may be security issues, please note
         if (window.location.pathname !== loginPath && !redirect) {
-
+          await clearAccessToken();
+          navigate(loginPath,);
         }
     };
+    
     const { styles } = useStyles();
-
-
-
+    
     const onMenuClick = useCallback((event: MenuInfo) => {
             const { key } = event;
-
+            if(key === 'logout'){
+              loginOut();
+              return ;
+            }
         },
         [],
     );
-
-    const loading = (
-        <span className={styles.action}>
-            <Spin
-              size="small"
-              style={{
-                  marginLeft: 8,
-                  marginRight: 8,
-              }}
-            />
-        </span>
-    );
-
+    
     const menuItems = [
         ...(menu
             ? [

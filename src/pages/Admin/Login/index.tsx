@@ -1,15 +1,6 @@
-import {
-    LockOutlined,
-    UserOutlined,
-} from '@ant-design/icons';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
-import {
-    Row,
-    Form,
-    Input,
-    Button,
-    message
-} from 'antd';
+import { Row, Form, Input, Button, message } from 'antd';
 import type { FormProps } from 'antd';
 import { HttpStatusCode } from 'axios';
 import { useNavigate } from 'react-router-dom'
@@ -31,8 +22,6 @@ type TAccessTokenEntity = {
 }
 
 import './index.less';
-
-
 
 /**
  * 设置凭证

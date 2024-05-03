@@ -1,5 +1,5 @@
 import { useLocation, useNavigate  } from 'react-router-dom'
-import {useAsyncEffect} from 'ahooks';
+import { useAsyncEffect } from 'ahooks';
 import useStore from '@/stores'
 import { loginPath } from '@/constants/pages';
 import { queryCurrentUser } from '@/services/admin/auth/user';

@@ -1,17 +1,12 @@
 import { FC } from 'react';
-import {
-  Button,
-  Result
-} from 'antd';
-import {
-  useNavigate
-} from 'react-router-dom';
+import { Button, Result } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 
 const NotFound : FC = () => {
     const navigate = useNavigate();
     const goHome = () => {
-        navigate('/home');
+        navigate('/');
     };
 
     return (

@@ -2,7 +2,6 @@ import { useEffect, useState, FC  } from 'react';
 import { Footer, AvatarDropdown, AvatarName } from '@/components';
 import { ProLayout } from '@ant-design/pro-layout';
 import { ProConfigProvider } from '@ant-design/pro-provider';
-import { ProCard } from '@ant-design/pro-components';
 import { useLocation, Outlet ,useNavigate } from 'react-router-dom';
 
 import { getMenuList } from '@/services/admin/system/basic'
@@ -67,14 +66,14 @@ const BasicLayout: FC = () => {
                 footerRender={() => <Footer />}
                 {...Settings}
             >
-                <ProCard
+                <div
                     style={{
                         height: '100vh',
                         minHeight: 800,
                     }}
                 >
                     <Outlet />
-                </ProCard>
+                </div>
             </ProLayout>
         </ProConfigProvider>
     )

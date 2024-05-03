@@ -1,5 +1,5 @@
 import {cloneDeep, pick} from 'lodash-es';
-import { ITreeOption, ITreeDataObj } from '@/interfaces/treeOptions'
+import { ITreeOption } from '@/interfaces/treeOptions'
 /**
  * 将树结构转的是成列表形貌（ 树型结构 ）
  * @param trees
