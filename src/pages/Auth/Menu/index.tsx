@@ -22,9 +22,6 @@ export type TableListItem = {
     update_at: number;
 };
 
-
-
-
 const Menu: FC = () =>{
 
     const [ menuData, setMenuData ] = useState([]);
@@ -92,6 +89,7 @@ const Menu: FC = () =>{
             width: 20,
             align: 'center',
             dataIndex: 'icon',
+            hideInSearch: true,
             render:(_,record)=>(
                 record.icon && <Icon component={(icons as any)[record.icon]} style={{ fontSize: '16px' }} />
             )
@@ -99,17 +97,19 @@ const Menu: FC = () =>{
             title: '名称',
             width: 80,
             align: 'center',
-            dataIndex: 'name',
+            dataIndex: 'name'
         }, {
             title: '路由',
             width: 80,
             align: 'center',
             dataIndex: 'path',
+            hideInSearch: true,
         }, {
             title: '排序',
             width: 80,
             align: 'center',
             dataIndex: 'order',
+            hideInSearch: true,
         },{
             title: '显示',
             width: 80,

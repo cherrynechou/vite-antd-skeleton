@@ -4,6 +4,7 @@ import {createMenu, getMenu, updateMenu } from '@/services/admin/auth/menu'
 import { SelectIcon } from '@/components'
 import { queryAllRoles } from '@/services/admin/auth/role';
 import { treeToOrderList, queryListMaxValue } from '@/utils/utils';
+import { omit,pick} from 'lodash-es';
 import { routeList } from './routeListData';
 import { useNavigate } from 'react-router-dom';
 
@@ -110,8 +111,31 @@ const CreateOrEdit: FC<menuModalProps> = (props:any) =>{
         })
     }
     
-    const handleOk = () =>{
+    const handleOk = async () =>{
+        const fieldsValue = await form.validateFields();
     
+        const omit_values = omit(fieldsValue,['status']);
+        const pick_values = pick(fieldsValue,['status']);
+    
+        const new_values = {
+            ...omit_values,
+            status: !!pick_values.status ? 1 : 0
+        };
+    
+        let response: any ={};
+        if(editId === undefined){
+            response = await createMenu(fieldsValue);
+        }else{
+            response = await updateMenu(editId,new_values);
+        }
+    
+        if(response.status === 200){
+            isShowModal(false);
+            message.success('修改成功');
+            setTimeout(()=>{
+                window.location.reload();
+            },100)
+        }
     }
     
     return (
