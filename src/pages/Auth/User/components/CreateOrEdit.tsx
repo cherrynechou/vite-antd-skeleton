@@ -1,5 +1,5 @@
 import {FC, useEffect, useRef, useState} from 'react';
-import { Button, Modal, Form, Input, Select, Upload, message, Skeleton } from 'antd';
+import { Modal, Form, Input, Select, message, Skeleton, Tree } from 'antd';
 import type { TreeProps } from 'antd/es/tree';
 
 import { filterTreeLeafNode, listToTree } from '@/utils/utils';
@@ -33,6 +33,7 @@ const CreateOrEdit: FC<ICreateOrEditModalProps> = ( props: any ) =>{
     const [avatarFileList,setAvatarFileList] = useState<UploadFile[]>([]);
     const [treeData, setTreeData] = useState<any>([]);
     const [treeLeafRecord, setTreeLeafRecord] = useState<any>([]);
+    const [defaultCheckedKeys, setDefaultCheckedKeys] = useState<any>([]);
     const [userRoles,setUserRoles] = useState<any>([]);
     const {isModalVisible, isShowModal, editId, actionRef} = props;
 
@@ -99,6 +100,8 @@ const CreateOrEdit: FC<ICreateOrEditModalProps> = ( props: any ) =>{
                     _roleList= currentData.roles.map((item: any)=>{return item.slug});
                     setUserRoles(_roleList);
                 }
+    
+                setDefaultCheckedKeys(_permissionList);
 
                 setInitialValues({
                     username: currentData.username,
@@ -131,6 +134,22 @@ const CreateOrEdit: FC<ICreateOrEditModalProps> = ( props: any ) =>{
             });
         }
     }
+    
+    const onSelect: TreeProps['onSelect'] = (selectedKeys) => {
+        //找出叶子节点
+        const filterChildNodes = treeLeafRecord.map((item: any) => {return item.id})
+        const filterSameKeys = filterChildNodes.filter((item: any)=> (selectedKeys.indexOf(item) > -1))
+        form.setFieldsValue({permissions:JSON.stringify( filterSameKeys) });
+    };
+    
+    const onCheck: TreeProps['onCheck'] = (checkedKeys) => {
+        // @ts-ignore
+        const checkedKeysResult = [...checkedKeys]
+        //找出叶子节点
+        const filterChildNodes = treeLeafRecord.map((item: any) => {return item.id})
+        const filterSameKeys = filterChildNodes.filter((item: any)=> (checkedKeysResult?.indexOf(item) > -1))
+        form.setFieldsValue({permissions:JSON.stringify( filterSameKeys) });
+    };
     
     const handleOk = async () => {
         const fieldsValue = await form.validateFields();
@@ -299,7 +318,32 @@ const CreateOrEdit: FC<ICreateOrEditModalProps> = ( props: any ) =>{
                     >
                         <Select mode="multiple" options={roles} placeholder="请选择 角色" />
                     </Form.Item>
-
+    
+                    {!userRoles.includes('administrator') && <>
+                        <Form.Item
+                          name="permissions"
+                          hidden
+                        >
+                            <Input
+                              hidden
+                            />
+                        </Form.Item>
+        
+                        <Form.Item
+                          label="权限"
+                          labelCol={{ span: 3 }}
+                        >
+                            <Tree
+                              checkable
+                              defaultExpandAll={false}
+                              defaultCheckedKeys={defaultCheckedKeys}
+                              onSelect={onSelect}
+                              onCheck={onCheck}
+                              treeData={treeData}
+                            />
+                        </Form.Item>
+                    </>
+                    }
                 </Form>
             )}
         </Modal>
