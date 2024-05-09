@@ -128,9 +128,8 @@ const CreateOrEdit: FC<ICreateOrEditModalProps> = ( props: any ) =>{
                 avatar: ''
             });
         }else{
-            const imageFile = fileList.pop();
             form.setFieldsValue({
-                avatar: imageFile.path
+                avatar: fileList.pop()
             });
         }
     }
