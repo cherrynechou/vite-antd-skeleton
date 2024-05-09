@@ -1,0 +1,161 @@
+import { FC, useState,useEffect } from 'react';
+import { Upload, Modal, message } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import type { UploadFile } from 'antd/es/upload/interface';
+import type { RcFile, UploadProps } from 'antd/es/upload';
+import { nanoid } from 'nanoid'
+import { uploadImageFile } from '@/services/admin/system/basic';
+import { cloneDeep } from 'lodash-es';
+
+interface customerUploadProps  {
+  accept: string,
+  listType: string,
+  maxCount: number,
+  fileList?: UploadFile[],
+  onUploadChange: (file: UploadFile[] )=> void
+}
+
+/**
+ * 自定义文件上传
+ * @param props
+ * @constructor
+ */
+let _uploadFileList: any[] = [];
+const CustomerUpload: FC<customerUploadProps> = (props: any) => {
+  const [previewImage, setPreviewImage] = useState('');
+  const [previewTitle, setPreviewTitle] = useState('');
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [uploadFileList,setUploadFileList] = useState<UploadFile[]>([]);
+  const [fileExtension,setFileExtension ] = useState('');
+  
+  const { accept,listType, maxCount, onUploadChange, fileList } = props;
+  
+  useEffect(()=>{
+    setUploadFileList(cloneDeep(fileList));
+    _uploadFileList = cloneDeep(fileList);
+  },[]);
+  
+  const getBase64 = (file: RcFile): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  
+  const handlePreview = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj as RcFile);
+    }
+    
+    setPreviewImage(file.url || (file.preview as string));
+    setPreviewOpen(true);
+    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
+  };
+  
+  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => setUploadFileList(newFileList);
+  
+  const handleCancel = () => setPreviewOpen(false);
+  
+  const uploadButton = (
+    <button style={{ border: 0, background: 'none' }} type="button">
+      <PlusOutlined />
+      <div style={{ marginTop: 8 }}>添加文件</div>
+    </button>
+  );
+  
+  /**
+   * 处理文件
+   * @param file
+   */
+  const handleBeforeUpload = async (file: any) => {
+    const allowFormat = file.type === 'image/jpeg' || file.type === 'image/png';
+  
+    if (!allowFormat) {
+      message.error('只允许 JPG/PNG 文件!', 1000);
+      return false;
+    }
+  
+    if(file.type == 'image/jpeg'){
+      setFileExtension('jpg');
+    }else if(file.type == 'image/png'){
+      setFileExtension('png');
+    }
+  }
+  
+  /**
+   * 处理文件上传
+   * @param options
+   */
+  const handleCustomUpload = async (options: any) => {
+    const { file, onProgress } = options;
+    onProgress({ percent: 50 });
+    
+    getBase64(file).then((r: any) => {
+      const index = r.indexOf('base64');
+      const fileData = r.substring(index + 7);
+    
+      const formData = {
+        extension: fileExtension,
+        fileData: fileData
+      }
+    
+      uploadImageFile(formData).then((response: any) => {
+        if (response.status === 200) {
+          
+          const uuid: string = nanoid()
+          
+          setUploadFileList([...fileList.filter(item=>item.status == 'done'),
+            {
+              uid: uuid,
+              name: response.data.path,
+              status: 'done',
+              url: response.data.remotePath,
+            } as UploadFile
+          ]);
+          
+          if(maxCount == 1){
+            _uploadFileList = [];
+            _uploadFileList.push(response.data.path);
+          }else{
+            _uploadFileList.push(response.data.path);
+          }
+          
+          message.success('上传成功');
+        }
+      });
+    });
+  }
+  
+  /**
+   * 删除
+   * @param file
+   */
+  const handleRemove = (file: any) =>{
+    const _resultFileList = uploadFileList.filter(item=>item.uid !== file.uid);
+    onUploadChange(_resultFileList);
+  }
+  
+  return (
+    <>
+      <Upload
+        accept={accept}
+        listType={listType}
+        fileList={uploadFileList}
+        customRequest={handleCustomUpload}
+        beforeUpload={handleBeforeUpload}
+        onPreview={handlePreview}
+        onChange={handleChange}
+        onRemove={handleRemove}
+      >
+        {uploadFileList.length >= maxCount ? null : uploadButton}
+      </Upload>
+      <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+        <img alt="example" style={{ width: '100%' }} src={previewImage} />
+      </Modal>
+    </>
+  )
+}
+
+
+export default CustomerUpload;

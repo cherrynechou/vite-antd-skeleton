@@ -3,19 +3,18 @@ import { Button, Modal, Form, Input, Select, Upload, message, Skeleton } from 'a
 import type { TreeProps } from 'antd/es/tree';
 
 import { filterTreeLeafNode, listToTree } from '@/utils/utils';
-import { PlusOutlined } from '@ant-design/icons';
 
 import type { UploadFile } from 'antd/es/upload/interface';
-import type { RcFile, UploadProps } from 'antd/es/upload';
 
 import { queryAllRoles } from '@/services/admin/auth/role';
 import { getUser, createUser, updateUser } from '@/services/admin/auth/user';
 import { queryAllPermissions } from '@/services/admin/auth/permission';
-import { uploadImageFile } from '@/services/admin/system/basic';
 
 import { ITreeOption } from '@/interfaces/treeOptions';
 import { ICreateOrEditModalProps } from '@/interfaces/modalProps'
 import {pick} from 'lodash-es';
+
+import {CustomerUpload} from '@/components';
 
 
 type TUserEntity = {
@@ -30,12 +29,8 @@ type TUserEntity = {
 
 const CreateOrEdit: FC<ICreateOrEditModalProps> = ( props: any ) =>{
     const [initialValues, setInitialValues] = useState<any>({});
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
-    const [previewTitle, setPreviewTitle] = useState('');
     const [roles, setRoles] = useState<any>([]);
-    const [fileExtension,setFileExtension ] = useState('');
+    const [avatarFileList,setAvatarFileList] = useState<UploadFile[]>([]);
     const [treeData, setTreeData] = useState<any>([]);
     const [treeLeafRecord, setTreeLeafRecord] = useState<any>([]);
     const [userRoles,setUserRoles] = useState<any>([]);
@@ -85,7 +80,7 @@ const CreateOrEdit: FC<ICreateOrEditModalProps> = ( props: any ) =>{
                     roleList.push(item.id);
                 });
 
-                setFileList([
+                setAvatarFileList([
                     {
                         uid: currentData.id,
                         name: '',
@@ -119,88 +114,24 @@ const CreateOrEdit: FC<ICreateOrEditModalProps> = ( props: any ) =>{
     useEffect(() => {
         fetchApi();
     }, []);
-
-    const getBase64 = (file: RcFile): Promise<string> =>
-        new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result as string);
-            reader.onerror = (error) => reject(error);
-        });
-
-    const handlePreview = async (file: UploadFile) => {
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj as RcFile);
-        }
-
-        setPreviewImage(file.url || (file.preview as string));
-        setPreviewOpen(true);
-        setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
-    };
-
-    const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList(newFileList);
-
-    const handleCancel = () => setPreviewOpen(false);
-
+    
     /**
-     * 上传之前
+     * 处理回调
+     * @param fileList
      */
-    const handleBeforeUpload = async (file: any) => {
-        const allowFormat = file.type === 'image/jpeg' || file.type === 'image/png';
-
-        if (!allowFormat) {
-            message.error('只允许 JPG/PNG 文件!', 1000);
-            return false;
-        }
-
-        if(file.type == 'image/jpeg'){
-            setFileExtension('jpg');
-        }else if(file.type == 'image/png'){
-            setFileExtension('png');
-        }
-
-        return allowFormat ;
-    }
-
-    /**
-     *
-     * @param options
-     */
-    const handleCustomUpload = async (options: any) => {
-        const { file, onProgress } = options;
-        onProgress({ percent: 50 });
-
-        getBase64(file).then((r: any) => {
-            const index = r.indexOf('base64');
-            const fileData = r.substring(index + 7);
-
-            const formData = {
-                extension: fileExtension,
-                fileData: fileData
-            }
-
-            uploadImageFile(formData).then((response: any) => {
-                if (response.status === 200) {
-
-                    setFileList([
-                        {
-                            uid: '1',
-                            name: '',
-                            status: 'done',
-                            url: response.data?.remotePath,
-                        } as UploadFile
-                    ]);
-
-                    form.setFieldsValue({
-                        avatar:response.data.path
-                    });
-
-                    message.success('上传成功');
-                }
+    const handleAvatarImageChange = (fileList: any)=>{
+        if(fileList.length == 0){
+            form.setFieldsValue({
+                avatar: ''
             });
-        });
-    };
-
+        }else{
+            const imageFile = fileList.pop();
+            form.setFieldsValue({
+                avatar: imageFile.path
+            });
+        }
+    }
+    
     const handleOk = async () => {
         const fieldsValue = await form.validateFields();
 
@@ -228,8 +159,7 @@ const CreateOrEdit: FC<ICreateOrEditModalProps> = ( props: any ) =>{
             actionRef.current.reload();
         }
     }
-
-
+    
     return (
         <Modal
             title={title}
@@ -269,25 +199,13 @@ const CreateOrEdit: FC<ICreateOrEditModalProps> = ( props: any ) =>{
                         label="头像"
                         labelCol={{ span: 3 }}
                     >
-                        <Upload
-                            action="/upload.do"
-                            listType="picture-card"
-                            fileList={fileList}
-                            customRequest={ handleCustomUpload }
-                            beforeUpload = {handleBeforeUpload}
-                            onPreview={handlePreview}
-                            onChange={handleChange}
-                        >
-                            {fileList.length >= 1 ? null : <>
-                                <button style={{ border: 0, background: 'none' }} type="button">
-                                    <PlusOutlined />
-                                    <div style={{ marginTop: 8 }}>Upload</div>
-                                </button>
-                            </>}
-                        </Upload>
-                        <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
-                            <img alt="example" style={{ width: '100%' }} src={previewImage} />
-                        </Modal>
+                        <CustomerUpload
+                          accept="image/*"
+                          listType="picture-card"
+                          fileList={avatarFileList}
+                          maxCount = {1}
+                          onUploadChange={handleAvatarImageChange}
+                        />
                     </Form.Item>
 
                     {/*添加*/}
