@@ -49,21 +49,13 @@ const Login = ()=>{
      * @param values
      */
     const onFinish: FormProps<TLoginFieldType>['onFinish'] = async (values) => {
-        try {
-            const res = await login(values);
-
-            if(res.status === HttpStatusCode.Ok){
-                const loginRes = res.data;
-                await setAccessToken(loginRes);
-                message.success(t('system.loginSuccess'));
-
-                await fetchUserInfo();
-
-                navigate( '/')
-
-            }
-        }catch (error){
-
+        const res = await login(values);
+        if(res.status === HttpStatusCode.Ok){
+            const loginRes = res.data;
+            await setAccessToken(loginRes);
+            message.success(t('system.loginSuccess'));
+            await fetchUserInfo();
+            navigate( '/')
         }
     }
 

@@ -28,6 +28,7 @@ const RouterGuard = (props: any) =>{
               await setCurrentUser(userInfo.data);
             }
           }catch (error){
+            console.log(error)
             navigate( loginPath, { replace: true });
           }
         }

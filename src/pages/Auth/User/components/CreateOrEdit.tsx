@@ -341,8 +341,7 @@ const CreateOrEdit: FC<ICreateOrEditModalProps> = ( props: any ) =>{
                               treeData={treeData}
                             />
                         </Form.Item>
-                    </>
-                    }
+                    </>}
                 </Form>
             )}
         </Modal>

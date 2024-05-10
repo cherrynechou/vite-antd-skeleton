@@ -17,7 +17,6 @@ const SelectIcon: FC<selectIconProps> = (props: any) =>{
 	const [ isModalOpen, setIsModalOpen ] = useState<any>(false);
 	
 	const onChange = ({ target: { value } }: RadioChangeEvent) => {
-		console.log(123);
 		setCurrentIcon(value);
 	};
 	
@@ -77,7 +76,6 @@ const SelectIcon: FC<selectIconProps> = (props: any) =>{
 					</Space>
 				</Button>
 			</div>
-			
 			
 			<Modal
 				destroyOnClose

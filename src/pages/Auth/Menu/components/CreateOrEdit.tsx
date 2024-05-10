@@ -4,15 +4,14 @@ import {createMenu, getMenu, updateMenu } from '@/services/admin/auth/menu'
 import { SelectIcon } from '@/components'
 import { queryAllRoles } from '@/services/admin/auth/role';
 import { treeToOrderList, queryListMaxValue } from '@/utils/utils';
-import { omit,pick} from 'lodash-es';
 import { routeList } from './routeListData';
-import { useNavigate } from 'react-router-dom';
 
 interface menuModalProps  {
     isModalVisible: boolean,
     isShowModal: (show: boolean, id?: number | undefined) => void,
     editId : number,
     menuData: any[],
+    status: number,
     actionRef: any
 }
 
@@ -22,7 +21,6 @@ const CreateOrEdit: FC<menuModalProps> = (props:any) =>{
     const [ linkTarget, setLinkTarget] = useState<any>([]);
     const [ roles, setRoles ] = useState<any>([]);
     const [ routes, setRoutes ] = useState<any>([]);
-    const navigate = useNavigate();
     
     const { isModalVisible, isShowModal, editId, menuData } = props;
     
@@ -98,7 +96,7 @@ const CreateOrEdit: FC<menuModalProps> = (props:any) =>{
     
     useEffect(() => {
         fetchApi();
-    },[navigate])
+    },[])
     
     /**
      * 图标
@@ -113,20 +111,12 @@ const CreateOrEdit: FC<menuModalProps> = (props:any) =>{
     
     const handleOk = async () =>{
         const fieldsValue = await form.validateFields();
-    
-        const omit_values = omit(fieldsValue,['status']);
-        const pick_values = pick(fieldsValue,['status']);
-    
-        const new_values = {
-            ...omit_values,
-            status: !!pick_values.status ? 1 : 0
-        };
-    
+        
         let response: any ={};
         if(editId === undefined){
             response = await createMenu(fieldsValue);
         }else{
-            response = await updateMenu(editId,new_values);
+            response = await updateMenu(editId,fieldsValue);
         }
     
         if(response.status === 200){

@@ -9,7 +9,7 @@ const request: AxiosInstance = axios.create(<{
     headers: any
 }>{
     baseURL: import.meta.env.VITE_API_BASE_URL,
-    timeout: 1000,
+    timeout: 60000,
     headers: {
         'Content-Type': 'application/json'
     }
@@ -46,7 +46,7 @@ request.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
             }
         });
     }
-
+    
     return config;
 
 },  (error: AxiosError) => {

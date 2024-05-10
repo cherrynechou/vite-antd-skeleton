@@ -105,7 +105,7 @@ const CustomerUpload: FC<customerUploadProps> = (props: any) => {
           
           const uuid: string = nanoid()
           
-          setUploadFileList([...fileList.filter(item=>item.status == 'done'),
+          setUploadFileList([...uploadFileList.filter(item=>item.status == 'done'),
             {
               uid: uuid,
               name: response.data.path,
@@ -120,6 +120,8 @@ const CustomerUpload: FC<customerUploadProps> = (props: any) => {
           }else{
             _uploadFileList.push(response.data.path);
           }
+
+          onUploadChange(_uploadFileList);
           
           message.success('上传成功');
         }

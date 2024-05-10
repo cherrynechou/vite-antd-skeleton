@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import type { ThemeConfig } from 'antd';
 import { ConfigProvider,App } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
@@ -28,11 +28,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       theme={config}
     >
       <App>
-        <HashRouter>
+        <BrowserRouter>
           <RouterGuard key="guard">
             <Router routes={routes} />
           </RouterGuard>
-        </HashRouter>
+        </BrowserRouter>
       </App>
     </ConfigProvider>
   </React.StrictMode>,
