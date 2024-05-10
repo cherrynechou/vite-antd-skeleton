@@ -5,7 +5,6 @@ import { loginPath } from '@/constants/pages';
 import { queryCurrentUser } from '@/services/admin/auth/user';
 import localforage from 'localforage';
 
-
 const RouterGuard = (props: any) =>{
   
   const currentUser = useStore(state=>state.currentUser);
@@ -13,14 +12,11 @@ const RouterGuard = (props: any) =>{
   
   const route = useLocation();
   const navigate = useNavigate();
-
+  
   useAsyncEffect(async()=>{
     const accessToken = await localforage.getItem('access_token');
-
     if(accessToken){
-      if (route.pathname === loginPath) {
-        navigate('/', { replace: true });
-      }else{
+      if (route.pathname !== loginPath) {
         if(!currentUser?.name){  //没有用户信息
           try {
             const userInfo = await queryCurrentUser();
@@ -28,7 +24,6 @@ const RouterGuard = (props: any) =>{
               await setCurrentUser(userInfo.data);
             }
           }catch (error){
-            console.log(error)
             navigate( loginPath, { replace: true });
           }
         }
@@ -36,7 +31,7 @@ const RouterGuard = (props: any) =>{
     }else{
       navigate( loginPath, { replace: true });
     }
-
+    
   },[route.pathname, navigate])
 
   return (

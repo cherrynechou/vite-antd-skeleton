@@ -11,6 +11,7 @@ import useStore from '@/stores'
 
 import Settings from '~/config/defaultSettings'
 import logoSvg from '@/assets/images/logo.svg'
+import localforage from 'localforage';
 
 const BasicLayout: FC = () => {
     const [ pathname, setPathname ] = useState(window.location.pathname)
@@ -64,6 +65,12 @@ const BasicLayout: FC = () => {
                     }
                 }}
                 footerRender={() => <Footer />}
+                onPageChange={async()=>{
+                    const accessToken = await localforage.getItem('access_token');
+                    if(!currentUser?.name && !accessToken && location.pathname!== loginPath ){
+                        navigate(loginPath);
+                    }
+                }}
                 {...Settings}
             >
                 <div
