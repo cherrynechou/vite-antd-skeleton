@@ -1,5 +1,6 @@
 import {cloneDeep, pick} from 'lodash-es';
 import { ITreeOption } from '@/interfaces/treeOptions'
+
 /**
  * 将树结构转的是成列表形貌（ 树型结构 ）
  * @param trees
@@ -162,14 +163,8 @@ const queryListMaxValue=(
   list: any[],
   field: string=''
 )=>{
-    const sortListValues = list.map((item: any) => {return item[field]});
-    const sort_max_array: number[] = [];
-    sortListValues.forEach((item: any) => {
-        if(item){
-            sort_max_array.push(item);
-        }
-    })
-    
+    const sortListValues = list.map((item: any) => item[field]);
+    const sort_max_array: number[] = sortListValues.filter(item=> item !== undefined)
     return Math.max(...sort_max_array);
 }
 

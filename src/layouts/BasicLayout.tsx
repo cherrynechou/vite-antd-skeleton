@@ -9,6 +9,8 @@ import fixMenuItemIcon from '@/utils/fixMenuItemIcon';
 
 import useStore from '@/stores'
 
+import { loginPath } from '@/constants/pages';
+
 import Settings from '~/config/defaultSettings'
 import logoSvg from '@/assets/images/logo.svg'
 import localforage from 'localforage';

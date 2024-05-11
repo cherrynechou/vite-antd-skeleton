@@ -11,7 +11,7 @@ interface menuModalProps  {
     isShowModal: (show: boolean, id?: number | undefined) => void,
     editId : number,
     menuData: any[],
-    status: number,
+    status?: number,
     actionRef: any
 }
 
