@@ -2,6 +2,7 @@ import { useEffect, useState, FC  } from 'react';
 import { Footer, AvatarDropdown, AvatarName } from '@/components';
 import { ProLayout } from '@ant-design/pro-layout';
 import { ProConfigProvider } from '@ant-design/pro-provider';
+import { useTranslation } from 'react-i18next';
 import { useLocation, Outlet ,useNavigate } from 'react-router-dom';
 
 import { getMenuList } from '@/services/admin/system/basic'
@@ -14,16 +15,50 @@ import { loginPath } from '@/constants/pages';
 import Settings from '~/config/defaultSettings'
 import logoSvg from '@/assets/images/logo.svg'
 import localforage from 'localforage';
+import { cloneDeep } from 'lodash-es';
+
+
 
 const BasicLayout: FC = () => {
     const [ pathname, setPathname ] = useState(window.location.pathname)
     const location = useLocation();
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const currentUser = useStore(state=>state.currentUser);
     
     useEffect(() => {
         setPathname(location.pathname)
     }, [location.pathname])
+    
+    
+    /**
+     * 处理菜单国际化
+     * @param routerData
+     */
+    const generateRoutes = (
+      routerData: any[]
+    ) =>{
+        const resultRouter: any[] = cloneDeep(routerData);
+        
+        const formatRouter = (routerData: any)=>{
+            routerData.forEach((item: any)=>{
+                if(item['children']){
+                    formatRouter(item['children'])
+                }else{
+                    item.name = t(item.locale);
+                }
+            })
+        }
+        
+        formatRouter(resultRouter);
+        
+        console.log(t('menu.auth.admin.role'));
+        
+        
+        console.log(resultRouter);
+        
+        return resultRouter;
+    }
 
 
     return (
@@ -40,7 +75,7 @@ const BasicLayout: FC = () => {
                     },
                     request: async () => {
                         const menuData = await getMenuList();
-                        return fixMenuItemIcon(menuData.data);
+                        return fixMenuItemIcon( generateRoutes(menuData.data));
                     },
                 }}
                 avatarProps={{

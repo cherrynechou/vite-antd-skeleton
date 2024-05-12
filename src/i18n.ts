@@ -18,8 +18,8 @@ i18n.use(LanguageDetector) //嗅探当前浏览器语言
     .use(initReactI18next)
     .init({
         resources,
-        lng:'zh-cn',
-        fallbackLng: 'zh-cn',
+        lng:'zh-CN',
+        fallbackLng: 'zh-CN',
         debug: false,
         interpolation: {
             escapeValue: false, // not needed for react as it escapes by default

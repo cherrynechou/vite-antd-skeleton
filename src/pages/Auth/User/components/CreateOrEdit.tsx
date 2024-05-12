@@ -123,15 +123,10 @@ const CreateOrEdit: FC<ICreateOrEditModalProps> = ( props: any ) =>{
      * @param fileList
      */
     const handleAvatarImageChange = (fileList: any)=>{
-        if(fileList.length == 0){
-            form.setFieldsValue({
-                avatar: ''
-            });
-        }else{
-            form.setFieldsValue({
-                avatar: fileList.pop()
-            });
-        }
+        form.setFieldsValue({
+            avatar: fileList.length == 0 ? '' :  fileList.pop()
+        });
+        
     }
     
     const onSelect: TreeProps['onSelect'] = (selectedKeys) => {

@@ -14,19 +14,5 @@ export default {
             secure: true,
             rewrite: (path: string) => path.replace(/^\/api/, ''),
         },
-    },
-    test:{
-        '/api': {
-            target: 'https://smpartapi.ysxinyi.com/admin',
-            changeOrigin: true,
-            rewrite: (path: string) => path.replace(/^\/api/, ''),
-        },
-    },
-    pre: {
-        '/api': {
-            target: 'https://smpartapi.ysxinyi.com/admin',
-            changeOrigin: true,
-            rewrite: (path: string) => path.replace(/^\/api/, ''),
-        },
     }
 };

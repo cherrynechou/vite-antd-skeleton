@@ -75,6 +75,7 @@ const CreateOrEdit: FC<menuModalProps> = (props:any) =>{
             
                 setInitialValues({
                     name: currentData.name,
+                    locale: currentData.locale,
                     parent_id: currentData.parent_id,
                     icon: currentData.icon,
                     path: currentData.path,
@@ -168,6 +169,18 @@ const CreateOrEdit: FC<menuModalProps> = (props:any) =>{
                     <Form.Item
                       name="name"
                       label="名称"
+                      labelCol={{ span: 3 }}
+                      rules={[{ required: true, message: '名称是必填项！' }]}
+                    >
+                        <Input
+                          placeholder="请输入 名称"
+                          style={{ width: 500 }}
+                        />
+                    </Form.Item>
+    
+                    <Form.Item
+                      name="locale"
+                      label="国际化标识"
                       labelCol={{ span: 3 }}
                       rules={[{ required: true, message: '名称是必填项！' }]}
                     >

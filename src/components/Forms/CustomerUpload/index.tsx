@@ -114,13 +114,7 @@ const CustomerUpload: FC<customerUploadProps> = (props: any) => {
             } as UploadFile
           ]);
           
-          if(maxCount == 1){
-            _uploadFileList = [];
-            _uploadFileList.push(response.data.path);
-          }else{
-            _uploadFileList.push(response.data.path);
-          }
-
+          _uploadFileList.push(response.data.path);
           onUploadChange(_uploadFileList);
           
           message.success('上传成功');
