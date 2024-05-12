@@ -1,7 +1,7 @@
-import System from './System'
-import Menu from './Menu'
+import system from './System'
+import menu from './Menu'
 
 export const en = {
-   System,
-   Menu
+   system,
+   menu
 };

@@ -51,12 +51,6 @@ const BasicLayout: FC = () => {
         }
         
         formatRouter(resultRouter);
-        
-        console.log(t('menu.auth.admin.role'));
-        
-        
-        console.log(resultRouter);
-        
         return resultRouter;
     }
 

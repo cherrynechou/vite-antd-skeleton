@@ -1,9 +1,9 @@
 import system from './System'
-import Menu from './Menu'
+import menu from './Menu'
 
 export const cn = {
     system,
-    Menu
+    menu
 };
 
 
