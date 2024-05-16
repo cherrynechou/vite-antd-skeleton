@@ -123,7 +123,7 @@ const filterTreeLeafNode=(
       arr: any[]
     )=>{
         arr.forEach((item: any)=>{
-            if(item[children]){
+            if(item[children].length>0){
                 expandTree(item[children]);
             }else{
                 leafRecords.push(item);
