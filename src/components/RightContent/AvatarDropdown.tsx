@@ -5,7 +5,7 @@ import type { MenuInfo } from 'rc-menu/lib/interface';
 import { useNavigate } from 'react-router-dom'
 import HeaderDropdown from '../HeaderDropdown';
 import { loginPath } from '@/constants/pages'
-import useStore from '@/stores'
+import { userStore } from '@/stores'
 import localforage from 'localforage';
 
 
@@ -15,7 +15,7 @@ export type GlobalHeaderRightProps = {
 };
 
 export const AvatarName = () => {
-    const currentUser = useStore(state=>state.currentUser);
+    const currentUser = userStore(state=>state.currentUser);
     return <span className="anticon">{currentUser?.name}</span>;
 };
 

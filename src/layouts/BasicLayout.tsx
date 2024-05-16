@@ -8,8 +8,7 @@ import { useLocation, Outlet ,useNavigate } from 'react-router-dom';
 import { getMenuList } from '@/services/admin/system/basic'
 import fixMenuItemIcon from '@/utils/fixMenuItemIcon';
 
-import useStore from '@/stores'
-
+import { userStore } from '@/stores'
 import { loginPath } from '@/constants/pages';
 
 import Settings from '~/config/defaultSettings'
@@ -17,14 +16,12 @@ import logoSvg from '@/assets/images/logo.svg'
 import localforage from 'localforage';
 import { cloneDeep } from 'lodash-es';
 
-
-
 const BasicLayout: FC = () => {
     const [ pathname, setPathname ] = useState(window.location.pathname)
     const location = useLocation();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const currentUser = useStore(state=>state.currentUser);
+    const currentUser = userStore(state=>state.currentUser);
     
     useEffect(() => {
         setPathname(location.pathname)

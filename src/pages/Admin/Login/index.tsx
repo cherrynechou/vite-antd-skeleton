@@ -4,7 +4,7 @@ import { Row, Form, Input, Button, message } from 'antd';
 import type { FormProps } from 'antd';
 import { HttpStatusCode } from 'axios';
 import { useNavigate } from 'react-router-dom'
-import useStore from '@/stores'
+import { userStore } from '@/stores'
 import localforage from 'localforage';
 import { login } from '@/services/admin/system/basic';
 import { queryCurrentUser } from '@/services/admin/auth/user';
@@ -33,7 +33,7 @@ const setAccessToken = async (data: TAccessTokenEntity) =>{
 }
 
 const Login = ()=>{
-    const setCurrentUser = useStore(state=>state.setCurrentUser);
+    const setCurrentUser = userStore(state=>state.setCurrentUser);
     const navigate = useNavigate()
     const { t } = useTranslation();
 
