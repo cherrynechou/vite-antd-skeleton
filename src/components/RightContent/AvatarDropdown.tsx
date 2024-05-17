@@ -1,6 +1,7 @@
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { createStyles } from 'antd-style';
 import React, { useCallback } from 'react';
+import { Spin } from 'antd';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import { useNavigate } from 'react-router-dom'
 import HeaderDropdown from '../HeaderDropdown';
@@ -47,6 +48,8 @@ const clearAccessToken = async () =>{
 
 export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, children }) => {
     const navigate = useNavigate();
+  
+  const currentUser = userStore(state=>state.currentUser);
     /**
      * 退出登录，并且将当前的 url 保存
      */
@@ -73,6 +76,23 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
         },
         [],
     );
+  
+  
+    const loading = (
+      <span className={styles.action}>
+        <Spin
+          size="small"
+          style={{
+            marginLeft: 8,
+            marginRight: 8,
+          }}
+        />
+      </span>
+    );
+    
+    if (!currentUser || !currentUser.name) {
+      return loading;
+    }
     
     const menuItems = [
         ...(menu
