@@ -6,7 +6,7 @@ import { createFromIconfontCN } from '@ant-design/icons';
  * 菜单图标,需要上传到https://www.iconfont.cn/
  */
 const Icon = createFromIconfontCN({
-  scriptUrl: '@/assets/iconfont/iconfont.js',
+  scriptUrl: import('@/assets/iconfont/iconfont.js'),
 });
 
 interface IProps {
