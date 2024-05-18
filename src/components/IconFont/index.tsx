@@ -2,11 +2,13 @@ import React from 'react';
 import { FC } from 'react';
 import { createFromIconfontCN } from '@ant-design/icons';
 
+import * as  iconFrontJs from '@/assets/iconfont/iconfont.js'
+
 /**
  * 菜单图标,需要上传到https://www.iconfont.cn/
  */
 const Icon = createFromIconfontCN({
-  scriptUrl: import('@/assets/iconfont/iconfont.js'),
+  scriptUrl: iconFrontJs,
 });
 
 interface IProps {
