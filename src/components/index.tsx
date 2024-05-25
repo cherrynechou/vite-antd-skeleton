@@ -4,5 +4,6 @@ import { AvatarDropdown, AvatarName } from './RightContent/AvatarDropdown';
 import SelectIcon  from './Forms/SelectIcon';
 import CustomerUpload from './Forms/CustomerUpload';
 import IconFont from './IconFont';
+import WangEditor from './WangEditor'
 
-export { Footer, Question, SelectLang, AvatarDropdown, AvatarName, SelectIcon, CustomerUpload,IconFont };
+export { Footer, Question, SelectLang, AvatarDropdown, AvatarName, SelectIcon, CustomerUpload, IconFont ,WangEditor};

@@ -42,7 +42,7 @@ const BasicLayout: FC = () => {
                 if(item['children']){
                     formatRouter(item['children'])
                 }else{
-                    item.name = t(item.locale);
+                    item.name = item.locale ? t(item.locale): item.name;
                 }
             })
         }

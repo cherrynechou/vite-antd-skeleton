@@ -5,13 +5,14 @@ import type { UploadFile } from 'antd/es/upload/interface';
 import type { RcFile, UploadProps } from 'antd/es/upload';
 import { nanoid } from 'nanoid'
 import { uploadImageFile } from '@/services/admin/system/basic';
-import { cloneDeep } from 'lodash-es';
+import { cloneDeep,map } from 'lodash-es';
 
 interface customerUploadProps  {
   accept: string,
   listType: string,
   maxCount: number,
   fileList?: UploadFile[],
+  maxSize?: number,
   onUploadChange: (file: UploadFile[] )=> void
 }
 
@@ -28,7 +29,7 @@ const CustomerUpload: FC<customerUploadProps> = (props: any) => {
   const [uploadFileList,setUploadFileList] = useState<UploadFile[]>([]);
   const [fileExtension,setFileExtension ] = useState('');
   
-  const { accept,listType, maxCount, onUploadChange, fileList } = props;
+  const { accept,listType, maxCount, onUploadChange, fileList,maxSize } = props;
   
   useEffect(()=>{
     setUploadFileList(cloneDeep(fileList));
@@ -81,6 +82,12 @@ const CustomerUpload: FC<customerUploadProps> = (props: any) => {
     }else if(file.type == 'image/png'){
       setFileExtension('png');
     }
+  
+    const isLimit = file.size / 1024 < maxSize;
+    if (maxSize && !isLimit) {
+      message.error(`文件上传需要小于 ${file.size / 1024}KB!`);
+      return false;
+    }
   }
   
   /**
@@ -129,7 +136,7 @@ const CustomerUpload: FC<customerUploadProps> = (props: any) => {
    */
   const handleRemove = (file: any) =>{
     const _resultFileList = uploadFileList.filter(item=>item.uid !== file.uid);
-    onUploadChange(_resultFileList);
+    onUploadChange(map(_resultFileList,'name'));
   }
   
   return (
