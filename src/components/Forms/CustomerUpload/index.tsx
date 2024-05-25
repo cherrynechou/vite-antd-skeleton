@@ -27,7 +27,6 @@ const CustomerUpload: FC<customerUploadProps> = (props: any) => {
   const [previewTitle, setPreviewTitle] = useState('');
   const [previewOpen, setPreviewOpen] = useState(false);
   const [uploadFileList,setUploadFileList] = useState<UploadFile[]>([]);
-  const [fileExtension,setFileExtension ] = useState('');
   
   const { accept,listType, maxCount, onUploadChange, fileList,maxSize } = props;
   
@@ -76,14 +75,9 @@ const CustomerUpload: FC<customerUploadProps> = (props: any) => {
       message.error('只允许 JPG/PNG 文件!', 1000);
       return false;
     }
-  
-    if(file.type == 'image/jpeg'){
-      setFileExtension('jpg');
-    }else if(file.type == 'image/png'){
-      setFileExtension('png');
-    }
-  
+    
     const isLimit = file.size / 1024 < maxSize;
+    
     if (maxSize && !isLimit) {
       message.error(`文件上传需要小于 ${file.size / 1024}KB!`);
       return false;
@@ -101,7 +95,14 @@ const CustomerUpload: FC<customerUploadProps> = (props: any) => {
     getBase64(file).then((r: any) => {
       const index = r.indexOf('base64');
       const fileData = r.substring(index + 7);
-    
+      
+      let fileExtension: string = '';
+      if(file.type == 'image/jpeg'){
+        fileExtension = 'jpg';
+      }else if(file.type == 'image/png'){
+        fileExtension = 'png';
+      }
+      
       const formData = {
         extension: fileExtension,
         fileData: fileData
