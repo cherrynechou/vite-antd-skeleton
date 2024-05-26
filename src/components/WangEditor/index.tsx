@@ -23,6 +23,39 @@ const getBase64 = (file: File): Promise<string> =>
     reader.onerror = (error) => reject(error);
   });
 
+
+
+/**
+ * 自定义上传
+ * @param file
+ * @param insertFn
+ */
+const customerUpload = (file: File, insertFn: any)=>{
+  let fileExtension: string = '';
+  if(file.type == 'image/jpeg'){
+    fileExtension = 'jpg';
+  }else if(file.type == 'image/png'){
+    fileExtension = 'png';
+  }
+  
+  getBase64(file).then((r: any) => {
+    const index = r.indexOf('base64');
+    const fileData = r.substring(index + 7);
+    
+    const formData = {
+      extension: fileExtension,
+      fileData: fileData
+    }
+    
+    uploadImageFile(formData).then((response: any)=>{
+      if (response.status === 200) {
+        insertFn(response.data.remotePath);
+      }
+    });
+  });
+}
+
+
 /**
  *
  * @param props
@@ -38,7 +71,13 @@ const WangEditor:FC<EditorProps> = (props: any) => {
   const [html, setHtml] = useState(value)
   
   // 工具栏配置
-  const toolbarConfig: Partial<IToolbarConfig> = {}
+  const toolbarConfig: Partial<IToolbarConfig> = {
+    excludeKeys: [
+      'headerSelect',
+      'italic',
+      'group-more-style' // 排除菜单组，写菜单组 key 的值即可
+    ]
+  }
 
   // 编辑器配置
   const editorConfig: Partial<IEditorConfig> = {
@@ -50,36 +89,9 @@ const WangEditor:FC<EditorProps> = (props: any) => {
 
         // 最多可上传几个文件，默认为 100
         maxNumberOfFiles: 10,
-
-        customUpload(file: File, insertFn: any) {
-          
-          let fileExtension: string = '';
-          if(file.type == 'image/jpeg'){
-            fileExtension = 'jpg';
-          }else if(file.type == 'image/png'){
-            fileExtension = 'png';
-          }
-          
-          getBase64(file).then((r: any) => {
-            const index = r.indexOf('base64');
-            const fileData = r.substring(index + 7);
-  
-            const formData = {
-              extension: fileExtension,
-              fileData: fileData
-            }
-  
-            uploadImageFile(formData).then((response: any)=>{
-              if (response.status === 200) {
-                insertFn(response.data.remotePath);
-              }
-            });
-          });
-        }
-      },
-      uploadVideo: {
-        // 上传视频地址
-        server: uploadImageFile
+        
+        //自定义上传
+        customUpload: customerUpload
       }
     }
   }

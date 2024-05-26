@@ -2,6 +2,16 @@ import axios, { AxiosInstance,AxiosResponse ,AxiosError, InternalAxiosRequestCon
 import { message } from 'antd';
 import localforage from 'localforage';
 
+import NProgress from 'nprogress';
+import "nprogress/nprogress.css";
+
+
+NProgress.configure({
+    easing: "ease-in-out",
+    speed: 300,
+    trickleSpeed: 300,
+});
+
 
 const request: AxiosInstance = axios.create(<{
     baseURL: any
@@ -32,6 +42,9 @@ const getAccessToken = async () =>{
 
 // Add a request interceptor
 request.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
+    
+    NProgress.start();
+    
     const accessToken = await getAccessToken();
 
     if(accessToken && config && config?.headers){
@@ -58,6 +71,8 @@ request.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
 request.interceptors.response.use( (response: AxiosResponse) => {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
+    
+    NProgress.done();
 
     if(response.status === HttpStatusCode.Ok){
         return response.data;
@@ -68,6 +83,8 @@ request.interceptors.response.use( (response: AxiosResponse) => {
 },  (error: AxiosError) => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+    
+    NProgress.done();
 
     if(error?.response?.status === HttpStatusCode.BadRequest){
         const responseData: any = error?.response?.data;
