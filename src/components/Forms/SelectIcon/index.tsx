@@ -70,7 +70,11 @@ const SelectIcon: FC<selectIconProps> = (props: any) =>{
 					value={ props.value }
 					prefix={ props.value && <Icon component={(icons as any)[props.value]} /> }
 				/>
-				<Button type="primary" onClick={()=>{setIsModalOpen(!isModalOpen)}}>
+				<Button
+					type="primary"
+					onClick={()=>{setIsModalOpen(!isModalOpen)}}
+					style={{ borderRadius: 0 }}
+				>
 					<Space>
 						<Icon component={ AppstoreOutlined  as React.ForwardRefExoticComponent<any>} />
 					</Space>
