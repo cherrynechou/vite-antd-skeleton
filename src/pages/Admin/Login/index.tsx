@@ -10,6 +10,7 @@ import { login } from '@/services/admin/system/basic';
 import { queryCurrentUser } from '@/services/admin/auth/user';
 
 import logoSvg from '@/assets/images/logo.svg'
+import backgroundImage from '@/assets/images/background.png'
 
 type TLoginFieldType = {
     username?: string;
@@ -61,7 +62,9 @@ const Login = ()=>{
 
 
     return (
-        <div className="login-main">
+        <div className="login-main"
+             style={{ backgroundImage: `url(${backgroundImage})` }}
+        >
             <Row
                 align="top"
                 justify="center"
