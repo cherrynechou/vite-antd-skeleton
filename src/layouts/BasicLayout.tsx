@@ -1,5 +1,5 @@
 import { useEffect, useState, FC  } from 'react';
-import { Footer, AvatarDropdown, AvatarName } from '@/components';
+import { Footer, AvatarDropdown, AvatarName,FullScreen } from '@/components';
 import { ProLayout } from '@ant-design/pro-layout';
 import { ProConfigProvider } from '@ant-design/pro-provider';
 import { useTranslation } from 'react-i18next';
@@ -76,6 +76,13 @@ const BasicLayout: FC = () => {
                     render: (_, avatarChildren) => {
                         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
                     },
+                }}
+                actionsRender={(props) => {
+                    if (props.isMobile) return [];
+                    if (typeof window === 'undefined') return [];
+                    return [
+                        <FullScreen />
+                    ];
                 }}
                 menuHeaderRender = {undefined}
                 menuItemRender={(item, dom) => (
