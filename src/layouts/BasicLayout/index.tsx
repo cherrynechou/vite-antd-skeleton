@@ -2,8 +2,8 @@ import {FC} from "react";
 import {Layout} from "antd";
 import SideMenu from "@/layouts/SideMenu";
 import HeaderRender from "@/layouts/HeaderRender";
-import {Content} from "antd/es/layout/layout";
 import Footer from "@/layouts/Footer";
+import AnimatedOutlet from "@/layouts/AnimatedOutlet";
 
 const BasicLayout : FC = ()=>{
     return (
@@ -12,7 +12,7 @@ const BasicLayout : FC = ()=>{
             <Layout>
                <HeaderRender/>
                 <Content>
-                    Content
+                    <AnimatedOutlet />
                 </Content>
                 <Footer />
             </Layout>

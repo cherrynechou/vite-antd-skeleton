@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC } from 'react'
 import { useOutlet } from 'react-router-dom'
 
 const AnimatedOutlet : FC = ()=>{
