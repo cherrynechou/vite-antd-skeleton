@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { GithubOutlined } from '@ant-design/icons';
 import { DefaultFooter} from "@ant-design/pro-components";
 
-const Footer: FC = ()=> {
+const FooterRender: FC = ()=> {
   
   const { t } = useTranslation();
   
@@ -40,4 +40,4 @@ const Footer: FC = ()=> {
 }
 
 
-export default Footer;
+export default FooterRender;
