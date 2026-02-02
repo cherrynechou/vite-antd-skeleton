@@ -1,0 +1,19 @@
+export default {
+    'pages.searchTable.username': '用户名',
+    'pages.searchTable.name': '名称',
+    'pages.searchTable.new': '添加',
+    'pages.searchTable.role': '角色',
+    'pages.searchTable.disabled': '是否禁用',
+    'pages.searchTable.loginCount': '登录次数',
+    'pages.searchTable.router': '路由',
+    'pages.searchTable.slug': '标识',
+    'pages.searchTable.icon': '图标',
+    'pages.searchTable.edit': '编辑',
+    'pages.searchTable.delete': '删除',
+    'pages.searchTable.action': '操作',
+    'pages.searchTable.locale': '国际化',
+    'pages.searchTable.sort': '排序',
+    'pages.searchTable.createdAt': '添加时间',
+    'pages.searchTable.updatedAt': '更新时间',
+    'pages.searchTable.deletedAt': '更新时间'
+}
