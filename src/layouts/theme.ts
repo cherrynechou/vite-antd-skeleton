@@ -14,7 +14,8 @@ export const defaultColorTheme: ThemeProps = {
     headerColor: "#000",
     siderBg: "#fff",
     siderColor: "#000",
-    colorBorder: "#f0f0f0"
+    colorBorder: "#f0f0f0",
+    algorithm: "defaultAlgorithm",
 }
 
 // 暗黑模式主题
@@ -32,6 +33,7 @@ export const darkColorTheme: ThemeProps = {
     siderBg: "#141414",
     siderColor: "#fff",
     colorBorder: "#282828",
+    algorithm: "darkAlgorithm",
 }
 
 export const configTheme: ThemeProps = {

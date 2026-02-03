@@ -15,9 +15,13 @@ const BasicLayout : FC = ()=>{
     return (
         <Layout
             className="min-h-screen bg-cover bg-center bg-no-repeat bg-fixed"
+            style={{
+                background: themeConfig.background,
+                transition: 'background 0.3s ease-in-out',
+            }}
         >
             <SideMenu/>
-            <Layout className={"relative"}>
+            <Layout>
                <HeaderRender/>
                 <Content style={{padding: themeConfig.bodyPadding}}>
                     <AnimatedOutlet />

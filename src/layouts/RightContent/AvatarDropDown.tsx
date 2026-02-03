@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import {Avatar, Dropdown, MenuProps, Space, Spin} from 'antd';
+import {Avatar, Button, Dropdown, MenuProps, Space, Spin} from 'antd';
 import useAuthUserStore from '@/stores/user';
 import {LogoutOutlined, SettingOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
@@ -10,7 +10,7 @@ export type GlobalHeaderRightProps = {
 };
 
 
-const AvatarDropDown:FC = () =>{
+const AvatarDropDown:FC<GlobalHeaderRightProps> = ({menu}   ) =>{
     const { t } = useTranslation();
     const currentUser = useAuthUserStore(state => state.currentUser);
     const onMenuClick:MenuProps['onClick']=(event)=>{
@@ -50,8 +50,6 @@ const AvatarDropDown:FC = () =>{
         return loading;
     }
 
-
-
     return (
         <Dropdown
             menu={{
@@ -59,12 +57,10 @@ const AvatarDropDown:FC = () =>{
                 items: menuItems,
             }}
         >
-            <div className="flex">
-                <Avatar src={currentUser.avatarUrl} alt="avatar"/>
-                <span style={{color: 'black', fontSize: '14px'}}>
-                    {currentUser.name}
-                </span>
-            </div>
+            <Button size={"large"} type={'text'}  style={{ verticalAlign: 'middle' }}>
+                <span style={{color: 'black', fontSize: '14px'}}>{currentUser.name}</span>
+                <Avatar src={currentUser.avatarUrl} alt="avatar" size={'small'}  />
+            </Button>
         </Dropdown>
     )
 }
