@@ -2,8 +2,17 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './global.css'
 import App from './App.tsx'
+import '@/locales/i18n'
+import dayjs from "dayjs";
 
-createRoot(document.getElementById('root')!).render(
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
+
+const container = document.getElementById('root')!;
+const root = createRoot(container);
+
+root.render(
   <StrictMode>
     <App />
   </StrictMode>,

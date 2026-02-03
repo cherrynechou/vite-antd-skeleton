@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import {Avatar, Button, Dropdown, MenuProps, Space, Spin} from 'antd';
+import {Avatar, Button, Dropdown, MenuProps, Spin} from 'antd';
 import useAuthUserStore from '@/stores/user';
 import {LogoutOutlined, SettingOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
@@ -57,9 +57,9 @@ const AvatarDropDown:FC<GlobalHeaderRightProps> = ({menu}   ) =>{
                 items: menuItems,
             }}
         >
-            <Button size={"large"} type={'text'}  style={{ verticalAlign: 'middle' }}>
-                <span style={{color: 'black', fontSize: '14px'}}>{currentUser.name}</span>
-                <Avatar src={currentUser.avatarUrl} alt="avatar" size={'small'}  />
+            <Button size={"large"} type={'text'}  >
+                <div>{currentUser.name}</div>
+                <Avatar src={currentUser.avatarUrl} alt="avatar" size={32}  />
             </Button>
         </Dropdown>
     )

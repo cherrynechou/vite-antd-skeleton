@@ -2,14 +2,13 @@ import {type PropsWithChildren, useMemo} from 'react';
 import ContextHolder from "@/components/ContextHolder";
 import {App, ConfigProvider, ThemeConfig} from "antd";
 import {useGlobalStore} from "@/stores";
+import { useAntdLocale } from '@/hooks/useLanguage';
 import algorithm from "@/layouts/algorithm.ts";
-import dayjs from 'dayjs'
-
-
-dayjs.locale('zh-cn')
 
 const AppProvider = ({ children }: PropsWithChildren) => {
     const themeConfig = useGlobalStore(state => state.themeConfig);
+    const locale = useAntdLocale();
+
     const theme: ThemeConfig = useMemo(() => ({
         components: {
             Layout: {
@@ -44,7 +43,7 @@ const AppProvider = ({ children }: PropsWithChildren) => {
 
 
     return (
-        <ConfigProvider theme={{...theme}}>
+        <ConfigProvider theme={{...theme}}  locale={locale}>
             <App>
                 <ContextHolder />
                 {children}

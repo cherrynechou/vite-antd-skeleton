@@ -6,6 +6,8 @@ import { queryCurrentUser } from "@/api/auth/UserController";
 
 const authState: AuthUserStoreState = {
     currentUser: {},
+    roles: [],
+    allPermissions: [],
     initialized: false,
 };
 
@@ -21,8 +23,12 @@ const authAction: StateCreator<AuthUserStore,[],[],AuthUserStoreActions> = (set,
     },
     fetchCurrentUser:async () =>{
         const result = await queryCurrentUser();
+        const data = result.data!;
+
         set({
-            currentUser: result.data,
+            currentUser: data,
+            roles: data.roles,
+            allPermissions: data.allPermissions,
         })
     }
 })

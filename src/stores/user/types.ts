@@ -1,5 +1,7 @@
 export interface AuthUserStoreState {
     currentUser: any,
+    roles: any[],
+    allPermissions: any[],
     initialized: boolean,
 }
 

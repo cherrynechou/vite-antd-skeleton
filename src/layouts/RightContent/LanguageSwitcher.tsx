@@ -1,12 +1,14 @@
-import {Button, ButtonProps, Dropdown} from "antd";
-import {TranslationOutlined} from "@ant-design/icons";
-import {FC} from "react";
-import {useLanguage} from "@/hooks/useLanguage";
+import { FC } from "react"
+import { Button, Dropdown, type ButtonProps } from "antd"
+import { TranslationOutlined } from "@ant-design/icons"
+import { useLanguage } from '@/hooks/useLanguage'
 
-const LanguageSwitcher:FC<ButtonProps> = (props) => {
-
+/**
+ * 切换语言
+ * @constructor
+ */
+const LanguageSwitcher: FC = () => {
     const { getLanguageMenuItems, language } = useLanguage();
-
     return (
         <Dropdown
             menu={{
@@ -14,7 +16,7 @@ const LanguageSwitcher:FC<ButtonProps> = (props) => {
                 selectedKeys:[ language ]
             }}
         >
-            <Button icon={<TranslationOutlined />} {...props} />
+            <Button icon={<TranslationOutlined />} size={"large"} type={'text'} />
         </Dropdown>
     )
 };
