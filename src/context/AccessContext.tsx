@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, ReactNode, useState } from 'react';
+import React, {createContext, useContext, useMemo, ReactNode, useState, FC} from 'react';
 
 // 定义权限配置的类型（支持 布尔值 / 带参数的判断函数）
 export type AccessObj = Record<
@@ -55,5 +55,7 @@ const useAccess = () => {
 };
 
 
-export {AccessProvider,useAccess}
+
+
+export {AccessProvider, useAccess}
 

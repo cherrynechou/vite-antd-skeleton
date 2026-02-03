@@ -6,7 +6,6 @@ import {App, Button, Space,Popconfirm} from 'antd';
 import {PlusOutlined} from '@ant-design/icons';
 import {omit} from 'lodash-es';
 import {queryRoles} from '@/api/auth/RoleController';
-import {useAccess} from "@/context/AccessContext.tsx";
 import CustomerPageContainer from "@/components/CustomerPageContainer";
 
 export type TableListItem = {
@@ -20,15 +19,13 @@ export type TableListItem = {
 const Role: FC = () =>{
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editId, setEditId] = useState<number | undefined>(0);
-    const access = useAccess();
+
 
     const { t } = useTranslation();
 
     const { message } = App.useApp();
 
     const actionRef = useRef<ActionType>(null);
-
-    console.log(access);
 
 
     //自定查询
