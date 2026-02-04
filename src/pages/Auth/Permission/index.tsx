@@ -2,10 +2,11 @@ import {FC,  useEffect, useRef, useState} from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { useTranslation } from 'react-i18next';
-import {App, Button, Space,Popconfirm} from "antd";
+import {App, Button, Space, Popconfirm, Tag} from "antd";
 import  {PlusOutlined} from "@ant-design/icons";
 import {queryPermissions} from '@/api/auth/PermissionController';
 import CustomerPageContainer from '@/components/CustomerPageContainer';
+import {treeToList} from "@/utils/utils";
 
 
 export type TableListItem = {
@@ -22,7 +23,8 @@ export type TableListItem = {
 
 const Permission: FC = () =>{
     const [ permissionTreeData, setPermissionTreeData ] = useState<any>([]);
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+    const [defaultExpandedRowKeys, setDefaultExpandedRowKeys] = useState<any>([])
     const [editId, setEditId] = useState<number | undefined>(0);
 
     const actionRef = useRef<ActionType>(null)
@@ -36,6 +38,14 @@ const Permission: FC = () =>{
     const requestData = async () =>{
         const permissionRes = await queryPermissions();
         setPermissionTreeData(permissionRes.data);
+
+        const treeList = treeToList(permissionRes.data);
+        const _defaultExpandedRowKeys = treeList.map((item)=>{
+            return item.id;
+        })
+        setDefaultExpandedRowKeys(_defaultExpandedRowKeys);
+
+
         return {
             data: permissionRes.data,
             success: permissionRes.status === 200
@@ -72,7 +82,28 @@ const Permission: FC = () =>{
             align: 'center',
             sorter: (a, b) => a.id - b.id,
             hideInSearch: true,
-        }, {
+        },
+        {
+            title: (
+                t('pages.searchTable.slug')
+            ),
+            width: 80,
+            align: 'center',
+            dataIndex: 'slug',
+            render: (_, record) => (
+                <Space>
+                    <Tag color="#586cb1">{record.slug}</Tag>
+                </Space>
+            ),
+        },
+        {
+            title: (
+                t('pages.searchTable.name')
+            ),
+            width: 80,
+            align: 'center',
+            dataIndex: 'name',
+        },{
             title: (
                 t('pages.searchTable.createdAt')
             ),
@@ -132,6 +163,9 @@ const Permission: FC = () =>{
                 headerTitle={
                     t('admin.permission.list')
                 }
+                expandable={{
+                    expandedRowKeys: defaultExpandedRowKeys
+                }}
                 rowSelection={{ fixed: true }}
                 pagination={false}
                 toolBarRender={() => [

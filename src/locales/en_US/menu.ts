@@ -1,4 +1,9 @@
 export default {
     'menu.dashboard': "Dashboard",
-    'menu.analysis:': "analysis",
+    'menu.dashboard.analysis': "Analysis",
+    'menu.admin': "System",
+    'menu.admin.user': "User",
+    'menu.admin.role': "Role",
+    'menu.admin.permission': "Permission",
+    'menu.admin.menu': "Menu",
 }

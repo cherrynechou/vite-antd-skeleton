@@ -47,7 +47,4 @@ const useAccess = () => {
 const Access : FC<AccessProps> = ({ accessible, children, fallback })=>{
     return accessible ? <>{children}</> : <>{fallback}</>;
 }
-
-
-
 export {AccessProvider, useAccess, Access}

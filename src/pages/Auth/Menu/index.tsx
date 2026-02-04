@@ -7,6 +7,7 @@ import * as icons from '@ant-design/icons';
 import Icon, {PlusOutlined} from '@ant-design/icons';
 import {queryMenus} from '@/api/auth/MenuController.ts';
 import CustomerPageContainer from '@/components/CustomerPageContainer';
+import {treeToList} from "@/utils/utils";
 
 export type TableListItem = {
     id: number;
@@ -22,7 +23,7 @@ export type TableListItem = {
 const Menu: FC = () =>{
     const [ menuData, setMenuData ] = useState([]);
     const [ isModalVisible, setIsModalVisible ] = useState(false);
-    const [defaultExpandedRowKeys, setDefaultExpandedRowKeys] = useState([])
+    const [defaultExpandedRowKeys, setDefaultExpandedRowKeys] = useState<any>([])
     const [ editId, setEditId] = useState<number | undefined>(0);
 
     const actionRef = useRef<ActionType>(null)
@@ -35,6 +36,13 @@ const Menu: FC = () =>{
     const requestData = async () =>{
         const ret = await queryMenus();
         setMenuData(ret.data);
+
+        const treeList = treeToList(ret.data);
+        const _defaultExpandedRowKeys = treeList.map((item)=>{
+            return item.id;
+        })
+        setDefaultExpandedRowKeys(_defaultExpandedRowKeys);
+
         return {
             data: ret.data,
             success: ret.status === 200

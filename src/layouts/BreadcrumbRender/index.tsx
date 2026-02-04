@@ -34,7 +34,7 @@ const BreadcrumbRender: FC = () => {
                 }
             })
         ])
-    }, [breadcrumb]);
+    }, [breadcrumb,t]);
 
     return (
          <Breadcrumb items={breadcrumbItems} />

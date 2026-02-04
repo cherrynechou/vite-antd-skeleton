@@ -67,7 +67,7 @@ const SideMenu : FC = ()=>{
     }, [collapsed]);
 
     //菜单项转换
-    const transformMenus = (nodes: IMenu[]): MenuItem[] =>{
+    const transformMenus = (nodes: IMenu[],t: any): MenuItem[] =>{
         return nodes.reduce<MenuItem[]>((acc, node) => {
             if (!node.visible) {
                 return acc;
@@ -81,7 +81,7 @@ const SideMenu : FC = ()=>{
 
             // 仅当有子菜单时才递归处理
             if (node.children?.length) {
-                (menuItem as any).children = transformMenus(node.children);
+                (menuItem as any).children = transformMenus(node.children,t);
             }
 
             acc.push(menuItem);
@@ -100,8 +100,8 @@ const SideMenu : FC = ()=>{
 
     // 使用 useMemo 缓存转换后的菜单项
     const menuItems = useMemo(() => {
-        return transformMenus(menuSource);
-    }, [menuSource]);
+        return transformMenus(menuSource,t);
+    }, [menuSource,t]);
 
     const menuClick:MenuProps['onClick'] = useCallback((current: any)=>{
         const menu: IMenu = menuMap[current.key];

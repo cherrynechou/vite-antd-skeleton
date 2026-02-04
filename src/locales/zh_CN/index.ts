@@ -5,6 +5,7 @@ import admin from './admin'
 import router from './router'
 import system from './system'
 import global from './global'
+import modal from './modal'
 
 export default {
     ...menu,
@@ -14,4 +15,5 @@ export default {
     ...router,
     ...system,
     ...global,
+    ...modal,
 }
