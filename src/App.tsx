@@ -4,8 +4,7 @@ import AntdProvider from '@/components/AntdProvider';
 import useAuthUserStore from '@/stores/user';
 import useAuthMenuStore from '@/stores/menu';
 import { routers }  from './routers'
-import { AccessProvider } from "@/context/AccessContext";
-import initialAccess from "@/access";
+import { AccessProvider } from '@/context'
 
 function App() {
     const fetchCurrentUser = useAuthUserStore(state => state.fetchCurrentUser);
@@ -23,8 +22,9 @@ function App() {
         }
     },[fetchCurrentUser,fetchMenus]);
 
+
     return (
-        <AccessProvider initialAccess={initialAccess}>
+        <AccessProvider>
             <AntdProvider>
                 <RouterProvider router={routers} />
             </AntdProvider>
