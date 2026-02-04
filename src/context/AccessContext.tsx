@@ -24,7 +24,7 @@ const AccessProvider:FC<AccessProviderProps> = ({ children }) => {
     const currentUser = useAuthUserStore(state => state.currentUser);
 
     const contextValue = useMemo(()=>({
-        canSeeAdmin: currentUser && currentUser.roles.includes('administrator')
+        canSeeAdmin: currentUser && currentUser?.roles?.includes('administrator')
     }),[currentUser]);
 
     return (

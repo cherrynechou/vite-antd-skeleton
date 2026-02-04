@@ -7,7 +7,7 @@ import  {PlusOutlined} from "@ant-design/icons";
 import {omit} from "lodash-es";
 import {queryUsers} from "@/api/auth/UserController.ts";
 import CustomerPageContainer from '@/components/CustomerPageContainer';
-
+import CreateOrEdit  from './components/CreateOrEdit';
 
 export type TableListItem = {
     id: number;
@@ -223,6 +223,17 @@ const User: FC = () =>{
                     </Button>,
                 ]}
             />
+
+            {isModalVisible &&
+                <CreateOrEdit
+                    isModalVisible={isModalVisible}
+                    isShowModal={isShowModal}
+                    actionRef={actionRef}
+                    editId={editId}
+                />
+            }
+
+
         </CustomerPageContainer>
     )
 }

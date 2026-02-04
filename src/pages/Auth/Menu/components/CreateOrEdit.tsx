@@ -1,8 +1,9 @@
 import { FC } from 'react'
 import {App, Form, Modal} from "antd";
 import {useTranslation} from "react-i18next";
+import {ICreateOrEditProps} from "@/interfaces/modal.ts";
 
-const CreateOrEdit : FC=(props: any)=>{
+const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
     const { t } = useTranslation();
     const { isModalVisible, isShowModal, editId, menuData } = props;
 

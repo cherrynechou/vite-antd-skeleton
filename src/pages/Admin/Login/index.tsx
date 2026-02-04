@@ -11,7 +11,6 @@ export type LoginFieldProps = {
     password?: string;
 };
 
-
 const Login: FC = () =>{
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { t } = useTranslation();
