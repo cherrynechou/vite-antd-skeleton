@@ -23,6 +23,8 @@ export interface ListNode {
  */
 const treeToOrderList=(trees : TreeNode[], options: {
     idKey?: string | number;
+    titleKey?: string ;
+    nameKey?: string ;
     parentKey?: string;
     levelKey?: string;
     childrenKey?: string;
@@ -30,9 +32,11 @@ const treeToOrderList=(trees : TreeNode[], options: {
   } = {}
 )=>{
     const {
-        childrenKey = 'children',
         idKey = 'id',
-        parentKey = 'parentId',
+        titleKey = 'title',
+        nameKey = 'name',
+        childrenKey = 'children',
+        parentKey = 'parent_id',
         levelKey = 'level',
         keepChildren = false
     } = options;
@@ -47,6 +51,7 @@ const treeToOrderList=(trees : TreeNode[], options: {
             // 设置额外属性
             newNode[parentKey] = parentId;
             newNode[levelKey] = level;
+            newNode[titleKey] = newNode[nameKey];
 
             // 是否保留children
             if (!keepChildren && childrenKey !== 'children') {

@@ -1,11 +1,12 @@
 import {FC,  useEffect, useRef, useState} from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import CustomerPageContainer from '@/components/CustomerPageContainer';
 import { ProTable } from '@ant-design/pro-components';
 import { useTranslation } from 'react-i18next';
 import {App, Button, Space, Popconfirm, Tag} from "antd";
 import  {PlusOutlined} from "@ant-design/icons";
 import {queryPermissions} from '@/api/auth/PermissionController';
-import CustomerPageContainer from '@/components/CustomerPageContainer';
+import CreateOrEdit from './components/CreateOrEdit'
 import {treeToList} from "@/utils/utils";
 
 export type TableListItem = {
@@ -174,6 +175,17 @@ const Permission: FC = () =>{
                     </Button>,
                 ]}
             />
+
+            {isModalVisible && (
+                <CreateOrEdit
+                    isModalVisible={isModalVisible}
+                    isShowModal={isShowModal}
+                    actionRef={actionRef}
+                    permissionTreeData={permissionTreeData}
+                    editId={editId}
+                />
+            )}
+
 
         </CustomerPageContainer>
     );
