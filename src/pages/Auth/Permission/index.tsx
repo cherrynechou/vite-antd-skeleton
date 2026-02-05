@@ -8,14 +8,13 @@ import {queryPermissions} from '@/api/auth/PermissionController';
 import CustomerPageContainer from '@/components/CustomerPageContainer';
 import {treeToList} from "@/utils/utils";
 
-
 export type TableListItem = {
     id: number;
     name: string;
     slug: string;
     methods: any[];
     paths: any[];
-    order: number;
+    sort: number;
     parent_id: number;
     created_at: number;
     update_at: number;
@@ -36,19 +35,18 @@ const Permission: FC = () =>{
 
     //自定查询
     const requestData = async () =>{
-        const permissionRes = await queryPermissions();
-        setPermissionTreeData(permissionRes.data);
+        const res = await queryPermissions();
+        setPermissionTreeData(res.data);
 
-        const treeList = treeToList(permissionRes.data);
+        const treeList = treeToList(res.data);
         const _defaultExpandedRowKeys = treeList.map((item)=>{
             return item.id;
         })
         setDefaultExpandedRowKeys(_defaultExpandedRowKeys);
 
-
         return {
-            data: permissionRes.data,
-            success: permissionRes.status === 200
+            data: res.data,
+            success: res.status === 200
         }
     }
 
@@ -150,9 +148,11 @@ const Permission: FC = () =>{
     ];
 
     return (
-        <CustomerPageContainer title={
-            t('admin.permission')
-        }>
+        <CustomerPageContainer
+            title={
+                t('admin.permission')
+            }
+        >
             <ProTable<TableListItem>
                 columns={columns}
                 actionRef={actionRef}

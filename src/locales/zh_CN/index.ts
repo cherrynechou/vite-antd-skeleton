@@ -7,6 +7,7 @@ import system from './system'
 import global from './global'
 import modal from './modal'
 import component from './component'
+import message from './message'
 
 export default {
     ...menu,
@@ -18,4 +19,5 @@ export default {
     ...global,
     ...modal,
     ...component,
+    ...message,
 }

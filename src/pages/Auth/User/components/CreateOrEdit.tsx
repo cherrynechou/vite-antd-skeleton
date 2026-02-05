@@ -1,12 +1,19 @@
-import {FC, useState} from 'react'
-import {App, Form, Input, Modal, Skeleton} from "antd";
-import {useTranslation} from "react-i18next";
+import { FC, useState } from 'react'
+import { App, Form, Input, Modal, Select, Skeleton, Tree } from "antd";
+import { useTranslation } from "react-i18next";
 import type { TreeProps } from 'antd/es/tree';
 import type { UploadFile } from 'antd/es/upload/interface';
-import {ICreateOrEditProps} from "@/interfaces/modal";
+import { ICreateOrEditProps } from "@/interfaces/modal";
 import UploadImage from "@/components/UploadImage";
+import { useAsyncEffect } from "ahooks";
+import { queryAllRoles } from "@/api/auth/RoleController.ts";
+import { queryAllPermissions } from "@/api/auth/PermissionController.ts";
+import { filterTreeLeafNode, listToTree } from "@/utils/utils.ts";
+import {createUser, getUser, updateUser} from "@/api/auth/UserController.ts";
+import {pick} from "lodash-es";
 
 const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
+    const { t } = useTranslation();
     const [initialValues, setInitialValues] = useState<any>({});
     const [roles, setRoles] = useState<any>([]);
     const [avatarFileList, setAvatarFileList] = useState<UploadFile[]>([]);
@@ -14,14 +21,83 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
     const [treeLeafRecord, setTreeLeafRecord] = useState<any>([]);
     const [defaultCheckedKeys, setDefaultCheckedKeys] = useState<any>([]);
     const [userRoles, setUserRoles] = useState<any>([]);
-    const { t } = useTranslation();
+
     const { isModalVisible, isShowModal, editId, actionRef } = props;
 
     const [form] = Form.useForm();
-    const { message} = App.useApp();
-
+    const { message } = App.useApp();
 
     const title = editId === undefined ? t('modal.createOrUpdateForm.create.title'): t('modal.createOrUpdateForm.edit.title');
+
+    const fetchApi = async () => {
+        try{
+            const roleRes = await queryAllRoles();
+
+            const roleData = roleRes.data;
+            const roleList: any[] = [];
+            roleData.forEach((item: any) => {
+                roleList.push({ label: item.name, value: item.id });
+            });
+            setRoles(roleList);
+
+            const permissionRes = await queryAllPermissions();
+            const permissionData = permissionRes.data;
+            const listTreePermissionData = listToTree(permissionData);
+
+            setTreeData(listTreePermissionData);
+            setTreeLeafRecord(filterTreeLeafNode(listTreePermissionData));
+
+            if(editId !== undefined){
+                const userRes = await getUser(editId);
+                const currentData = userRes.data;
+
+                const roleList: any[] = [];
+                currentData.roles.forEach((item: any) => {
+                    roleList.push(item.id);
+                });
+
+                setAvatarFileList([
+                    {
+                        uid: currentData.id,
+                        name: '',
+                        status: 'done',
+                        url: currentData.avatar_url,
+                    },
+                ]);
+
+                let permissionList: any[] = [];
+                if (currentData.permissions.length > 0) {
+                    permissionList = currentData.permissions.map((item: any) => {
+                        return item.id;
+                    });
+                }
+
+                let userRoleList: any[] = [];
+                if (currentData.roles.length > 0) {
+                    userRoleList = currentData.roles.map((item: any) => {
+                        return item.slug;
+                    });
+                    setUserRoles(userRoleList);
+                }
+
+                setDefaultCheckedKeys(permissionList);
+
+                setInitialValues({
+                    username: currentData.username,
+                    name: currentData.name,
+                    avatar: currentData.avatar,
+                    roles: roleList,
+                    permissions: JSON.stringify(permissionList),
+                });
+            }
+        }catch (error: any){
+            console.log(error);
+        }
+    };
+
+    useAsyncEffect(async () => {
+        await fetchApi();
+    }, []);
 
     const handleAvatarImageChange = (fileList: UploadFile[])=>{
         form.setFieldsValue({
@@ -29,9 +105,49 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
         });
     }
 
+    const onSelect: TreeProps['onSelect'] = (selectedKeys) => {
+        //找出叶子节点
+        const filterChildNodes = treeLeafRecord.map((item: any) => {
+            return item.id;
+        });
+        const filterSameKeys = filterChildNodes.filter((item: any) => selectedKeys.indexOf(item) > -1);
+        form.setFieldsValue({ permissions: JSON.stringify(filterSameKeys) });
+    };
 
-    const handleOk = () =>{
+    const onCheck: TreeProps['onCheck'] = (checkedKeys) => {
+        // @ts-ignore
+        const checkedKeysResult = [...checkedKeys];
+        //找出叶子节点
+        const filterChildNodes = treeLeafRecord.map((item: any) => {
+            return item.id;
+        });
+        const filterSameKeys = filterChildNodes.filter((item: any) => checkedKeysResult?.indexOf(item) > -1);
+        form.setFieldsValue({ permissions: JSON.stringify(filterSameKeys) });
+    };
 
+
+    const handleOk =async () =>{
+        try{
+            const fieldsValue = await form.validateFields();
+
+            //去掉 confirm
+            const fieldsPostValue = pick(fieldsValue, ['name', 'username', 'avatar', 'roles', 'password', 'permissions']);
+
+            if (editId === undefined) {
+                await createUser(fieldsPostValue);
+            } else {
+                await updateUser(editId, fieldsPostValue);
+            }
+
+            isShowModal(false);
+
+            const defaultUpdateSuccessMessage = editId === undefined ? t('global.create.success'): t('global.update.success');
+
+            message.success(defaultUpdateSuccessMessage);
+            actionRef.current.reload();
+        }catch (error: any){
+
+        }
     }
 
     return (
@@ -55,7 +171,9 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                             rules={[
                                 {
                                     required: true,
-                                    message: (t('modal.createOrUpdateForm.username.required'))
+                                    message: (
+                                        t('modal.createOrUpdateForm.username.required')
+                                    )
                                 }
                             ]}
                         >
@@ -106,6 +224,166 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                             />
                         </Form.Item>
 
+                        {/*添加*/}
+                        {editId === undefined && (
+                            <>
+                                <Form.Item
+                                    name="password"
+                                    label={
+                                        t('modal.createOrUpdateForm.password')
+                                    }
+                                    labelCol={{ span: 4 }}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: (
+                                                t('modal.createOrUpdateForm.password.required')
+                                            ),
+                                        },
+                                        ({ getFieldValue }) => ({
+                                            validator(_, value) {
+                                                if (value.length >= 6) {
+                                                    return Promise.resolve();
+                                                }
+                                                return Promise.reject(new Error( t('message.password.length.failure')));
+                                            },
+                                        }),
+                                    ]}
+                                    hasFeedback
+                                >
+                                    <Input.Password
+                                        placeholder={
+                                            t('modal.createOrUpdateForm.password.placeholder')
+                                        }
+                                    />
+                                </Form.Item>
+
+                                <Form.Item
+                                    name="confirm"
+                                    label={
+                                        t('modal.createOrUpdateForm.password.confirm')
+                                    }
+                                    labelCol={{ span: 4 }}
+                                    dependencies={['password']}
+                                    hasFeedback
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: (
+                                               t('modal.createOrUpdateForm.password.confirm.required')
+                                            ),
+                                        },
+                                        ({ getFieldValue }) => ({
+                                            validator(_, value) {
+                                                if (!value || getFieldValue('password') === value) {
+                                                    return Promise.resolve();
+                                                }
+                                                return Promise.reject(t('message.password.not.match'));
+                                            },
+                                        }),
+                                    ]}
+                                >
+                                    <Input.Password
+                                        placeholder={
+                                            t('modal.createOrUpdateForm.password.confirm.placeholder')
+                                        }
+                                    />
+                                </Form.Item>
+                            </>
+                        )}
+
+                        {/*编辑*/}
+                        {editId !== undefined && (
+                            <>
+                                <Form.Item
+                                    name="password"
+                                    label={
+                                        t('modal.createOrUpdateForm.password')
+                                    }
+                                    labelCol={{ span: 4 }}
+                                    hasFeedback
+                                >
+                                    <Input.Password
+                                        placeholder={
+                                            t('modal.createOrUpdateForm.password.placeholder')
+                                        }
+                                    />
+                                </Form.Item>
+
+                                <Form.Item
+                                    name="confirm"
+                                    label={
+                                        t('modal.createOrUpdateForm.password.confirm')
+                                    }
+                                    labelCol={{ span: 4 }}
+                                    dependencies={['password']}
+                                    hasFeedback
+                                    rules={[
+                                        ({ getFieldValue }) => ({
+                                            validator(_, value) {
+                                                if (getFieldValue('password') === value) {
+                                                    return Promise.resolve();
+                                                }
+                                                return Promise.reject(new Error(t('message.password.not.match')));
+                                            },
+                                        }),
+                                    ]}
+                                >
+                                    <Input.Password
+                                        placeholder={
+                                            t('modal.createOrUpdateForm.password.confirm.placeholder')
+                                        }
+                                    />
+                                </Form.Item>
+                            </>
+                        )}
+
+                        <Form.Item
+                            name="roles"
+                            label={
+                                t('modal.createOrUpdateForm.role')
+                            }
+                            labelCol={{ span: 4 }}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        t('validator.admin.role.required')
+                                    )
+                                }
+                            ]}
+                        >
+                            <Select
+                                mode="multiple"
+                                options={roles}
+                                placeholder={
+                                    t('modal.createOrUpdateForm.role.placeholder')
+                                }
+                            />
+                        </Form.Item>
+
+                        {!userRoles.includes('administrator') && (
+                            <>
+                                <Form.Item name="permissions" hidden>
+                                    <Input hidden />
+                                </Form.Item>
+                                <Form.Item
+                                    label={
+                                        t('modal.createOrUpdateForm.permission')
+                                    }
+                                    labelCol={{ span: 4 }}
+                                >
+                                    <Tree
+                                        checkable
+                                        defaultExpandAll={false}
+                                        defaultCheckedKeys={defaultCheckedKeys}
+                                        onSelect={onSelect}
+                                        onCheck={onCheck}
+                                        treeData={treeData}
+                                    />
+                                </Form.Item>
+                            </>
+                        )}
 
                     </Form>
                 )

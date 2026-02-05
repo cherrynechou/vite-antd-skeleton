@@ -9,6 +9,7 @@ export default {
     'pages.searchTable.slug': '标识',
     'pages.searchTable.icon': '图标',
     'pages.searchTable.edit': '编辑',
+    'pages.searchTable.permission': '权限',
     'pages.searchTable.delete': '删除',
     'pages.searchTable.action': '操作',
     'pages.searchTable.locale': '国际化',

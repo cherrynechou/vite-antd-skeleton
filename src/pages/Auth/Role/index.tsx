@@ -1,4 +1,4 @@
-import {FC,  useEffect, useRef, useState} from 'react';
+import {FC,  useRef, useState} from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import CustomerPageContainer from "@/components/CustomerPageContainer";
@@ -6,22 +6,24 @@ import { useTranslation } from 'react-i18next';
 import {App, Button, Space,Popconfirm} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { omit } from 'lodash-es';
-import { queryRoles } from '@/api/auth/RoleController';
-
-
+import {destroyRole, queryRoles} from '@/api/auth/RoleController';
+import CreateOrEdit from "./components/CreateOrEdit";
+import CreateOrEditPermission from "./components/CreateOrEditPermission";
 
 export type TableListItem = {
     id: number;
     name: string;
+    is_administrator: boolean;
     created_at: number;
     update_at: number;
 };
 
-
 const Role: FC = () =>{
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [editId, setEditId] = useState<number | undefined>(0);
     const { t } = useTranslation();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
+    const [editId, setEditId] = useState<number | undefined>(0);
+
 
     const { message } = App.useApp();
 
@@ -55,13 +57,28 @@ const Role: FC = () =>{
         setIsModalVisible(show);
     };
 
+    /**
+     *  显示对话框
+     * @param show
+     * @param id
+     */
+    const isShowDrawer = (show: boolean, id?: number | undefined) => {
+        setEditId(id);
+        setIsDrawerVisible(show);
+    };
+
 
     /**
      * 删除id
      * @param id
      */
     const confirmDel = async (id: number) => {
+        try{
+            await destroyRole(id);
+            message.success(t('global.delete.success'));
+        }catch (error: any){
 
+        }
     }
 
     //列表
@@ -113,9 +130,14 @@ const Role: FC = () =>{
             align: 'center',
             render: (_,record) => (
                 <Space>
-                    <a key="link" className="text-blue-500" onClick={() => isShowModal(true, record.id)}>
+                    <a key="link-edit" className="text-blue-500" onClick={() => isShowModal(true, record.id)}>
                         {t('pages.searchTable.edit')}
                     </a>
+                    {record.is_administrator &&
+                        <a key="link-permission" className="text-blue-500" onClick={()=>isShowDrawer(true,record.id)}>
+                            {t('pages.searchTable.permission')}
+                        </a>
+                    }
                     <Popconfirm
                         key="del"
                         placement="top"
@@ -134,8 +156,10 @@ const Role: FC = () =>{
     ];
 
     return (
-        <CustomerPageContainer title={
-            t('admin.role')}
+        <CustomerPageContainer
+            title={
+                t('admin.role')
+            }
         >
             <ProTable<TableListItem>
                 columns={columns}
@@ -154,6 +178,25 @@ const Role: FC = () =>{
                     </Button>,
                 ]}
             />
+
+            {isModalVisible && (
+                <CreateOrEdit
+                    isModalVisible={isModalVisible}
+                    isShowModal={isShowModal}
+                    actionRef={actionRef}
+                    editId={editId}
+                />
+            )}
+
+            {isDrawerVisible && (
+                <CreateOrEditPermission
+                    isDrawerVisible={isDrawerVisible}
+                    isShowDrawer={isShowDrawer}
+                    editId={editId}
+                    actionRef={actionRef}
+                />
+            )}
+
         </CustomerPageContainer>
     )
 }

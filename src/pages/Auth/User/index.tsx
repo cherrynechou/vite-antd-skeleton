@@ -1,11 +1,11 @@
-import {FC,  useEffect, useRef, useState} from 'react';
+import {FC, useRef, useState} from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { useTranslation } from 'react-i18next';
 import {App, Button, Space, Popconfirm, Tag, Switch} from "antd";
 import  {PlusOutlined} from "@ant-design/icons";
 import {omit} from "lodash-es";
-import {queryUsers} from "@/api/auth/UserController.ts";
+import {queryUsers} from "@/api/auth/UserController";
 import CustomerPageContainer from '@/components/CustomerPageContainer';
 import CreateOrEdit  from './components/CreateOrEdit';
 
@@ -39,7 +39,6 @@ const User: FC = () =>{
     const { t } = useTranslation();
 
     const { message } = App.useApp();
-
 
     //获取用户用户列表
     const requestData = async (params: any) => {
@@ -200,11 +199,11 @@ const User: FC = () =>{
         },
     ];
 
-
-
     return (
-        <CustomerPageContainer title={
-            t('admin.user')}
+        <CustomerPageContainer
+            title={
+                t('admin.user')
+            }
         >
             <ProTable<TableListItem>
                 columns={columns}
@@ -232,7 +231,6 @@ const User: FC = () =>{
                     editId={editId}
                 />
             }
-
 
         </CustomerPageContainer>
     )

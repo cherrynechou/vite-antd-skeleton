@@ -14,7 +14,7 @@ export type TableListItem = {
     icon: string;
     name: string;
     router: string;
-    order: number;
+    sort: number;
     status: number;
     created_at: number;
     update_at: number;
@@ -41,6 +41,8 @@ const Menu: FC = () =>{
         const _defaultExpandedRowKeys = treeList.map((item)=>{
             return item.id;
         })
+
+        console.log(_defaultExpandedRowKeys);
         setDefaultExpandedRowKeys(_defaultExpandedRowKeys);
 
         return {
@@ -116,7 +118,7 @@ const Menu: FC = () =>{
             ),
             width: 80,
             align: 'center',
-            dataIndex: 'order',
+            dataIndex: 'sort',
             hideInSearch: true,
         },
         {
@@ -167,7 +169,9 @@ const Menu: FC = () =>{
 
     return (
         <CustomerPageContainer
-            title={t('admin.menu')}
+            title={
+                t('admin.menu')
+            }
         >
             <ProTable<TableListItem>
                 columns={columns}

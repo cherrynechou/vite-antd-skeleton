@@ -1,17 +1,34 @@
-export interface TreeToListOptions {
-    childrenKey?: string;
-    idKey?: string;
-    parentKey?: string;
-    levelKey?: string;
-    keepChildren?: boolean;
+export interface TreeNode {
+    id: string | number;
+    name: string;
+    children?: TreeNode[];
+    parentId: string | number;
+    [key: string]: any;
 }
+
+export interface ListNode {
+    id: number;
+    parentId: number | null;
+    name: string;
+    order?: number; // 排序字段
+    children?: ListNode[];
+    [key: string]: any;
+}
+
 /**
- * 将树结构转的是成列表形貌（ 树型结构 ）
+ * 将树结构转的是成列表形式（ 树型结构 ）
  * @param trees
  * @param options
  * 需要递归方式
  */
-const treeToOrderList=(trees : any[], options: TreeToListOptions = {})=>{
+const treeToOrderList=(trees : TreeNode[], options: {
+    idKey?: string | number;
+    parentKey?: string;
+    levelKey?: string;
+    childrenKey?: string;
+    keepChildren?: boolean;
+  } = {}
+)=>{
     const {
         childrenKey = 'children',
         idKey = 'id',
@@ -48,6 +65,7 @@ const treeToOrderList=(trees : any[], options: TreeToListOptions = {})=>{
     return result;
 }
 
+
 const treeToList = (  trees: any[],  children: string = 'children')=>{
 
     const rows: any = [];
@@ -82,22 +100,91 @@ const treeToList = (  trees: any[],  children: string = 'children')=>{
 }
 
 
-
 /**
- * 生成树型列表(数据是从数据库查询出来的记录)
- * @param trees
+ * 生成antd tree树型结构
+ * @param data
  * @param options
- * refre: https://www.jb51.net/article/234063.htm
  */
-const listToTree=()=>{
+const listToTree = (data: ListNode[], options:{
+    idKey?: string,
+    titleKey?: string,        //现在的标题
+    nameKey?: string,         //原来的标题
+    parentIdKey?: string,
+    treeKey?: string,
+    childrenKey?: string,
+    keepNameField?: boolean,   //保存name
+    rootId?: number | null,
+  } = {}
+) : ListNode[] => {
 
+    const {
+        idKey = 'id',
+        titleKey = 'title',
+        nameKey = 'name',
+        treeKey =  'key',
+        parentIdKey = 'parent_id',
+        childrenKey = 'children',
+        keepNameField = false,
+        rootId = 0,
+    } = options;
+
+    if (!data || !Array.isArray(data)) return [];
+
+    // 创建哈希映射和树结构
+    const nodeMap = new Map<string | number, ListNode>();
+    data.forEach(node => {
+        nodeMap.set(node[idKey], { ...node }); // 浅拷贝，避免修改原数据
+    });
+
+    const trees: ListNode[] = [];
+    nodeMap.forEach(node => {
+        const parentId = node[parentIdKey];
+        //通用字段
+        node[titleKey] = node[nameKey];
+        node[treeKey] = parentId.toString().concat("-" +node[idKey]);
+        if(!keepNameField){
+            delete node[nameKey];
+        }
+        // 找到根节点：pid匹配rootPid，直接加入树形根节点数组
+        if (parentId === rootId) {
+            trees.push(node);
+        } else {
+            // 找到父节点，将当前节点加入父节点的children数组
+            const parentNode = nodeMap.get(parentId);
+            if (parentNode) {
+                parentNode[childrenKey] = parentNode[childrenKey] || [];
+                parentNode[childrenKey].push(node);
+            }
+        }
+    });
+    return trees;
 }
 
 
+/**
+ * 获取树型结构叶子节点
+ * @param trees
+ * @param childrenKey
+ */
+const filterTreeLeafNode=(trees: any[], childrenKey: string = 'children') =>  {
+    const leafRecords: any[] = [];
+
+    function traverse(node: any) {
+        if (!node[childrenKey] || node[childrenKey].length === 0) {
+            leafRecords.push(node);
+        } else {
+            node.children.forEach(traverse);
+        }
+    }
+
+    trees.forEach(traverse);
+    return leafRecords;
+}
 
 export {
     treeToOrderList,
-    treeToList,
     listToTree,
+    treeToList,
+    filterTreeLeafNode
 }
 
