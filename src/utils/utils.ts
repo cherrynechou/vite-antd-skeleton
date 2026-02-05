@@ -23,42 +23,48 @@ export interface ListNode {
  */
 const treeToOrderList=(trees : TreeNode[], options: {
     idKey?: string | number;
-    titleKey?: string ;
     nameKey?: string ;
+    rootLabel?: string;
     parentKey?: string;
     levelKey?: string;
     childrenKey?: string;
     keepChildren?: boolean;
   } = {}
 )=>{
+
     const {
         idKey = 'id',
-        titleKey = 'title',
         nameKey = 'name',
-        childrenKey = 'children',
+        rootLabel = 'Root',
         parentKey = 'parent_id',
         levelKey = 'level',
+        childrenKey = 'children',
         keepChildren = false
     } = options;
 
-    const result: any[] = [];
+    //根节点
+    const root = { id: 0 , name: rootLabel, level: 0, parent_id: -1 };
 
-    function traverse(nodes: any[], parentId: number | string | null = null, level: number = 0) {
+    //中间变量
+    const rows: any[] = [];
+    rows.push(root);
+
+    function traverse(nodes: any[], parentId: number | string | null = null, level: number = 1) {
         nodes.forEach(node => {
             const newNode = { ...node };
             const children = newNode[childrenKey] as any[] | undefined;
 
             // 设置额外属性
-            newNode[parentKey] = parentId;
+            newNode[parentKey] = parentId ?? 0 ;
             newNode[levelKey] = level;
-            newNode[titleKey] = newNode[nameKey];
+            newNode[childrenKey] = children;
 
             // 是否保留children
-            if (!keepChildren && childrenKey !== 'children') {
+            if (!keepChildren && childrenKey === 'children') {
                 delete newNode[childrenKey];
             }
 
-            result.push(newNode);
+            rows.push(newNode);
 
             if (children && children.length > 0) {
                 traverse(children, node[idKey], level + 1);
@@ -67,6 +73,31 @@ const treeToOrderList=(trees : TreeNode[], options: {
     }
 
     traverse(trees);
+
+    const result: any[] = [];
+    //格式化列表
+    const formatLabelName = (level: number) => {
+        let str= '';
+        for( let i = 0; i < level; ++i){
+            str += '-';
+        }
+        if(level == 0){
+            return '';
+        }else {
+            return '|' + str;
+        }
+    }
+    //格式化树
+    rows.forEach((item: any)=>{
+        const formatLabel = formatLabelName(item.level);
+
+        result.push({
+            label: formatLabel + item[nameKey],
+            value: item.id,
+            key: item[parentKey] + "-" + item[idKey]
+        })
+    })
+
     return result;
 }
 

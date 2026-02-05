@@ -31,4 +31,11 @@ export default {
     'modal.createOrUpdateForm.status': '是否显示',
     'modal.createOrUpdateForm.sort': '排序',
     'modal.createOrUpdateForm.sort.placeholder': '请输入 排序！',
+    'modal.createOrUpdateForm.parent' : '父级',
+    'modal.createOrUpdateForm.parent.placeholder' : '请选择父级',
+    'modal.createOrUpdateForm.httpMethod': 'Http方法',
+    'modal.createOrUpdateForm.httpMethod.placeholder': '请选择Http方法',
+    'modal.createOrUpdateForm.httpPath': 'Http路径',
+    'modal.createOrUpdateForm.httpPath.placeholder': '请选择Http路径'
+
 }

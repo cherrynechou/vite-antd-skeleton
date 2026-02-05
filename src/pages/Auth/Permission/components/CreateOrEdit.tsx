@@ -3,8 +3,7 @@ import {App, Form, Input, Modal, Select, Skeleton} from "antd";
 import {useTranslation} from "react-i18next";
 import {useAsyncEffect} from "ahooks";
 import {treeToOrderList} from "@/utils/utils.ts";
-import {queryAllPermissionRoutes, queryPermission} from "@/api/auth/PermissionController.ts";
-
+import {queryAllPermissionRoutes, queryPermission} from "@/api/auth/PermissionController";
 
 /**
  * 创建菜单通用
@@ -34,9 +33,6 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
 
     const fetchApi = async () => {
         setTreeData(treeToOrderList(permissionTreeData));
-
-
-        console.log(treeToOrderList(permissionTreeData))
 
         const allMethods: any[] = [
             { label: 'GET', value: 'GET' },
