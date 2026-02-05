@@ -9,6 +9,7 @@ import {queryUsers} from "@/api/auth/UserController";
 import CustomerPageContainer from '@/components/CustomerPageContainer';
 import CreateOrEdit  from './components/CreateOrEdit';
 
+
 export type TableListItem = {
     id: number;
     username: string;
@@ -39,6 +40,10 @@ const User: FC = () =>{
     const { t } = useTranslation();
 
     const { message } = App.useApp();
+
+
+
+
 
     //获取用户用户列表
     const requestData = async (params: any) => {

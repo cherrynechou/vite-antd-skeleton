@@ -41,7 +41,7 @@ const useAccess = () => {
     if (!context) {
         throw new Error('useAccess 必须在 AccessProvider 内部使用');
     }
-    return context;
+    return context.access;
 };
 
 const Access : FC<AccessProps> = ({ accessible, children, fallback })=>{
