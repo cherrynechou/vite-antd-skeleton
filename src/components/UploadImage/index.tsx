@@ -1,20 +1,22 @@
-import {FC, useState} from 'react';
-import {PlusOutlined} from '@ant-design/icons'
-import { Upload } from 'antd';
-import FormData from 'form-data';
+import { FC, useState } from 'react';
+import { PlusOutlined } from '@ant-design/icons'
+import {Modal, Upload} from 'antd';
 import type { RcFile, UploadProps } from 'antd/es/upload';
-import type { UploadFile } from 'antd/es/upload/interface';
+import {UploadFile, UploadListType} from 'antd/es/upload/interface';
 import type { UploadChangeParam } from 'antd/es/upload';
-import {uploadImageFile} from "@/api/system/CommonController";
-import {nanoid} from "nanoid";
+import { uploadImageFile } from '@/api/system/CommonController';
+import { useTranslation } from 'react-i18next';
+import { nanoid } from "nanoid";
 
 export interface UploadImageProps {
     /** 最大上传数量，1为单张，大于1为多张 */
     maxCount?: number;
-    /** 文件列表（受控） */
-    value?: UploadFile[];
+    /** 上传列表的内建样式 text, picture, picture-card 和 picture-circle*/
+    listType: UploadListType;
+    /** 初始文件列表（编辑场景回显用） */
+    initialFileList?: UploadFile[];
     /** 文件列表变化回调 */
-    onChange?: (fileList: UploadFile[]) => void;
+    onUploadChange?: (fileList: UploadFile[]) => void;
     /** 上传前校验 */
     beforeUpload?: (file: RcFile, fileList: RcFile[]) => boolean | Promise<void>;
     /** 限制文件类型，如 ['image/jpeg', 'image/png'] */
@@ -23,23 +25,24 @@ export interface UploadImageProps {
     maxSize?: number;
 }
 
-
 const UploadImage : FC<UploadImageProps> = (props)=>{
     const {
         maxCount = 1,
-        value,
-        onChange,
+        initialFileList = [],
+        onUploadChange,
         beforeUpload,
+        listType = 'picture-card',
         accept = 'image/*',
         maxSize = 5,
     } = props;
 
     // 内部状态管理
-    const [fileList, setFileList] = useState<UploadFile[]>(value || []);
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
-    const [previewTitle, setPreviewTitle] = useState('');
-    const [uploadFileList, setUploadFileList] = useState<UploadFile[]>([]);
+    const { t } = useTranslation();
+    const [previewImage, setPreviewImage] = useState<string>('');
+    const [previewTitle, setPreviewTitle] = useState<string>('');
+    const [previewOpen, setPreviewOpen] = useState<boolean>(false);
+    //显示文件列表
+    const [fileList, setFileList] = useState<UploadFile[]>(initialFileList);
 
     const getBase64 = (file: RcFile): Promise<string> =>
         new Promise((resolve, reject) => {
@@ -49,14 +52,28 @@ const UploadImage : FC<UploadImageProps> = (props)=>{
             reader.onerror = (error) => reject(error);
         });
 
+    //预览
+    const handlePreview = async (file: UploadFile) => {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj as RcFile);
+        }
+
+        setPreviewImage(file.url || (file.preview as string));
+        setPreviewOpen(true);
+        setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
+    };
+
+    const handleCancel = () => setPreviewOpen(false);
+
     // 上传按钮
     const uploadButton = (
-        <div>
+        <button style={{ border: 0, background: 'none' }} type="button">
             <PlusOutlined />
-            <div style={{ marginTop: 8 }}>上传</div>
-        </div>
+            <div style={{ marginTop: 8 }}>
+                { t('component.upload.file') }
+            </div>
+        </button>
     );
-
 
     // 处理文件列表变化
     const handleChange: UploadProps['onChange'] = (info: UploadChangeParam) => {
@@ -69,11 +86,6 @@ const UploadImage : FC<UploadImageProps> = (props)=>{
 
         // 更新状态
         setFileList(newFileList);
-
-        // 触发外部 onChange
-        if (onChange) {
-            onChange(newFileList);
-        }
     };
 
     // 自定义上传前校验
@@ -118,38 +130,57 @@ const UploadImage : FC<UploadImageProps> = (props)=>{
 
             uploadImageFile(formData).then((response: any)=>{
                 const uuid: string = nanoid();
+                const filteredFiles = fileList.filter((f: UploadFile<any>) => f.status === 'done');
+                const finalFiles:UploadFile<any>[] = [...filteredFiles,  {
+                    uid: uuid,
+                    name: response.data.path,
+                    status: 'done',
+                    url: response.data.fullPath,
+                } as UploadFile];
 
-                setUploadFileList([
-                    ...uploadFileList.filter((item) => item.status === 'done'),
-                    {
-                        uid: uuid,
-                        name: response.data.path,
-                        status: 'done',
-                        url: response.data.fullPath,
-                    } as UploadFile,
-                ]);
+                setFileList(finalFiles);
+
+                if (onUploadChange) {
+                    onUploadChange(finalFiles);
+                }
             })
-
         });
-
     }
 
-
+    //删除
+    const handleRemove:UploadProps['onRemove'] = (file: UploadFile<any>)=>{
+        if (onUploadChange) {
+            onUploadChange(fileList.filter((f: UploadFile<any>)=>f.uid!==file.uid));
+        }
+    }
 
     // 计算是否显示上传按钮
     const showUploadButton = maxCount ? fileList.length < maxCount : true;
 
     return (
-        <Upload
-            accept={accept}
-            listType="picture-card"
-            fileList={fileList}
-            beforeUpload={customBeforeUpload}
-            customRequest={customRequest}
-            onChange={handleChange}
-        >
-            {showUploadButton ? uploadButton : null}
-        </Upload>
+        <>
+            <Upload
+                accept={accept}
+                listType={listType}
+                fileList={fileList}
+                beforeUpload={customBeforeUpload}
+                customRequest={customRequest}
+                onPreview={handlePreview}
+                onChange={handleChange}
+                onRemove={handleRemove}
+            >
+                {showUploadButton ? uploadButton : null}
+            </Upload>
+            <Modal
+                open={previewOpen}
+                title={previewTitle}
+                footer={null}
+                onCancel={handleCancel}
+            >
+                <img alt="example" style={{ width: '100%' }} src={previewImage} />
+            </Modal>
+        </>
+
     )
 }
 

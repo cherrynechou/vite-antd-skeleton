@@ -1,13 +1,16 @@
-import React, {createContext, useContext, useMemo, ReactNode, useState, FC} from 'react';
-import useAuthUserStore from "@/stores/user";
+import React, {createContext, useContext, useMemo, ReactNode, FC} from 'react';
 
 export interface AccessInstance {
-    canSeeAdmin: boolean;
+    access: AccessState;
 }
+// 通用权限规则类型：支持布尔值/带参函数（和Umi一致）
+export type AccessRule = boolean | ((...args: any[]) => boolean);
+export type AccessState = Record<string, AccessRule>;
 
 // 权限 Provider 组件：包裹根组件，注入全局权限
 export interface AccessProviderProps {
     children: ReactNode;
+    access: () => AccessState; // access.ts导出的默认函数
 }
 
 export interface AccessProps {
@@ -19,16 +22,13 @@ export interface AccessProps {
 // 创建 Context（默认值设为 null，后续用 Hook 做非空校验）
 const AccessContext = createContext<AccessInstance | null>(null);
 
-const AccessProvider:FC<AccessProviderProps> = ({ children }) => {
-    // 用 useState 管理权限，支持动态更新
-    const currentUser = useAuthUserStore(state => state.currentUser);
-
-    const contextValue = useMemo(()=>({
-        canSeeAdmin: currentUser && currentUser?.roles?.includes('administrator')
-    }),[currentUser]);
-
+const AccessProvider:FC<AccessProviderProps> = ({
+    children ,
+    access
+}) => {
+    const accessRules = access();
     return (
-        <AccessContext.Provider value={contextValue}>
+        <AccessContext.Provider value={{ access: accessRules }}>
             {children}
         </AccessContext.Provider>
     );

@@ -23,8 +23,10 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
 
     const title = editId === undefined ? t('modal.createOrUpdateForm.create.title'): t('modal.createOrUpdateForm.edit.title');
 
-    const handleAvatarImageChange = ()=>{
-
+    const handleAvatarImageChange = (fileList: UploadFile[])=>{
+        form.setFieldsValue({
+            avatar: fileList.length === 0 ? '' : fileList.map(v=>v.name),
+        });
     }
 
 
@@ -97,10 +99,10 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                             <UploadImage
                                 accept="image/*"
                                 listType="picture-card"
-                                fileList={avatarFileList}
+                                initialFileList={avatarFileList}
                                 maxCount={1}
-                                size={100}
-                                onChange={handleAvatarImageChange}
+                                maxSize={100}
+                                onUploadChange={handleAvatarImageChange}
                             />
                         </Form.Item>
 

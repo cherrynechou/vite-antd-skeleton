@@ -5,6 +5,7 @@ import useAuthUserStore from '@/stores/user';
 import useAuthMenuStore from '@/stores/menu';
 import { routers }  from './routers'
 import { AccessProvider } from '@/context'
+import access from './access'
 
 function App() {
     const fetchCurrentUser = useAuthUserStore(state => state.fetchCurrentUser);
@@ -24,7 +25,7 @@ function App() {
 
 
     return (
-        <AccessProvider>
+        <AccessProvider access={access}>
             <AntdProvider>
                 <RouterProvider router={routers} />
             </AntdProvider>
