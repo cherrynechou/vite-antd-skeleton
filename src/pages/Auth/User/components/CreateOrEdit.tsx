@@ -32,7 +32,6 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
     const fetchApi = async () => {
         try{
             const roleRes = await queryAllRoles();
-
             const roleData = roleRes.data;
             const roleList: any[] = [];
             roleData.forEach((item: any) => {

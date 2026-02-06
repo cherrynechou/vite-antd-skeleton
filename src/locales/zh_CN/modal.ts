@@ -36,6 +36,10 @@ export default {
     'modal.createOrUpdateForm.httpMethod': 'Http方法',
     'modal.createOrUpdateForm.httpMethod.placeholder': '请选择Http方法',
     'modal.createOrUpdateForm.httpPath': 'Http路径',
-    'modal.createOrUpdateForm.httpPath.placeholder': '请选择Http路径'
-
+    'modal.createOrUpdateForm.httpPath.placeholder': '请选择Http路径',
+    'model.createOrUpdateForm.display': '是否显示',
+    'modal.createOrUpdateForm.target': '目标方式',
+    'modal.createOrUpdateForm.target.blank': '空白窗口',
+    'modal.createOrUpdateForm.target.current': '当前窗口',
+    'modal.createOrUpdateForm.target.placeholder': '请选择跳转目标方式',
 }

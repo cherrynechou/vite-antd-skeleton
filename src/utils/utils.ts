@@ -1,16 +1,18 @@
+import {clone} from 'lodash-es';
+
 export interface TreeNode {
     id: string | number;
     name: string;
     children?: TreeNode[];
-    parentId: string | number;
+    parent_id: string | number;
     [key: string]: any;
 }
 
 export interface ListNode {
     id: number;
-    parentId: number | null;
-    name: string;
-    order?: number; // 排序字段
+    parent_id: number | undefined;
+    name: string  | undefined;
+    sort?: number; // 排序字段
     children?: ListNode[];
     [key: string]: any;
 }
@@ -22,49 +24,38 @@ export interface ListNode {
  * 需要递归方式
  */
 const treeToOrderList=(trees : TreeNode[], options: {
-    idKey?: string | number;
-    nameKey?: string ;
-    rootLabel?: string;
-    parentKey?: string;
-    levelKey?: string;
-    childrenKey?: string;
-    keepChildren?: boolean;
-  } = {}
+       idKey?: string | number;
+       parentKey?: string;
+       levelKey?: string;
+       childrenKey?: string;
+       keepChildren?: boolean;
+   } = {}
 )=>{
-
     const {
         idKey = 'id',
-        nameKey = 'name',
-        rootLabel = 'Root',
         parentKey = 'parent_id',
         levelKey = 'level',
         childrenKey = 'children',
         keepChildren = false
     } = options;
 
-    //根节点
-    const root = { id: 0 , name: rootLabel, level: 0, parent_id: -1 };
-
-    //中间变量
-    const rows: any[] = [];
-    rows.push(root);
+    const result: any[] = [];
 
     function traverse(nodes: any[], parentId: number | string | null = null, level: number = 1) {
         nodes.forEach(node => {
             const newNode = { ...node };
-            const children = newNode[childrenKey] as any[] | undefined;
+      const children = newNode[childrenKey] as any[] | undefined;
 
             // 设置额外属性
             newNode[parentKey] = parentId ?? 0 ;
             newNode[levelKey] = level;
             newNode[childrenKey] = children;
-
             // 是否保留children
             if (!keepChildren && childrenKey === 'children') {
                 delete newNode[childrenKey];
             }
 
-            rows.push(newNode);
+            result.push(newNode);
 
             if (children && children.length > 0) {
                 traverse(children, node[idKey], level + 1);
@@ -73,13 +64,42 @@ const treeToOrderList=(trees : TreeNode[], options: {
     }
 
     traverse(trees);
+    return result;
+}
+
+/**
+ * 生成select树型节点
+ * @param data
+ * @param options
+ */
+const buildAntdTreeData = (data: ListNode[], options: {
+    idKey?: string | number;
+    nameKey?: string ;
+    parentKey?: string;
+    rootLabel?: string ;
+  } = {}
+)=>{
+
+    const {
+        idKey = 'id',
+        nameKey = 'name',
+        parentKey = 'parent_id',
+        rootLabel,
+    } = options;
 
     const result: any[] = [];
+
+    const rows = clone(data);
+
+    //根节点
+    const root: ListNode = { id: 0 , name: rootLabel, level: 0, parent_id: -1 };
+    rows.unshift(root);
+
     //格式化列表
     const formatLabelName = (level: number) => {
         let str= '';
         for( let i = 0; i < level; ++i){
-            str += '-';
+            str += '—';
         }
         if(level == 0){
             return '';
@@ -87,6 +107,7 @@ const treeToOrderList=(trees : TreeNode[], options: {
             return '|' + str;
         }
     }
+
     //格式化树
     rows.forEach((item: any)=>{
         const formatLabel = formatLabelName(item.level);
@@ -101,8 +122,18 @@ const treeToOrderList=(trees : TreeNode[], options: {
     return result;
 }
 
-
-const treeToList = (  trees: any[],  children: string = 'children')=>{
+/**
+ * 树型列表转为普通列表
+ * @param trees
+ * @param options
+ */
+const treeToList = ( trees: any[],  options: {
+    childrenKey?: string;
+  } = {}
+)=>{
+    const {
+        childrenKey = 'children',
+    } = options;
 
     const rows: any = [];
     const result: any[] = [];
@@ -112,10 +143,10 @@ const treeToList = (  trees: any[],  children: string = 'children')=>{
         level: number = 1
     ) => {
         arr.forEach(item =>{
-            const row = Object.assign({}, item,{level:level});
-            if(item[children]){
+            const row = Object.assign({}, item,{ level: level });
+            if(item[childrenKey]){
                 rows.push(row);
-                deepTrees(item[children],level + 1);
+                deepTrees(item[childrenKey],level + 1);
             } else {
                 rows.push(row);
             }
@@ -200,9 +231,17 @@ const listToTree = (data: ListNode[], options:{
 /**
  * 获取树型结构叶子节点
  * @param trees
- * @param childrenKey
+ * @param options
  */
-const filterTreeLeafNode=(trees: any[], childrenKey: string = 'children') =>  {
+const filterTreeLeafNode=(trees: any[], options: {
+      childrenKey?: string;
+  } = {}
+) =>  {
+
+    const {
+        childrenKey = 'children',
+    } = options;
+
     const leafRecords: any[] = [];
 
     function traverse(node: any) {
@@ -217,10 +256,37 @@ const filterTreeLeafNode=(trees: any[], childrenKey: string = 'children') =>  {
     return leafRecords;
 }
 
+/**
+ * 路由
+ * @param routeList
+ * @param parentPath
+ */
+const extractRoutes = (routeList: any, parentPath = '') => {
+    let result: any[] = [];
+    const traverse = (routeList: any[]) => {
+        routeList.forEach(route => {
+            // 核心条件：path存在 + 以/开头 → 加入结果集
+            if (route.path && route.path.startsWith('/')) {
+                result.push({ ...route }); // 浅拷贝，避免修改原始配置
+            }
+
+            // 递归处理子路由，无论当前路由是否符合条件，都要遍历子路由
+            if (route.children && route.children.length > 0) {
+                traverse(route.children);
+            }
+        });
+    }
+
+    traverse(routeList);
+    return result;
+}
+
 export {
     treeToOrderList,
+    buildAntdTreeData,
     listToTree,
     treeToList,
-    filterTreeLeafNode
+    filterTreeLeafNode,
+    extractRoutes
 }
 

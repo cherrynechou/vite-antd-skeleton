@@ -2,7 +2,7 @@ import {FC, useState} from 'react'
 import {App, Form, Input, Modal, Select, Skeleton} from "antd";
 import {useTranslation} from "react-i18next";
 import {useAsyncEffect} from "ahooks";
-import {treeToOrderList} from "@/utils/utils.ts";
+import {buildAntdTreeData, treeToOrderList} from "@/utils/utils.ts";
 import {queryAllPermissionRoutes, queryPermission} from "@/api/auth/PermissionController";
 
 /**
@@ -32,7 +32,11 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
     const title = editId === undefined ? t('modal.createOrUpdateForm.create.title') : t('modal.createOrUpdateForm.edit.title');
 
     const fetchApi = async () => {
-        setTreeData(treeToOrderList(permissionTreeData));
+        const orderList = treeToOrderList(permissionTreeData);
+
+        setTreeData(buildAntdTreeData(orderList,{
+            rootLabel: t('global.tree.root')
+        }));
 
         const allMethods: any[] = [
             { label: 'GET', value: 'GET' },

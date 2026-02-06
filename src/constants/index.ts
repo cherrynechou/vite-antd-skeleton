@@ -1,4 +1,4 @@
-import * as pages from './pages'
+import pages from './pages'
 
 export default {
     ...pages

@@ -9,7 +9,6 @@ import {queryUsers} from "@/api/auth/UserController";
 import CustomerPageContainer from '@/components/CustomerPageContainer';
 import CreateOrEdit  from './components/CreateOrEdit';
 
-
 export type TableListItem = {
     id: number;
     username: string;

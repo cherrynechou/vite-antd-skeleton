@@ -1,4 +1,5 @@
 export default {
+    'global.tree.root': '根',
     'global.switch.checked.label': '开启',
     'global.switch.unChecked.label': '关闭',
     'global.layout.header.fullscreen': '全屏',

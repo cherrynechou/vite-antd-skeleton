@@ -1,13 +1,15 @@
 import {FC,  useEffect, useRef, useState} from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {ProTable} from '@ant-design/pro-components';
+import CustomerPageContainer from '@/components/CustomerPageContainer';
 import { useTranslation } from 'react-i18next';
 import {App, Button, Space,Popconfirm} from "antd";
 import * as icons from '@ant-design/icons';
 import Icon, {PlusOutlined} from '@ant-design/icons';
 import {queryMenus} from '@/api/auth/MenuController.ts';
-import CustomerPageContainer from '@/components/CustomerPageContainer';
+import CreateOrEdit from './components/CreateOrEdit'
 import {treeToList} from "@/utils/utils";
+
 
 export type TableListItem = {
     id: number;
@@ -42,7 +44,6 @@ const Menu: FC = () =>{
             return item.id;
         })
 
-        console.log(_defaultExpandedRowKeys);
         setDefaultExpandedRowKeys(_defaultExpandedRowKeys);
 
         return {
@@ -193,6 +194,16 @@ const Menu: FC = () =>{
                     </Button>,
                 ]}
             />
+
+            {isModalVisible &&
+                <CreateOrEdit
+                    isModalVisible={isModalVisible}
+                    isShowModal={isShowModal}
+                    actionRef = {actionRef}
+                    menuData={menuData}
+                    editId = {editId}
+                />
+            }
         </CustomerPageContainer>
     )
 }
