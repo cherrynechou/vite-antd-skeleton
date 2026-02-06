@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Layout } from "antd";
 import {useGlobalStore} from "@/stores";
-import SideMenu from "@/layouts/SideMenu";
+import ColumnSiderRender from "@/layouts/ColumnSiderRender";
 import HeaderRender from "@/layouts/HeaderRender";
 import AnimatedOutlet from "@/layouts/AnimatedOutlet";
 import FooterRender from "@/layouts/FooterRender";
@@ -19,7 +19,7 @@ const BasicLayout : FC = ()=>{
                 transition: 'background 0.3s ease-in-out',
             }}
         >
-            <SideMenu/>
+            <ColumnSiderRender/>
             <Layout>
                <HeaderRender/>
                 <Content style={{padding: themeConfig.bodyPadding}}>

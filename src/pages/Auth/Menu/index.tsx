@@ -35,20 +35,23 @@ const Menu: FC = () =>{
     const { message } = App.useApp();
 
     //自定查询
-    const requestData = async () =>{
-        const ret = await queryMenus();
-        setMenuData(ret.data);
+    const requestData = async (): Promise<any> =>{
+        try{
+            const ret = await queryMenus();
+            setMenuData(ret.data);
 
-        const treeList = treeToList(ret.data);
-        const _defaultExpandedRowKeys = treeList.map((item)=>{
-            return item.id;
-        })
+            const treeList = treeToList(ret.data);
+            const _defaultExpandedRowKeys = treeList.map((item)=>{
+                return item.id;
+            })
 
-        setDefaultExpandedRowKeys(_defaultExpandedRowKeys);
-
-        return {
-            data: ret.data,
-            success: ret.status === 200
+            setDefaultExpandedRowKeys(_defaultExpandedRowKeys);
+            return {
+                data: ret.data,
+                success: ret.status === 200
+            }
+        }catch (error: any){
+            message.error(error.data.message);
         }
     }
 
@@ -154,10 +157,16 @@ const Menu: FC = () =>{
                     <Popconfirm
                         key="del"
                         placement="top"
-                        title={t('pages.searchTable.okConfirm')}
+                        title={
+                            t('pages.searchTable.okConfirm')
+                        }
                         onConfirm={ () => confirmDel(record.id) }
-                        okText={t('pages.searchTable.ok')}
-                        cancelText={t('pages.searchTable.cancel')}
+                        okText={
+                            t('pages.searchTable.ok')
+                        }
+                        cancelText={
+                            t('pages.searchTable.cancel')
+                        }
                     >
                         <a key="delete" className="text-blue-500">
                             {t('pages.searchTable.delete')}

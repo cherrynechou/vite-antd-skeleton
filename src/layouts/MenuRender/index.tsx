@@ -1,21 +1,14 @@
-import {FC, useCallback, useEffect, useMemo, useState} from 'react';
-import {Layout, Menu, MenuProps, theme} from 'antd';
-import {useTranslation} from 'react-i18next';
-import useMenuStore from '@/stores/menu';
-import {useGlobalStore} from '@/stores';
-import {IMenu} from '@/domain/ISysMenu';
-import IconFont from '@/components/IconFont';
-import SideMenuHeader from "./SideMenuHeader";
-import { useNavigate,useLocation } from 'react-router-dom';
-
+import {Menu, MenuProps, theme} from "antd";
+import {useTranslation} from "react-i18next";
+import useMenuStore from "@/stores/menu";
+import {useCallback, useEffect, useMemo, useState} from "react";
+import {useGlobalStore} from "@/stores";
+import {useLocation, useNavigate} from "react-router-dom";
+import {IMenu} from "@/domain/ISysMenu.ts";
+import IconFont from "@/components/IconFont";
 type MenuItem = Required<MenuProps>['items'][number];
 
-const { Sider } = Layout;
-
-/**
- * Layout菜单
- */
-const SideMenu : FC = ()=>{
+const MenuRender = () =>{
     const { t } = useTranslation();
     const menus = useMenuStore(state => state.menus);
     const menuMap = useMenuStore(state => state.menuMap);
@@ -27,10 +20,6 @@ const SideMenu : FC = ()=>{
     const layout = useGlobalStore(state => state.layout);
     const menuParentKey = useGlobalStore(state => state.menuParentKey);
     const setBreadcrumb = useGlobalStore(state=>state.setBreadcrumb);
-
-    const {
-        token: { colorBgContainer },
-    } = theme.useToken();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -120,25 +109,15 @@ const SideMenu : FC = ()=>{
     }
 
     return (
-        <Sider
-            width={256}
-            trigger={null}
-            collapsible
-            collapsed={collapsed}
-            style={{background: colorBgContainer}}
-        >
-            <SideMenuHeader />
-            <Menu
-                mode="inline"
-                selectedKeys={selectedKeys} // 选中项绑定路由
-                openKeys={openKeys} // 展开项
-                onOpenChange={onOpenChange}
-                items={menuItems}
-                onClick={menuClick}
-            />
-        </Sider>
+        <Menu
+            mode="inline"
+            selectedKeys={selectedKeys} // 选中项绑定路由
+            openKeys={openKeys} // 展开项
+            onOpenChange={onOpenChange}
+            items={menuItems}
+            onClick={menuClick}
+        />
     )
 }
 
-
-export default SideMenu
+export default MenuRender;

@@ -3,7 +3,12 @@ import {App, Form, Input, Modal, Select, Skeleton} from "antd";
 import {useTranslation} from "react-i18next";
 import {useAsyncEffect} from "ahooks";
 import {buildAntdTreeData, treeToOrderList} from "@/utils/utils.ts";
-import {queryAllPermissionRoutes, queryPermission} from "@/api/auth/PermissionController";
+import {
+    createPermission,
+    queryAllPermissionRoutes,
+    queryPermission,
+    updatePermission
+} from "@/api/auth/PermissionController";
 
 /**
  * 创建菜单通用
@@ -63,7 +68,6 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
         }
         setHttpPaths(_pathValues);
 
-
         if (editId !== undefined) {
             const permissionRes = await queryPermission(editId);
             const currentData = permissionRes.data;
@@ -88,8 +92,26 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
     }, []);
 
 
-    const handleOk = () =>{
+    const handleOk = async () =>{
+        try {
+            const fieldsValue = await form.validateFields();
 
+            if (editId === undefined) {
+                await createPermission(fieldsValue);
+            } else {
+                await updatePermission(editId, fieldsValue);
+            }
+
+            isShowModal(false);
+
+            const defaultUpdateSuccessMessage = editId === undefined ? t('global.create.success'): t('global.update.success');
+
+            message.success(defaultUpdateSuccessMessage);
+            actionRef.current.reload();
+
+        }catch (error: any){
+            message.error(error.message);
+        }
     }
 
     return (

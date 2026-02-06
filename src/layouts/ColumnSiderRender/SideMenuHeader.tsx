@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import {useGlobalStore} from "@/stores";
 
-const SideMenuHeader:FC = ()=>{
+const SiderMenuHeader:FC = ()=>{
     const logo = useGlobalStore(state => state.logo);
     const title = useGlobalStore(state => state.title);
     const collapsed = useGlobalStore(state => state.collapsed);
@@ -14,5 +14,5 @@ const SideMenuHeader:FC = ()=>{
     )
 }
 
-export default SideMenuHeader;
+export default SiderMenuHeader;
 

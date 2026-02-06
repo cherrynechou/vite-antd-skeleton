@@ -1,3 +1,15 @@
 export default {
     'global.tree.root': 'Root',
+    'global.create.success': 'Create Success',
+    'global.delete.success' : 'Delete Success',
+    'global.update.success' : 'Update Success',
+    'global.reset.success' : 'Reset Success',
+    'global.success.text': 'Success!',
+    'global.failure.text': 'Failure!',
+    'global.switch.checked.label': 'Open',
+    'global.switch.unChecked.label': 'Close',
+    'global.layout.header.fullscreen': 'Full Screen',
+    'global.layout.header.fullscreen.exit': 'Exit Full Screen',
+    'global.layout.header.settings': 'User Settings',
+    'global.layout.header.logout': 'Logout',
 }

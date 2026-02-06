@@ -39,7 +39,7 @@ export function getPermissionIdsByRoleId(id: number) {
  * @param id
  * @param params
  */
-export function updatePermissionId(id: number, params: any = {}) {
+export function updatePermissionByRoleId(id: number, params: any = {}) {
     return request.put(`/role/${id}/permissions`,params);
 }
 

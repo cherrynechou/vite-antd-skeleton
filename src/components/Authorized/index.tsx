@@ -1,7 +1,7 @@
-import {FC} from "react";
-import {Access, useAccess} from "@/context";
-import {Button, Result} from "antd";
-import {useTranslation} from "react-i18next";
+import { FC } from "react";
+import { Access, useAccess } from "@/context";
+import { Button, Result } from "antd";
+import { useTranslation } from "react-i18next";
 
 export type AuthorizedProps =  {
     children: any,

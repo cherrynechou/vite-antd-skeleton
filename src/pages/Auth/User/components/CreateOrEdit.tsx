@@ -17,10 +17,10 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
     const [initialValues, setInitialValues] = useState<any>({});
     const [roles, setRoles] = useState<any>([]);
     const [avatarFileList, setAvatarFileList] = useState<UploadFile[]>([]);
-    const [treeData, setTreeData] = useState<any>([]);
+    //const [treeData, setTreeData] = useState<any>([]);
     const [treeLeafRecord, setTreeLeafRecord] = useState<any>([]);
-    const [defaultCheckedKeys, setDefaultCheckedKeys] = useState<any>([]);
-    const [userRoles, setUserRoles] = useState<any>([]);
+    //const [defaultCheckedKeys, setDefaultCheckedKeys] = useState<any>([]);
+    //const [userRoles, setUserRoles] = useState<any>([]);
 
     const { isModalVisible, isShowModal, editId, actionRef } = props;
 
@@ -39,12 +39,12 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
             });
             setRoles(roleList);
 
-            const permissionRes = await queryAllPermissions();
-            const permissionData = permissionRes.data;
-            const listTreePermissionData = listToTree(permissionData);
-
-            setTreeData(listTreePermissionData);
-            setTreeLeafRecord(filterTreeLeafNode(listTreePermissionData));
+            // const permissionRes = await queryAllPermissions();
+            // const permissionData = permissionRes.data;
+            // const listTreePermissionData = listToTree(permissionData);
+            //
+            // setTreeData(listTreePermissionData);
+            // setTreeLeafRecord(filterTreeLeafNode(listTreePermissionData));
 
             if(editId !== undefined){
                 const userRes = await getUser(editId);
@@ -71,15 +71,15 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                     });
                 }
 
-                let userRoleList: any[] = [];
-                if (currentData.roles.length > 0) {
-                    userRoleList = currentData.roles.map((item: any) => {
-                        return item.slug;
-                    });
-                    setUserRoles(userRoleList);
-                }
-
-                setDefaultCheckedKeys(permissionList);
+                // let userRoleList: any[] = [];
+                // if (currentData.roles.length > 0) {
+                //     userRoleList = currentData.roles.map((item: any) => {
+                //         return item.slug;
+                //     });
+                //     setUserRoles(userRoleList);
+                // }
+                //
+                // setDefaultCheckedKeys(permissionList);
 
                 setInitialValues({
                     username: currentData.username,
@@ -104,25 +104,25 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
         });
     }
 
-    const onSelect: TreeProps['onSelect'] = (selectedKeys) => {
-        //找出叶子节点
-        const filterChildNodes = treeLeafRecord.map((item: any) => {
-            return item.id;
-        });
-        const filterSameKeys = filterChildNodes.filter((item: any) => selectedKeys.indexOf(item) > -1);
-        form.setFieldsValue({ permissions: JSON.stringify(filterSameKeys) });
-    };
-
-    const onCheck: TreeProps['onCheck'] = (checkedKeys) => {
-        // @ts-ignore
-        const checkedKeysResult = [...checkedKeys];
-        //找出叶子节点
-        const filterChildNodes = treeLeafRecord.map((item: any) => {
-            return item.id;
-        });
-        const filterSameKeys = filterChildNodes.filter((item: any) => checkedKeysResult?.indexOf(item) > -1);
-        form.setFieldsValue({ permissions: JSON.stringify(filterSameKeys) });
-    };
+    // const onSelect: TreeProps['onSelect'] = (selectedKeys) => {
+    //     //找出叶子节点
+    //     const filterChildNodes = treeLeafRecord.map((item: any) => {
+    //         return item.id;
+    //     });
+    //     const filterSameKeys = filterChildNodes.filter((item: any) => selectedKeys.indexOf(item) > -1);
+    //     form.setFieldsValue({ permissions: JSON.stringify(filterSameKeys) });
+    // };
+    //
+    // const onCheck: TreeProps['onCheck'] = (checkedKeys) => {
+    //     // @ts-ignore
+    //     const checkedKeysResult = [...checkedKeys];
+    //     //找出叶子节点
+    //     const filterChildNodes = treeLeafRecord.map((item: any) => {
+    //         return item.id;
+    //     });
+    //     const filterSameKeys = filterChildNodes.filter((item: any) => checkedKeysResult?.indexOf(item) > -1);
+    //     form.setFieldsValue({ permissions: JSON.stringify(filterSameKeys) });
+    // };
 
 
     const handleOk =async () =>{
@@ -361,28 +361,28 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                             />
                         </Form.Item>
 
-                        {!userRoles.includes('administrator') && (
-                            <>
-                                <Form.Item name="permissions" hidden>
-                                    <Input hidden />
-                                </Form.Item>
-                                <Form.Item
-                                    label={
-                                        t('modal.createOrUpdateForm.permission')
-                                    }
-                                    labelCol={{ span: 4 }}
-                                >
-                                    <Tree
-                                        checkable
-                                        defaultExpandAll={false}
-                                        defaultCheckedKeys={defaultCheckedKeys}
-                                        onSelect={onSelect}
-                                        onCheck={onCheck}
-                                        treeData={treeData}
-                                    />
-                                </Form.Item>
-                            </>
-                        )}
+                        {/*{!userRoles.includes('administrator') && (*/}
+                        {/*    <>*/}
+                        {/*        <Form.Item name="permissions" hidden>*/}
+                        {/*            <Input hidden />*/}
+                        {/*        </Form.Item>*/}
+                        {/*        <Form.Item*/}
+                        {/*            label={*/}
+                        {/*                t('modal.createOrUpdateForm.permission')*/}
+                        {/*            }*/}
+                        {/*            labelCol={{ span: 4 }}*/}
+                        {/*        >*/}
+                        {/*            <Tree*/}
+                        {/*                checkable*/}
+                        {/*                defaultExpandAll={false}*/}
+                        {/*                defaultCheckedKeys={defaultCheckedKeys}*/}
+                        {/*                onSelect={onSelect}*/}
+                        {/*                onCheck={onCheck}*/}
+                        {/*                treeData={treeData}*/}
+                        {/*            />*/}
+                        {/*        </Form.Item>*/}
+                        {/*    </>*/}
+                        {/*)}*/}
 
                     </Form>
                 )

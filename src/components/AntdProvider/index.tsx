@@ -24,6 +24,23 @@ const AppProvider = ({ children }: PropsWithChildren) => {
             Menu: {
                 activeBarBorderWidth: 0,
                 itemBg: 'transparent',
+            },
+            Input: {
+                colorPrimary: 'white',
+                borderRadius: 0,
+            },
+            Select: {
+                borderRadius: 0,
+            },
+            InputNumber: {
+                borderRadius: 0,
+            },
+            Button: {
+                backgroundColor: 'transparent',
+                borderRadius: 0,
+            },
+            Modal: {
+                borderRadius: 0,
             }
         },
         token: {
@@ -41,9 +58,8 @@ const AppProvider = ({ children }: PropsWithChildren) => {
         algorithm: themeConfig.algorithm ? algorithm[themeConfig.algorithm] : undefined
     }),[themeConfig])
 
-
     return (
-        <ConfigProvider theme={{...theme}}  locale={locale}>
+        <ConfigProvider theme={{...theme }}  locale={locale}>
             <App>
                 <ContextHolder />
                 {children}

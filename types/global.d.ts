@@ -12,7 +12,7 @@ declare global {
         access: AccessState;
     }
 
-// 权限 Provider 组件：包裹根组件，注入全局权限
+    // 权限 Provider 组件：包裹根组件，注入全局权限
     export interface AccessProviderProps {
         children: ReactNode;
         access: () => AccessState; // access.ts导出的默认函数

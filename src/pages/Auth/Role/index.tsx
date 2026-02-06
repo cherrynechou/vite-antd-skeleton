@@ -30,20 +30,26 @@ const Role: FC = () =>{
     const actionRef = useRef<ActionType>(null);
 
     //自定查询
-    const requestData = async (params: any) =>{
-        const filter = omit(params,['current','pageSize']);
-        const rename = {
-            page: params.current,
-            pageSize: params.pageSize
-        }
-        const mergeParams = Object.assign({} , filter , rename);
-        const ret = await queryRoles(mergeParams);
+    const requestData = async (params: any): Promise<any> => {
+        try{
+            const filter = omit(params,['current','pageSize']);
+            const rename = {
+                page: params.current,
+                pageSize: params.pageSize
+            }
+            const mergeParams = Object.assign({} , filter , rename);
+            const ret = await queryRoles(mergeParams);
 
-        return {
-            data: ret.data.data,
-            total: ret.data.meta.pagination.total,
-            success: ret.status === 200
+            return {
+                data: ret.data.data,
+                total: ret.data.meta.pagination.total,
+                success: ret.status === 200
+            }
+        }catch (error: any){
+            message.error(error.data.message);
         }
+
+
     }
 
 
@@ -133,7 +139,7 @@ const Role: FC = () =>{
                     <a key="link-edit" className="text-blue-500" onClick={() => isShowModal(true, record.id)}>
                         {t('pages.searchTable.edit')}
                     </a>
-                    {record.is_administrator &&
+                    {!record.is_administrator &&
                         <a key="link-permission" className="text-blue-500" onClick={()=>isShowDrawer(true,record.id)}>
                             {t('pages.searchTable.permission')}
                         </a>

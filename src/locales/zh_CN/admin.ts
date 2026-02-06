@@ -6,5 +6,7 @@ export default {
     'admin.role': '角色',
     'admin.role.list': '角色列表',
     'admin.permission': '权限',
-    'admin.permission.list': '权限列表'
+    'admin.permission.list': '权限列表',
+    'admin.dict': '字典',
+    'admin.dict.list': '字典列表',
 }

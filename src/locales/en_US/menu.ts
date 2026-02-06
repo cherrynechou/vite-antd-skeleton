@@ -6,4 +6,5 @@ export default {
     'menu.admin.role': "Role",
     'menu.admin.permission': "Permission",
     'menu.admin.menu': "Menu",
+    'menu.admin.dict': "Dict"
 }

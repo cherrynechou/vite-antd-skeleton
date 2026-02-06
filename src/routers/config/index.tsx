@@ -70,6 +70,12 @@ const routeConfig: RouteObject[] = [
                                 handle: {
                                     titleKey: 'router.admin.menu'
                                 }
+                            },{
+                                path: '/auth/dict',
+                                element: <LazyImport lazy={lazy(()=>import('@/pages/Auth/Dict'))}/>,
+                                handle: {
+                                    titleKey: 'router.admin.dict'
+                                }
                             }
                         ]
                     }

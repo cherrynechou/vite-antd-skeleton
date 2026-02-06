@@ -1,73 +1,57 @@
-import {FC, useRef, useState} from 'react';
+import {FC, useRef, useState} from "react";
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { ProTable } from '@ant-design/pro-components';
-import { useTranslation } from 'react-i18next';
-import {App, Button, Space, Popconfirm, Tag, Switch} from "antd";
-import  {PlusOutlined} from "@ant-design/icons";
+import {App, Button, Popconfirm, Space, Tag} from "antd";
+import {useTranslation} from "react-i18next";
+import CustomerPageContainer from "@/components/CustomerPageContainer";
+import {ProTable} from '@ant-design/pro-components';
+import {PlusOutlined} from "@ant-design/icons";
+import {destroyDict, queryDicts} from "@/api/auth/DictController";
 import {omit} from "lodash-es";
-import {queryUsers} from "@/api/auth/UserController";
-import CustomerPageContainer from '@/components/CustomerPageContainer';
-import CreateOrEdit  from './components/CreateOrEdit';
+import CreateOrEdit from "./components/CreateOrEdit.tsx";
+import CreateOrEditData from "@/pages/Auth/Dict/components/CreateOrEditData.tsx";
 
 export type TableListItem = {
     id: number;
-    username: string;
     name: string;
-    email: string;
-    roles: {
-        data: [];
-    };
-    is_administrator: boolean;
-    phone: string;
+    code: string;
     status: number;
-    login_count: number;
-    created_at: number;
-    update_at: number;
+    createdAt: number;
+    updateAt: number;
 };
 
-export type RoleItem = {
-    name: string;
-};
-
-
-const User: FC = () =>{
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [editId, setEditId] = useState<number | undefined>(0);
-
-    const actionRef = useRef<ActionType>(null)
-
+const Dict: FC = ()=>{
     const { t } = useTranslation();
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+    const [isDataModalVisible,setIsDataModalVisible] = useState<boolean>(false);
+    const [editId, setEditId] = useState<number| undefined>(0);
+
+    const actionRef = useRef<ActionType>(null);
 
     const { message } = App.useApp();
 
-
-    //获取用户用户列表
-    const requestData = async (params: any): Promise<any> => {
-        try {
+    //自定查询
+    const requestData = async (params: any): Promise<any> =>{
+        try{
             const filter = omit(params, ['current', 'pageSize']);
             const rename = {
                 page: params.current,
                 pageSize: params.pageSize,
             };
             const mergeParams = Object.assign({}, filter, rename);
-            const ret = await queryUsers(mergeParams);
+
+            const ret = await queryDicts(mergeParams);
+
+            console.log(ret);
 
             return {
                 data: ret.data.data,
                 total: ret.data.meta.pagination.total,
                 success: ret.status === 200,
-            };
+            }
+
         }catch (error: any){
             message.error(error.data.message);
         }
-    };
-
-    /**
-     * 禁止用户登录
-     * @param uid
-     */
-    const handleBlockUser = async (uid: number) => {
-
     }
 
     /**
@@ -75,90 +59,80 @@ const User: FC = () =>{
      * @param show
      * @param id
      */
-    const isShowModal = (show: boolean, id?: number | undefined) => {
+    const isShowModal = (show: boolean, id?: number | undefined)=> {
         setEditId(id);
         setIsModalVisible(show);
-    };
+    }
 
+    /**
+     * 显示字典数据
+     * @param show
+     * @param id
+     */
+    const isShowDataModal = (show: boolean, id?: number | undefined)=> {
+        setEditId(id);
+        setIsDataModalVisible(show);
+    }
 
     /**
      * 删除id
      * @param id
      */
     const confirmDel = async (id: number) => {
+        try {
+            await destroyDict(id);
 
+            const defaultDeleteSuccessMessage = t('global.delete.success');
+
+            message.success(defaultDeleteSuccessMessage);
+            actionRef.current?.reload();
+
+        }catch (error: any){
+            message.error(error.message);
+        }
     }
 
     //列表
     const columns: ProColumns<TableListItem>[] = [
         {
             title: 'ID',
-            width: 40,
+            width: 80,
             dataIndex: 'id',
             align: 'center',
             sorter: (a, b) => a.id - b.id,
             hideInSearch: true,
-        }, {
-            title: (
-                t('pages.searchTable.username')
-            ),
-            width: 80,
-            align: 'center',
-            dataIndex: 'username',
-        }, {
+        },{
             title: (
                 t('pages.searchTable.name')
             ),
             width: 80,
             align: 'center',
-            dataIndex: 'name',
-            hideInSearch: true,
-        }, {
+            dataIndex: 'name'
+        },{
             title: (
-                t('pages.searchTable.role')
+                t('pages.searchTable.dict.code')
             ),
             width: 80,
             align: 'center',
-            dataIndex: 'roles',
-            hideInSearch: true,
-            renderFormItem: (_, { defaultRender }) => {
-                return defaultRender(_);
-            },
-            render: (_, record) => (
-                <Space>
-                    {record.roles.data.map((item: RoleItem, index: number) => (
-                        <Tag key={index} color="#586cb1">
-                            {item.name}
-                        </Tag>
-                    ))}
-                </Space>
-            ),
-        }, {
+            dataIndex: 'code'
+        },{
             title: (
-                t('pages.searchTable.disabled')
+               t('pages.searchTable.status')
             ),
             width: 80,
             align: 'center',
-            dataIndex: 'is_black',
+            dataIndex: 'status',
             hideInSearch: true,
-            render: (_, record) => (
-                <Switch
-                    checkedChildren={t('global.switch.checked.label')}
-                    unCheckedChildren={t('global.switch.unChecked.label')}
-                    defaultChecked={record.status === 1}
-                    disabled={record.is_administrator}
-                    onChange={() => handleBlockUser(record.id)}
-                />
-            ),
-        }, {
-            title: (
-                t('pages.searchTable.loginCount')
-            ),
-            width: 80,
-            align: 'center',
-            dataIndex: 'login_count',
-            hideInSearch: true,
-        }, {
+            render:(_,record)=>(
+                record.status == 0 ?
+                    <Tag color="red">
+                        {t('global.switch.unChecked.label')}
+                    </Tag> :
+                    <Tag color="green">
+                        {t('global.switch.checked.label')}
+                    </Tag>
+            )
+        },{
             title: (
                 t('pages.searchTable.createdAt')
             ),
@@ -174,7 +148,7 @@ const User: FC = () =>{
             align: 'center',
             dataIndex: 'updated_at',
             hideInSearch: true,
-        }, {
+        },{
             title: (
                 t('pages.searchTable.action')
             ),
@@ -186,6 +160,9 @@ const User: FC = () =>{
                 <Space>
                     <a key="link" className="text-blue-500" onClick={() => isShowModal(true, record.id)}>
                         {t('pages.searchTable.edit')}
+                    </a>
+                    <a key="config" className="text-blue-500" onClick={()=>isShowDataModal(true,record.id)}>
+                        {t('pages.searchTable.dict.data')}
                     </a>
                     <Popconfirm
                         key="del"
@@ -210,10 +187,11 @@ const User: FC = () =>{
         },
     ];
 
+
     return (
         <CustomerPageContainer
             title={
-                t('admin.user')
+                t('admin.dict')
             }
         >
             <ProTable<TableListItem>
@@ -223,7 +201,7 @@ const User: FC = () =>{
                 rowKey="id"
                 dateFormatter="string"
                 headerTitle={
-                    t('admin.user.list')
+                    t('admin.dict.list')
                 }
                 rowSelection={{ fixed: true }}
                 pagination={false}
@@ -243,8 +221,17 @@ const User: FC = () =>{
                 />
             }
 
+            {isDataModalVisible &&
+                <CreateOrEditData
+                    isModalVisible={isDataModalVisible}
+                    isShowModal={isShowDataModal}
+                    actionRef={actionRef}
+                    editId={editId}
+                />
+            }
+
         </CustomerPageContainer>
     )
 }
 
-export default User;
+export default Dict;

@@ -6,7 +6,7 @@ import {nanoid} from "nanoid";
 import {useAsyncEffect} from "ahooks";
 import {filterTreeLeafNode, listToTree} from "@/utils/utils.ts";
 import {queryAllPermissions} from "@/api/auth/PermissionController.ts";
-import {getPermissionIdsByRoleId} from "@/api/auth/RoleController.ts";
+import {getPermissionIdsByRoleId, updatePermissionByRoleId} from "@/api/auth/RoleController.ts";
 
 export interface ICreateOrEditProps  {
     isDrawerVisible: boolean;
@@ -90,9 +90,23 @@ const CreateOrEditPermission: FC <ICreateOrEditProps> = (props: any)=>{
         form.setFieldsValue({ permissionIds: checkedKeysResult.length===0 ? [] : filterSameKeys });
     };
 
-
     const handleOk = async () =>{
+        try {
+            const fieldsValue = await form.validateFields();
 
+            await updatePermissionByRoleId(editId,fieldsValue);
+
+            isShowDrawer(false);
+
+            const defaultUpdateSuccessMessage = editId === undefined ? t('global.create.success'): t('global.update.success');
+
+            message.success(defaultUpdateSuccessMessage);
+
+            actionRef.current.reload();
+
+        }catch (error: any){
+
+        }
     }
 
     return (

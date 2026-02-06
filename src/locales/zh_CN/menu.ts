@@ -6,4 +6,5 @@ export default {
     'menu.admin.role': "角色列表",
     'menu.admin.permission': "权限列表",
     'menu.admin.menu': "菜单列表",
+    'menu.admin.dict': "字典列表"
 }

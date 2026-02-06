@@ -1,45 +1,43 @@
-import { FC, useState } from 'react'
-import {App, Form, Input, InputNumber, Modal, Skeleton, Switch, Tree} from 'antd';
-import { useTranslation } from 'react-i18next';
-import { ICreateOrEditProps } from "@/interfaces/modal.ts";
-import { useAsyncEffect } from "ahooks";
-import {createRole, getRoleById, updateRole} from "@/api/auth/RoleController";
+import {FC, useState} from "react";
+import {App, Form, Input, Modal, Skeleton, Switch} from "antd";
+import {ICreateOrEditProps} from "@/interfaces/modal.ts";
+import {useTranslation} from "react-i18next";
+import { useAsyncEffect } from 'ahooks';
+import {createDict, getDict, updateDict} from "@/api/auth/DictController.ts";
 
-const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
+const { TextArea } = Input;
+
+const CreateOrEdit:FC<ICreateOrEditProps> = (props: any) =>{
     const { t } = useTranslation();
     const [initialValues, setInitialValues] = useState<any>({});
     const { isModalVisible, isShowModal, editId, actionRef } = props;
 
     const [form] = Form.useForm();
-    const { message } = App.useApp();
+    const { message} = App.useApp();
 
     const title = editId === undefined ? t('modal.createOrUpdateForm.create.title') : t('modal.createOrUpdateForm.edit.title');
 
     const fetchApi = async () => {
-        try{
-            if(editId !== undefined){
-                const roleRes = await getRoleById(editId);
-                const currentData = roleRes.data;
-                setInitialValues({
-                    name: currentData.name,
-                    slug: currentData.slug,
-                    sort: currentData.sort,
-                    status: currentData.status
-                });
-            }else{
-                form.setFieldsValue({
-                    sort: 1,
-                    status: 1
-                })
-            }
-        }catch (error: any){
-            console.log(error);
+        if (editId !== undefined) {
+            const res = await getDict(editId);
+            const currentData = res.data;
+            setInitialValues({
+                name: currentData.name,
+                code: currentData.code,
+                status: currentData.status,
+                remark: currentData.remark
+            })
+        }else{
+            form.setFieldsValue({
+                status: 1
+            })
         }
     }
 
     useAsyncEffect(async () => {
         await fetchApi();
     }, []);
+
 
     const handleOk = async () =>{
         try {
@@ -51,21 +49,19 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                 status: fieldsValue.status ? 1 : 0
             }
 
-            if (editId === undefined) {
-                await createRole(transformedData);
-            } else {
-                await updateRole(editId, transformedData);
+            if(editId === undefined){
+                await createDict(transformedData)
+            }else{
+                await updateDict(editId,transformedData);
             }
-
             isShowModal(false);
 
             const defaultUpdateSuccessMessage = editId === undefined ? t('global.create.success'): t('global.update.success');
 
             message.success(defaultUpdateSuccessMessage);
             actionRef.current.reload();
-
         }catch (error: any){
-            message.error(error.message);
+            message.error(error.data.message);
         }
     }
 
@@ -79,9 +75,8 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
             width={750}
         >
             {
-                Object.keys(initialValues).length === 0 && editId !== undefined ? <Skeleton paragraph={{ rows: 4 }} /> : (
+                Object.keys(initialValues).length === 0 && editId !== undefined ? (<Skeleton paragraph={{ rows: 4 }} />) : (
                     <Form
-                        name="role-update-or-create"
                         form={form}
                         initialValues={initialValues}
                         autoComplete="off"
@@ -91,7 +86,7 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                             label={
                                 t('modal.createOrUpdateForm.name')
                             }
-                            labelCol={{ span: 3 }}
+                            labelCol={{ span: 4 }}
                             rules={[
                                 {
                                     required: true,
@@ -99,41 +94,33 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                                         t('validator.admin.name.required')
                                     )
                                 }
-                            ]}>
+                            ]}
+                        >
                             <Input placeholder={
                                 t('modal.createOrUpdateForm.name.placeholder')
-                            } />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="slug"
-                            label={
-                                t('modal.createOrUpdateForm.slug')
-                            }
-                            labelCol={{ span: 3 }}
-                            rules={[
-                                {
-                                    required: true,
-                                    message: (
-                                        t('modal.createOrUpdateForm.slug.required')
-                                    )
-                                }
-                            ]}>
-                            <Input placeholder={
-                                t('modal.createOrUpdateForm.slug.placeholder')
                             }
                             />
                         </Form.Item>
 
-
                         <Form.Item
-                            name="sort"
+                            name="code"
                             label={
-                                t('modal.createOrUpdateForm.sort')
+                                t('modal.createOrUpdateForm.dict.code')
                             }
-                            labelCol={{ span: 3 }}
+                            labelCol={{ span: 4 }}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        t('modal.createOrUpdateForm.dict.code.required')
+                                    )
+                                }
+                            ]}
                         >
-                            <InputNumber />
+                            <Input placeholder={
+                                t('modal.createOrUpdateForm.dict.code.placeholder')
+                            }
+                            />
                         </Form.Item>
 
                         <Form.Item
@@ -141,7 +128,7 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                             label={
                                 t('modal.createOrUpdateForm.status')
                             }
-                            labelCol={{ span: 3 }}
+                            labelCol={{ span: 4 }}
                             valuePropName="checked"
                         >
                             <Switch
@@ -153,8 +140,24 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                                 }
                             />
                         </Form.Item>
+
+                        <Form.Item
+                            name="remark"
+                            label={
+                                t('modal.createOrUpdateForm.remark')
+                            }
+                            labelCol={{ span: 4 }}
+                        >
+                            <TextArea
+                                placeholder={
+                                    t('modal.createOrUpdateForm.remark.placeholder')
+                                }
+                            />
+
+                        </Form.Item>
                     </Form>
-            )}
+                )
+            }
         </Modal>
     )
 }

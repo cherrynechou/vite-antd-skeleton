@@ -5,5 +5,6 @@ export default {
     'router.admin.roles': '角色列表',
     'router.admin.permissions': '权限列表',
     'router.admin.menu': '菜单列表',
+    'router.admin.dict': '字典列表'
 
 }

@@ -1,4 +1,4 @@
-import {FC,  useEffect, useRef, useState} from 'react';
+import {FC, useRef, useState} from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import CustomerPageContainer from '@/components/CustomerPageContainer';
 import { ProTable } from '@ant-design/pro-components';
@@ -33,24 +33,26 @@ const Permission: FC = () =>{
 
     const { message } = App.useApp();
 
-
     //自定查询
-    const requestData = async () =>{
-        const res = await queryPermissions();
-        setPermissionTreeData(res.data);
+    const requestData = async (): Promise<any> =>{
+        try {
+            const res = await queryPermissions();
+            setPermissionTreeData(res.data);
 
-        const treeList = treeToList(res.data);
-        const _defaultExpandedRowKeys = treeList.map((item)=>{
-            return item.id;
-        })
-        setDefaultExpandedRowKeys(_defaultExpandedRowKeys);
+            const treeList = treeToList(res.data);
+            const _defaultExpandedRowKeys = treeList.map((item)=>{
+                return item.id;
+            })
+            setDefaultExpandedRowKeys(_defaultExpandedRowKeys);
 
-        return {
-            data: res.data,
-            success: res.status === 200
+            return {
+                data: res.data,
+                success: res.status === 200
+            }
+        }catch (error: any){
+            message.error(error.data.message);
         }
     }
-
 
 
     /**
@@ -134,10 +136,16 @@ const Permission: FC = () =>{
                     <Popconfirm
                         key="del"
                         placement="top"
-                        title={t('pages.searchTable.okConfirm')}
+                        title={
+                            t('pages.searchTable.okConfirm')
+                        }
                         onConfirm={ () => confirmDel(record.id) }
-                        okText={t('pages.searchTable.ok')}
-                        cancelText={t('pages.searchTable.cancel')}
+                        okText={
+                            t('pages.searchTable.ok')
+                        }
+                        cancelText={
+                            t('pages.searchTable.cancel')
+                        }
                     >
                         <a key="delete" className="text-blue-500">
                             {t('pages.searchTable.delete')}

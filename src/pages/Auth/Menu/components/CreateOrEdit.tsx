@@ -1,13 +1,14 @@
 import { FC, useState } from 'react'
-import {App, Form, Input, InputNumber, Modal, Select, Skeleton, Switch} from "antd";
+import {App, Form, Input, InputNumber, Modal, Radio, RadioChangeEvent, Select, Skeleton, Switch} from "antd";
 import {useTranslation} from "react-i18next";
 import {useAsyncEffect} from "ahooks";
 import routers from '@/routers/config'; // 导入全局路由配置
 import {buildAntdTreeData, extractRoutes, treeToOrderList} from "@/utils/utils.ts";
 import {LOGIN_PATH} from "@/constants/pages.ts";
 import {queryAllRoles} from "@/api/auth/RoleController.ts";
-import {getMenu} from "@/api/auth/MenuController.ts";
+import {createMenu, getMenu, updateMenu} from "@/api/auth/MenuController.ts";
 import IconSelector from "@/components/IconSelector";
+import {maxBy} from "lodash-es";
 
 
 export interface ICreateOrEditProps {
@@ -23,10 +24,11 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
     const [treeData, setTreeData] = useState<any>([]);
     const [initialValues, setInitialValues] = useState<any>({});
     const [linkTarget, setLinkTarget] = useState<any>([]);
-    const { isModalVisible, isShowModal, editId, menuData } = props;
+    const [menuTypes,setMenuTypes] = useState<any>([]);
+    const [currentMenuType,setCurrentType] = useState<any>(1);
+    const {isModalVisible, isShowModal, editId, menuData } = props;
     const [roles, setRoles] = useState<any>([]);
     const [routes, setRoutes] = useState<any>([]);
-
 
     const [form] = Form.useForm();
     const { message } = App.useApp();
@@ -51,8 +53,24 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
                 value: ''
             },
         ];
-
         setLinkTarget(targets);
+
+        //类型
+        const types = [
+            {
+                label: t('modal.createOrUpdateForm.menu.parent'),
+                value: 1
+            }, {
+                label: t('modal.createOrUpdateForm.menu.child'),
+                value: 2
+            }, {
+                label: t('modal.createOrUpdateForm.menu.button'),
+                value: 3
+            }
+        ]
+
+        setMenuTypes(types);
+
         //提取路由
         const routes = extractRoutes(routers);
         const filter_routes = routes.map(item=>item.path);
@@ -89,24 +107,31 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
                 });
             }
 
+            setCurrentType(currentData.type);
+
             setInitialValues({
                 name: currentData.name,
                 key:currentData.key,
+                type: currentData.type,
                 locale: currentData.locale,
                 parent_id: currentData.parent_id,
                 icon: currentData.icon,
                 path: currentData.path,
                 target: currentData.target,
-                order: currentData.order,
+                sort: currentData.sort,
                 roles: rolesValue,
                 status: currentData.status,
             });
+
         }else{
-            console.log(treeValues);
+            const oldestList = maxBy(orderList, list => list.sort);
+            form.setFieldsValue({
+                sort: oldestList.sort + 1,
+                type: 1,
+                status: 1
+            })
+
         }
-
-
-
     }
 
 
@@ -115,10 +140,39 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
         await fetchApi();
     }, []);
 
-
+    const onMenuTypeChange = (e: RadioChangeEvent)=>{
+        setCurrentType(e.target.value);
+    }
 
     const handleOk = async () => {
+        try {
+            const fieldsValue = await form.validateFields();
 
+            //最终提交数据格式化
+            const transformedData  = {
+                ...fieldsValue,
+                status: fieldsValue.status ? 1 : 0
+            }
+
+            if (editId === undefined) {
+                await createMenu(transformedData );
+            } else {
+                await updateMenu(editId, transformedData );
+            }
+
+            isShowModal(false);
+
+            const defaultUpdateSuccessMessage = editId === undefined ? t('global.create.success'): t('global.update.success');
+
+            message.success(defaultUpdateSuccessMessage);
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+
+        }catch (error: any){
+            message.error(error.message);
+        }
     }
 
     return (
@@ -163,13 +217,52 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
                     </Form.Item>
 
                     <Form.Item
-                        name="icon"
+                        name="type"
                         label={
-                            t('modal.createOrUpdateForm.icon')
+                            t('modal.createOrUpdateForm.menu.type')
                         }
                         labelCol={{ span: 3 }}
                     >
-                        <IconSelector />
+                        <Radio.Group
+                            onChange={onMenuTypeChange}
+                            options={menuTypes}
+                        />
+                    </Form.Item>
+
+                    {currentMenuType == 1 &&
+                        <Form.Item
+                            name="icon"
+                            label={
+                                t('modal.createOrUpdateForm.icon')
+                            }
+                            labelCol={{ span: 3 }}
+                        >
+                            <IconSelector />
+                        </Form.Item>
+                    }
+
+
+                    <Form.Item
+                        name="name"
+                        label={
+                            t('modal.createOrUpdateForm.name')
+                        }
+                        labelCol={{ span: 3 }}
+                        rules={[
+                            {
+                                required: true,
+                                message: (
+                                    t('validator.admin.name.required')
+                                )
+                            }
+                        ]}
+                    >
+                        <Input
+                            placeholder={
+                                t('modal.createOrUpdateForm.name.placeholder')
+                            }
+                            style={{ width: 500 }}
+                        />
                     </Form.Item>
 
                     <Form.Item
@@ -266,7 +359,7 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
                     </Form.Item>
 
                     <Form.Item
-                        name="order"
+                        name="sort"
                         label={
                             t('modal.createOrUpdateForm.sort')
                         }
@@ -283,7 +376,7 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
                     <Form.Item
                         name="status"
                         label={
-                            t('model.createOrUpdateForm.display')
+                            t('modal.createOrUpdateForm.status')
                         }
                         labelCol={{ span: 3 }}
                         valuePropName="checked"
