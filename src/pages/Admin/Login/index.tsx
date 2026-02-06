@@ -12,8 +12,8 @@ export type LoginFieldProps = {
 };
 
 const Login: FC = () =>{
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const { t } = useTranslation();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const login = useAuthUserStore(state => state.login);
     const { message } = App.useApp();
 

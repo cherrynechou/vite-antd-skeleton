@@ -1,23 +1,4 @@
-import React, {createContext, useContext, useMemo, ReactNode, FC} from 'react';
-
-export interface AccessInstance {
-    access: AccessState;
-}
-// 通用权限规则类型：支持布尔值/带参函数（和Umi一致）
-export type AccessRule = boolean | ((...args: any[]) => boolean);
-export type AccessState = Record<string, AccessRule>;
-
-// 权限 Provider 组件：包裹根组件，注入全局权限
-export interface AccessProviderProps {
-    children: ReactNode;
-    access: () => AccessState; // access.ts导出的默认函数
-}
-
-export interface AccessProps {
-    accessible: boolean,
-    fallback: ReactNode
-    children: ReactNode;
-}
+import React, {createContext, useContext, FC} from 'react';
 
 // 创建 Context（默认值设为 null，后续用 Hook 做非空校验）
 const AccessContext = createContext<AccessInstance | null>(null);

@@ -39,5 +39,9 @@ export const useFullScreen = () => {
     // @ts-ignore
     useEventListener(document, 'msfullscreenchange', fullscreenChangeHandler);
 
-    return { isFullScreen, enterFullScreen, exitFullScreen }
+    return {
+        isFullScreen,
+        enterFullScreen,
+        exitFullScreen
+    };
 }

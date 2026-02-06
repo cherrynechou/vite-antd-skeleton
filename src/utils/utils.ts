@@ -99,12 +99,12 @@ const buildAntdTreeData = (data: ListNode[], options: {
     const formatLabelName = (level: number) => {
         let str= '';
         for( let i = 0; i < level; ++i){
-            str += '—';
+            str += '─';
         }
         if(level == 0){
             return '';
         }else {
-            return '|' + str;
+            return '├' + str;
         }
     }
 
