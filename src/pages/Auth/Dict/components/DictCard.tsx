@@ -70,7 +70,7 @@ const DictCard : FC<{
                             className={'w-full text-sm flex items-center justify-between'}
                             key={item.id}
                             color={current == item.id ? 'processing' : 'default'}
-                            style={{marginBottom: '2px'}}
+                            style={{marginBottom: '2px',cursor: "pointer"}}
                             onClick={()=>tagClick(item.id)}
                         >
                             {item.name}
