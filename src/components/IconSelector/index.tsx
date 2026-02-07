@@ -15,8 +15,6 @@ const IconSelector: FC = (props: any)=>{
 
   const { message } = App.useApp();
 
-
-
   useEffect(()=>{
     const iconViewData: any[] = [];
     iconData.forEach(item => {
@@ -50,11 +48,10 @@ const IconSelector: FC = (props: any)=>{
 
   const handleOk = () =>{
     if(currentIcon === ''){
-
       const defaultIconErrorMessage = t('message.icon.empty.failure');
-
       message.error(defaultIconErrorMessage)
     }
+
     props.onChange(currentIcon);
     setIsModalOpen(false);
   }

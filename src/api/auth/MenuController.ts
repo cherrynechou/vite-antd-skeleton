@@ -1,7 +1,9 @@
 import request from '@/utils/request';
 
-export function queryMenus() {
-    return request.get('/auth/menu');
+export function queryMenus(params: any = {}) {
+    return request.get('/auth/menu',{
+        params
+    });
 }
 
 /**

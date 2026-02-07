@@ -29,6 +29,7 @@ export default {
     'modal.createOrUpdateForm.url.placeholder': '请选择跳转地址！',
     'modal.createOrUpdateForm.avatar': '头像',
     'modal.createOrUpdateForm.status': '状态',
+    'modal.createOrUpdateForm.default': '默认值',
     'modal.createOrUpdateForm.sort': '排序',
     'modal.createOrUpdateForm.sort.placeholder': '请输入 排序！',
     'modal.createOrUpdateForm.parent' : '父级',
@@ -49,7 +50,14 @@ export default {
     'modal.createOrUpdateForm.dict.code': '编码',
     'modal.createOrUpdateForm.dict.code.required': '编码必须！',
     'modal.createOrUpdateForm.dict.code.placeholder': '请输入编码',
+    'modal.createOrUpdateForm.dict.data.label': '数据标签',
+    'modal.createOrUpdateForm.dict.data.label.placeholder': '请输入 数据标签',
+    'modal.createOrUpdateForm.dict.data.label.required': '数据标签必须！',
+    'modal.createOrUpdateForm.dict.data.value': '数据键值',
+    'modal.createOrUpdateForm.dict.data.value.placeholder': '请输入 数据键值',
+    'modal.createOrUpdateForm.dict.data.value.required': '数据键值必须！',
     'modal.createOrUpdateForm.remark': '备注',
-    'modal.createOrUpdateForm.remark.placeholder': '请输入备注'
+    'modal.createOrUpdateForm.remark.placeholder': '请输入备注',
+    'modal.dict.data': '字典项列表',
 
 }

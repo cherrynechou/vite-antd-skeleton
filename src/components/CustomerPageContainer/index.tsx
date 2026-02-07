@@ -8,14 +8,15 @@ export interface ICustomerPageProps {
 }
 
 const CustomerPageContainer:FC<ICustomerPageProps> = (props: ICustomerPageProps )=>{
+    const {title,children} = props;
     return(
         <PageContainer
             header={{
-                title: props.title,
+                title: title,
                 breadcrumb: <BreadcrumbRender />
             }}
         >
-            {props.children}
+            {children}
         </PageContainer>
     )
 }

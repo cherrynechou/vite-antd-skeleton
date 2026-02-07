@@ -4,7 +4,9 @@ import request from '@/utils/request';
  * 获取菜单列表
  */
 export async function queryDictDatas(params: any = {}) {
-    return request.get('/dict/datas',params);
+    return request.get('/dict/datas', {
+        params
+    });
 }
 
 export async function getDictAllDataList(code: string) {
