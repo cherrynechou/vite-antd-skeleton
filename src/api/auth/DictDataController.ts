@@ -4,30 +4,30 @@ import request from '@/utils/request';
  * 获取菜单列表
  */
 export async function queryDictDatas(params: any = {}) {
-    return request.get('/dict/datas', {
+    return request.get('/auth/dict/datas', {
         params
     });
 }
 
 export async function getDictAllDataList(code: string) {
-    return request.get(`/dict/${code}/dataList`)
+    return request.get(`/auth/dict/${code}/dataList`)
 }
 
 export async function createDictData(params:any = {}){
-    return request.post('/dict/datas',params);
+    return request.post('/auth/dict/datas',params);
 }
 
 export async function getDictData(id: number){
-    return request.get(`/dict/datas/${id}`)
+    return request.get(`/auth/dict/datas/${id}`)
 }
 
 export async function updateDictData(id: number, params:any = {}){
-    return request.put(`/dict/datas/${id}`)
+    return request.put(`/auth/dict/datas/${id}`)
 }
 
 //设置默认值
 export async function setDictDataDefault(id: number, params:any = {}){
-    return request.put(`/dict/setDefault/${id}`,params)
+    return request.put(`/auth/dict/setDefault/${id}`,params)
 }
 
 /**
@@ -35,5 +35,5 @@ export async function setDictDataDefault(id: number, params:any = {}){
  * @param id
  */
 export async function destroyDictData(id: number) {
-    return request.delete(`/dict/datas/${id}`);
+    return request.delete(`/auth/dict/datas/${id}`);
 }

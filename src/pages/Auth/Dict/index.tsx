@@ -68,7 +68,7 @@ const Dict : FC = () =>{
     //自定查询
     const requestData = async (params: any): Promise<any> =>{
         try{
-            await waitTime(1000);
+            await waitTime(1500);
 
             const filter = omit(params, ['current', 'pageSize']);
             setDictId(currentDictId);
