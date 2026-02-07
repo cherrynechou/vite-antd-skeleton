@@ -45,7 +45,6 @@ const Dict : FC = () =>{
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
     const [isDataModalVisible,setIsDataModalVisible] = useState<boolean>(false);
     const [editId, setEditId] = useState<number | undefined>(0);
-    const [dictId,setDictId] = useState<number | undefined>(0);
     const actionRef = useRef<ActionType>(null);
 
     const { message} = App.useApp();
@@ -71,7 +70,6 @@ const Dict : FC = () =>{
             await waitTime(1500);
 
             const filter = omit(params, ['current', 'pageSize']);
-            setDictId(currentDictId);
 
             const rename = {
                 dictId: currentDictId,
@@ -123,6 +121,9 @@ const Dict : FC = () =>{
      * @param id
      */
     const isShowDataModal = (show: boolean, id?: number | undefined)=> {
+
+        console.log(id)
+
         setEditId(id);
         setIsDataModalVisible(show);
     }
@@ -301,7 +302,7 @@ const Dict : FC = () =>{
                     isModalVisible={isDataModalVisible}
                     isShowModal={isShowDataModal}
                     actionRef = {actionRef}
-                    dictId={dictId}
+                    dictId={currentDictId}
                     editId={editId}
                 />
             }

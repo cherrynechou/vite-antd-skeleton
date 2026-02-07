@@ -25,6 +25,7 @@ const CreateOrEditData:FC<ICreateOrEditProps> = (props: any) =>{
 
     const title = editId === undefined ? t('modal.createOrUpdateForm.create.title') : t('modal.createOrUpdateForm.edit.title');
 
+    console.log(editId,dictId);
 
     const fetchApi = async () => {
         const dictRes = await getDict(dictId);
