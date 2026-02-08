@@ -54,7 +54,7 @@ const Dict : FC = () =>{
         const dictRes = await queryDicts();
         const currentData = dictRes.data;
         const firstDict: any = first(currentData.data);
-        setCurrentDictId( firstDict.id );
+        setCurrentDictId( firstDict?.id || 0 );
         setDictDataList( currentData.data );
         setIsLoading(false);
     }
