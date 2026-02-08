@@ -5,7 +5,7 @@ declare global {
     // 通用权限规则类型：支持布尔值/带参函数（和Umi一致）
     export interface AccessState {
         canSeeAdmin: boolean;
-        hasPermissions: (permission: string | string[]) => boolean;
+        hasPermissions: (permission: string) => boolean;
     }
 
     export interface AccessInstance {
@@ -15,7 +15,6 @@ declare global {
     // 权限 Provider 组件：包裹根组件，注入全局权限
     export interface AccessProviderProps {
         children: ReactNode;
-        access: () => AccessState; // access.ts导出的默认函数
     }
 
     export interface AccessProps {

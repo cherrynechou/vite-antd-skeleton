@@ -1,19 +1,22 @@
 import React, {createContext, useContext, FC} from 'react';
+import access from '@/access.ts'
 
 // 创建 Context（默认值设为 null，后续用 Hook 做非空校验）
 const AccessContext = createContext<AccessInstance | null>(null);
 
 const AccessProvider:FC<AccessProviderProps> = ({
-    children ,
-    access
+    children
 }) => {
+
     const accessRules = access();
+
     return (
         <AccessContext.Provider value={{ access: accessRules }}>
             {children}
         </AccessContext.Provider>
     );
 };
+
 
 // 自定义 useAccess Hook：和 Umi 用法一致，直接调用获取权限
 const useAccess = () => {

@@ -20,7 +20,7 @@ const DictCard : FC<{
     const { dictDataList, isShowModal, reloadData, isLoading, onTagClick, current } = props;
 
     const handleMenuClick: MenuProps['onClick'] = (e) => {
-        console.log('click', e);
+
         if(e.key == "modify"){
             isShowModal(true, current)
         }else if(e.key == "delete"){

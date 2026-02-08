@@ -48,6 +48,7 @@ export interface SiteAction {
 export interface LayoutState {
     layout: LayoutType;
     collapsed: boolean;
+    isMobile: boolean;
     breadcrumb: BreadcrumbItem[];
     menuParentKey: string | null;
 }
@@ -58,6 +59,7 @@ export interface LayoutState {
 export interface LayoutAction {
     setLayout: (layout: LayoutType) => void;
     setCollapsed: (collapsed: boolean) => void;
+    setIsMobile: (isMobile: boolean) => void;
     setBreadcrumb: (breadcrumb: BreadcrumbItem[]) => void;
     setMenuParentKey: (menuParentKey: string) => void;
 }
