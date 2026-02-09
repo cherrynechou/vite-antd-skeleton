@@ -18,6 +18,7 @@ export const initialGlobalState = {
  */
 const persistedKeys: (keyof typeof initialGlobalState)[] = [
     'layout',
+    'themeConfig',
     'menuParentKey',
 ];
 
@@ -28,7 +29,6 @@ export const useGlobalStore = create<GlobalStore>()(
               ...createSiteSlice(...args),
               ...createThemeSlice(...args),
               ...createLayoutSlice(...args),
-
           }),
           {
                name: 'global-data-storage',

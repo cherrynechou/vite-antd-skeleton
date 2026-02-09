@@ -1,4 +1,4 @@
-import useAuthUserStore from "@/stores/user";
+import useAuthUserStore from '@/stores/user';
 import { matchPermission } from './utils/permission';
 
 export default ()  => {

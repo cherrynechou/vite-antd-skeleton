@@ -4,11 +4,11 @@
  */
 
 import type { StateCreator } from 'zustand';
-import type { GlobalStore, ThemeState } from '@/stores/types';
+import type { GlobalStore, ThemeState, ThemeAction } from '@/stores/types';
 import type { ThemeProps } from "@/layouts/typing";
 import { configTheme, defaultColorTheme } from "@/layouts/theme";
 
-export type ThemeSlice = ThemeState ;
+export type ThemeSlice = ThemeState & ThemeAction;
 
 /**
  * 主题初始状态

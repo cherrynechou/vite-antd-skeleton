@@ -30,6 +30,8 @@ export interface MenuIndexes {
 export interface SiteState {
     logo: string;
     title: string;
+    subtitle: string;
+    describe: string;
     documentTitle: string;
 }
 
@@ -49,6 +51,7 @@ export interface LayoutState {
     layout: LayoutType;
     collapsed: boolean;
     isMobile: boolean;
+    mobileMenuOpen: boolean;
     breadcrumb: BreadcrumbItem[];
     menuParentKey: string | null;
 }
@@ -60,6 +63,7 @@ export interface LayoutAction {
     setLayout: (layout: LayoutType) => void;
     setCollapsed: (collapsed: boolean) => void;
     setIsMobile: (isMobile: boolean) => void;
+    setMobileMenuOpen: (mobileMenuOpen: boolean) => void;
     setBreadcrumb: (breadcrumb: BreadcrumbItem[]) => void;
     setMenuParentKey: (menuParentKey: string) => void;
 }
@@ -77,7 +81,6 @@ export interface ThemeState {
  */
 export interface ThemeAction {
     setThemeConfig: (themeConfig: ThemeProps) => void;
-    setThemeDrawer: (themeDrawer: boolean) => void;
 }
 
 

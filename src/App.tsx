@@ -3,8 +3,10 @@ import { RouterProvider } from 'react-router-dom'
 import AntdProvider from '@/components/AntdProvider';
 import useAuthUserStore from '@/stores/user';
 import useAuthMenuStore from '@/stores/menu';
+import { useGlobalStore } from '@/stores';
 import { routers }  from './routers'
 import { AccessProvider } from '@/context'
+import {useMobile} from "@/hooks";
 
 function App() {
     const fetchCurrentUser = useAuthUserStore(state => state.fetchCurrentUser);

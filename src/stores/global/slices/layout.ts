@@ -12,6 +12,7 @@ export const initialLayoutState: LayoutState = {
     layout: "side",
     collapsed: false,
     isMobile: false,
+    mobileMenuOpen: false,
     breadcrumb: [],
     menuParentKey: null,
 };
@@ -33,6 +34,10 @@ export const createLayoutSlice: StateCreator<GlobalStore, [], [], LayoutSlice> =
 
     setIsMobile: (isMobile: boolean) => {
         set({ isMobile });
+    },
+
+    setMobileMenuOpen: (mobileMenuOpen: boolean) => {
+        set({ mobileMenuOpen });
     },
 
     setBreadcrumb: (breadcrumb: BreadcrumbItem[]) => {
