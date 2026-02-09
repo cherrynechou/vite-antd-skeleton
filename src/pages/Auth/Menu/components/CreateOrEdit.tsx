@@ -202,7 +202,7 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
                             {
                                 required: true,
                                 message: (
-                                    t('validator.admin.parent.required')
+                                    t('modal.createOrUpdateForm.parent.required')
                                 )
                             }
                         ]}
@@ -252,7 +252,7 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
                             {
                                 required: true,
                                 message: (
-                                    t('validator.admin.name.required')
+                                    t('modal.createOrUpdateForm.name.required')
                                 )
                             }
                         ]}
@@ -275,7 +275,7 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
                             {
                                 required: true,
                                 message: (
-                                    t('validator.admin.key.required')
+                                    t('modal.createOrUpdateForm.key.required')
                                 )
                             }
                         ]}
@@ -298,7 +298,7 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
                             {
                                 required: true,
                                 message: (
-                                    t('validator.admin.locale.required')
+                                    t('modal.createOrUpdateForm.locale.required')
                                 )
                             }
                         ]}

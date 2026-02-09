@@ -91,7 +91,7 @@ const CreateOrEdit:FC<ICreateOrEditProps> = (props: any) =>{
                                 {
                                     required: true,
                                     message: (
-                                        t('validator.admin.name.required')
+                                        t('modal.createOrUpdateForm.name.required')
                                     )
                                 }
                             ]}
