@@ -1,5 +1,5 @@
 import useAuthUserStore from '@/stores/user';
-import { matchPermission } from './utils/permission';
+import { matchPermission } from '@/utils/permission';
 
 export default ()  => {
     // 用 useState 管理权限，支持动态更新
