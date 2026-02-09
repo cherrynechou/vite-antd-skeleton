@@ -1,5 +1,5 @@
 import React, {createContext, useContext, FC} from 'react';
-import access from '@/access.ts'
+import access from '@/access'
 
 // 创建 Context（默认值设为 null，后续用 Hook 做非空校验）
 const AccessContext = createContext<AccessInstance | null>(null);
