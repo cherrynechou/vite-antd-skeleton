@@ -13,26 +13,27 @@ export type GlobalHeaderRightProps = {
 const AvatarDropDown:FC<GlobalHeaderRightProps> = ({menu}   ) =>{
     const { t } = useTranslation();
     const currentUser = useAuthUserStore(state => state.currentUser);
-    const onMenuClick:MenuProps['onClick']=(event)=>{
-        const { key } = event;
-
-        console.log(key);
-
-    }
 
     const menuItems: MenuProps['items'] = [
         {
             key: 'settings',
             icon: <SettingOutlined />,
             label: t('global.layout.header.settings'),
+            onClick: async ()=>{
+                console.log("setting");
+            }
         },
         {
             key: 'logout',
             icon: <LogoutOutlined />,
             label: t('global.layout.header.logout'),
+            onClick: async ()=>{
+                logout().then(() => {
+                    window.location.href = LOGIN_PATH;
+                })
+            }
         },
     ];
-
 
     const loading = (
         <span>
@@ -53,8 +54,7 @@ const AvatarDropDown:FC<GlobalHeaderRightProps> = ({menu}   ) =>{
     return (
         <Dropdown
             menu={{
-                onClick: onMenuClick,
-                items: menuItems,
+                items: menuItems
             }}
         >
             <Button size={"large"} type={'text'}  >
