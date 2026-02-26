@@ -184,6 +184,7 @@ const DictTable:FC<IDictTableProps>=(props: any)=>{
                 rowKey="id"
                 options={false}
                 actionRef={actionRef}
+                tableAlertRender={false}    // 去掉默认的信息提示框
                 dateFormatter="string"
                 headerTitle={
                     t('admin.dict.list')

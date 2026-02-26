@@ -17,6 +17,7 @@ export default {
     'pages.searchTable.dict.code': '代码',
     'pages.searchTable.dict.label': '标签',
     'pages.searchTable.dict.data': '配置数据',
+    'pages.searchTable.dict.name': '字典名称',
     'pages.searchTable.dict.data.label': '字典标签',
     'pages.searchTable.dict.data.value': '字典值',
     'pages.searchTable.dict.data.isDefault': '默认值',

@@ -65,13 +65,19 @@ const routeConfig: RouteObject[] = [
                                     titleKey: 'router.admin.permissions'
                                 }
                             },{
+                                path: '/auth/departments',
+                                element: <LazyImport lazy={lazy(() => import('@/pages/Auth/Department'))}/>,
+                                handle: {
+                                    titleKey: 'router.admin.departments'
+                                }
+                            },{
                                 path: '/auth/menu',
                                 element: <LazyImport lazy={lazy(() => import('@/pages/Auth/Menu'))}/>,
                                 handle: {
                                     titleKey: 'router.admin.menu'
                                 }
                             },{
-                                path: '/auth/dict',
+                                path: '/auth/dicts',
                                 element: <LazyImport lazy={lazy(()=>import('@/pages/Auth/Dict'))}/>,
                                 handle: {
                                     titleKey: 'router.admin.dict'

@@ -10,7 +10,6 @@ import {createMenu, getMenu, updateMenu} from "@/api/auth/MenuController.ts";
 import IconSelector from "@/components/IconSelector";
 import {maxBy} from "lodash-es";
 
-
 export interface ICreateOrEditProps {
     isModalVisible: boolean,
     isShowModal: (show: boolean, id?: number | undefined) => void,
@@ -134,8 +133,6 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
         }
     }
 
-
-
     useAsyncEffect(async () => {
         await fetchApi();
     }, []);
@@ -184,227 +181,227 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
             destroyOnHidden
             width={750}
         >
-            {Object.keys(initialValues).length === 0 && editId !== undefined ? (
-                <Skeleton paragraph={{ rows: 4 }} />
-            ) : (
-                <Form
-                    form={form}
-                    initialValues={initialValues}
-                    autoComplete="off"
-                >
-                    <Form.Item
-                        name="parent_id"
-                        label={
-                            t('modal.createOrUpdateForm.parent')
-                        }
-                        labelCol={{ span: 3 }}
-                        rules={[
-                            {
-                                required: true,
-                                message: (
-                                    t('modal.createOrUpdateForm.parent.required')
-                                )
-                            }
-                        ]}
+            {
+                Object.keys(initialValues).length === 0 && editId !== undefined ? <Skeleton paragraph={{ rows: 4 }} /> : (
+                    <Form
+                        form={form}
+                        initialValues={initialValues}
+                        autoComplete="off"
                     >
-                        <Select
-                            options={treeData}
-                            style={{ width: 400 }}
-                            placeholder={
-                                t('modal.createOrUpdateForm.parent.placeholder')
-                            }
-                        />
-                    </Form.Item>
-
-                    <Form.Item
-                        name="type"
-                        label={
-                            t('modal.createOrUpdateForm.menu.type')
-                        }
-                        labelCol={{ span: 3 }}
-                    >
-                        <Radio.Group
-                            onChange={onMenuTypeChange}
-                            options={menuTypes}
-                        />
-                    </Form.Item>
-
-                    {currentMenuType == 1 &&
                         <Form.Item
-                            name="icon"
+                            name="parent_id"
                             label={
-                                t('modal.createOrUpdateForm.icon')
+                                t('modal.createOrUpdateForm.parent')
+                            }
+                            labelCol={{ span: 3 }}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        t('modal.createOrUpdateForm.parent.required')
+                                    )
+                                }
+                            ]}
+                        >
+                            <Select
+                                options={treeData}
+                                style={{ width: 400 }}
+                                placeholder={
+                                    t('modal.createOrUpdateForm.parent.placeholder')
+                                }
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            name="type"
+                            label={
+                                t('modal.createOrUpdateForm.menu.type')
                             }
                             labelCol={{ span: 3 }}
                         >
-                            <IconSelector />
+                            <Radio.Group
+                                onChange={onMenuTypeChange}
+                                options={menuTypes}
+                            />
                         </Form.Item>
-                    }
 
-
-                    <Form.Item
-                        name="name"
-                        label={
-                            t('modal.createOrUpdateForm.name')
+                        {currentMenuType == 1 &&
+                            <Form.Item
+                                name="icon"
+                                label={
+                                    t('modal.createOrUpdateForm.icon')
+                                }
+                                labelCol={{ span: 3 }}
+                            >
+                                <IconSelector />
+                            </Form.Item>
                         }
-                        labelCol={{ span: 3 }}
-                        rules={[
-                            {
-                                required: true,
-                                message: (
-                                    t('modal.createOrUpdateForm.name.required')
-                                )
-                            }
-                        ]}
-                    >
-                        <Input
-                            placeholder={
-                                t('modal.createOrUpdateForm.name.placeholder')
-                            }
-                            style={{ width: 500 }}
-                        />
-                    </Form.Item>
 
-                    <Form.Item
-                        name="key"
-                        label={
-                            t('modal.createOrUpdateForm.key')
-                        }
-                        labelCol={{ span: 3 }}
-                        rules={[
-                            {
-                                required: true,
-                                message: (
-                                    t('modal.createOrUpdateForm.key.required')
-                                )
-                            }
-                        ]}
-                    >
-                        <Input
-                            placeholder={
-                                t('modal.createOrUpdateForm.key.placeholder')
-                            }
-                            style={{ width: 500 }}
-                        />
-                    </Form.Item>
 
-                    <Form.Item
-                        name="locale"
-                        label={
-                            t('modal.createOrUpdateForm.locale')
-                        }
-                        labelCol={{ span: 3 }}
-                        rules={[
-                            {
-                                required: true,
-                                message: (
-                                    t('modal.createOrUpdateForm.locale.required')
-                                )
+                        <Form.Item
+                            name="name"
+                            label={
+                                t('modal.createOrUpdateForm.name')
                             }
-                        ]}
-                    >
-                        <Input
-                            placeholder={
-                                t('modal.createOrUpdateForm.locale.placeholder')
-                            }
-                            style={{ width: 500 }}
-                        />
-                    </Form.Item>
+                            labelCol={{ span: 3 }}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        t('modal.createOrUpdateForm.name.required')
+                                    )
+                                }
+                            ]}
+                        >
+                            <Input
+                                placeholder={
+                                    t('modal.createOrUpdateForm.name.placeholder')
+                                }
+                                style={{ width: 500 }}
+                            />
+                        </Form.Item>
 
-                    <Form.Item
-                        name="path"
-                        label={
-                            t('modal.createOrUpdateForm.router')
-                        }
-                        labelCol={{ span: 3 }}
-                    >
-                        <Select
-                            options={routes}
-                            style={{ width: 400 }}
-                            placeholder={
-                                t('modal.createOrUpdateForm.router.placeholder')
+                        <Form.Item
+                            name="key"
+                            label={
+                                t('modal.createOrUpdateForm.key')
                             }
-                        />
-                    </Form.Item>
+                            labelCol={{ span: 3 }}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        t('modal.createOrUpdateForm.key.required')
+                                    )
+                                }
+                            ]}
+                        >
+                            <Input
+                                placeholder={
+                                    t('modal.createOrUpdateForm.key.placeholder')
+                                }
+                                style={{ width: 500 }}
+                            />
+                        </Form.Item>
 
-                    <Form.Item
-                        name="url"
-                        label={
-                            t('modal.createOrUpdateForm.url')
-                        }
-                        labelCol={{ span: 3 }}
-                    >
-                        <Input
-                            placeholder={
-                                t('modal.createOrUpdateForm.url.placeholder')
+                        <Form.Item
+                            name="locale"
+                            label={
+                                t('modal.createOrUpdateForm.locale')
                             }
-                            style={{ width: 500 }}
-                        />
-                    </Form.Item>
+                            labelCol={{ span: 3 }}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: (
+                                        t('modal.createOrUpdateForm.locale.required')
+                                    )
+                                }
+                            ]}
+                        >
+                            <Input
+                                placeholder={
+                                    t('modal.createOrUpdateForm.locale.placeholder')
+                                }
+                                style={{ width: 500 }}
+                            />
+                        </Form.Item>
 
-                    <Form.Item
-                        name="target"
-                        label={
-                            t('modal.createOrUpdateForm.target')
-                        }
-                        labelCol={{ span: 3 }}
-                    >
-                        <Select
-                            options={linkTarget}
-                            style={{ width: 250 }}
-                            placeholder={
-                                t('modal.createOrUpdateForm.target.placeholder')
+                        <Form.Item
+                            name="path"
+                            label={
+                                t('modal.createOrUpdateForm.router')
                             }
-                        />
-                    </Form.Item>
+                            labelCol={{ span: 3 }}
+                        >
+                            <Select
+                                options={routes}
+                                style={{ width: 400 }}
+                                placeholder={
+                                    t('modal.createOrUpdateForm.router.placeholder')
+                                }
+                            />
+                        </Form.Item>
 
-                    <Form.Item
-                        name="sort"
-                        label={
-                            t('modal.createOrUpdateForm.sort')
-                        }
-                        labelCol={{ span: 3 }}
-                    >
-                        <InputNumber
-                            style={{ width: 400 }}
-                            placeholder={
-                                t('modal.createOrUpdateForm.sort.placeholder')
+                        <Form.Item
+                            name="url"
+                            label={
+                                t('modal.createOrUpdateForm.url')
                             }
-                        />
-                    </Form.Item>
+                            labelCol={{ span: 3 }}
+                        >
+                            <Input
+                                placeholder={
+                                    t('modal.createOrUpdateForm.url.placeholder')
+                                }
+                                style={{ width: 500 }}
+                            />
+                        </Form.Item>
 
-                    <Form.Item
-                        name="status"
-                        label={
-                            t('modal.createOrUpdateForm.status')
-                        }
-                        labelCol={{ span: 3 }}
-                        valuePropName="checked"
-                    >
-                        <Switch
-                            checkedChildren={t('global.switch.checked.label')}
-                            unCheckedChildren={t('global.switch.unChecked.label')}
-                        />
-                    </Form.Item>
-
-                    <Form.Item
-                        name="roles"
-                        label={
-                            t('modal.createOrUpdateForm.role')
-                        }
-                        labelCol={{ span: 3 }}
-                    >
-                        <Select
-                            mode="multiple"
-                            options={roles}
-                            style={{ width: 500 }}
-                            placeholder={
-                                t('modal.createOrUpdateForm.role.placeholder')
+                        <Form.Item
+                            name="target"
+                            label={
+                                t('modal.createOrUpdateForm.target')
                             }
-                        />
-                    </Form.Item>
-                </Form>
-            )}
+                            labelCol={{ span: 3 }}
+                        >
+                            <Select
+                                options={linkTarget}
+                                style={{ width: 250 }}
+                                placeholder={
+                                    t('modal.createOrUpdateForm.target.placeholder')
+                                }
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            name="sort"
+                            label={
+                                t('modal.createOrUpdateForm.sort')
+                            }
+                            labelCol={{ span: 3 }}
+                        >
+                            <InputNumber
+                                style={{ width: 400 }}
+                                placeholder={
+                                    t('modal.createOrUpdateForm.sort.placeholder')
+                                }
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            name="status"
+                            label={
+                                t('modal.createOrUpdateForm.status')
+                            }
+                            labelCol={{ span: 3 }}
+                            valuePropName="checked"
+                        >
+                            <Switch
+                                checkedChildren={t('global.switch.checked.label')}
+                                unCheckedChildren={t('global.switch.unChecked.label')}
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            name="roles"
+                            label={
+                                t('modal.createOrUpdateForm.role')
+                            }
+                            labelCol={{ span: 3 }}
+                        >
+                            <Select
+                                mode="multiple"
+                                options={roles}
+                                style={{ width: 500 }}
+                                placeholder={
+                                    t('modal.createOrUpdateForm.role.placeholder')
+                                }
+                            />
+                        </Form.Item>
+                    </Form>
+                )
+            }
         </Modal>
     )
 }

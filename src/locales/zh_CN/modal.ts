@@ -23,6 +23,10 @@ export default {
     'modal.createOrUpdateForm.icon.placeholder': '请选择图标',
     'modal.createOrUpdateForm.slug': '标识',
     'modal.createOrUpdateForm.slug.placeholder': '请输入标识',
+    'modal.createOrUpdateForm.telephone': '手机号',
+    'modal.createOrUpdateForm.telephone.placeholder': '请输入手机号',
+    'modal.createOrUpdateForm.email': '邮箱',
+    'modal.createOrUpdateForm.email.placeholder': '请输入邮箱',
     'modal.createOrUpdateForm.role': '角色',
     'modal.createOrUpdateForm.role.placeholder': '选择角色',
     'modal.createOrUpdateForm.router': '路由',
@@ -61,6 +65,11 @@ export default {
     'modal.createOrUpdateForm.dict.data.value.required': '数据键值必须！',
     'modal.createOrUpdateForm.remark': '备注',
     'modal.createOrUpdateForm.remark.placeholder': '请输入备注',
+    'modal.createOrUpdateForm.department.name': '部门名称',
+    'modal.createOrUpdateForm.department.name.placeholder': '请输入部门名称',
+    'modal.createOrUpdateForm.department.name.required': '部门名称必须！',
+    'modal.createOrUpdateForm.department.principal': '负责人',
+    'modal.createOrUpdateForm.department.principal.placeholder':'请输入 负责人',
     'modal.dict.data': '字典项列表',
 
 }

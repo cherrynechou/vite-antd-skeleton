@@ -337,6 +337,34 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                             </>
                         )}
 
+                        {/*手机号*/}
+                        <Form.Item
+                            name="telephone"
+                            label={
+                                t('modal.createOrUpdateForm.telephone')
+                            }
+                            labelCol={{ span: 4 }}
+                        >
+                            <Input placeholder={
+                                t('modal.createOrUpdateForm.telephone.placeholder')
+                            }
+                            />
+                        </Form.Item>
+
+                        {/*邮箱*/}
+                        <Form.Item
+                            name="email"
+                            label={
+                                t('modal.createOrUpdateForm.email')
+                            }
+                            labelCol={{ span: 4 }}
+                        >
+                            <Input placeholder={
+                                t('modal.createOrUpdateForm.email.placeholder')
+                            }
+                            />
+                        </Form.Item>
+
                         <Form.Item
                             name="roles"
                             label={

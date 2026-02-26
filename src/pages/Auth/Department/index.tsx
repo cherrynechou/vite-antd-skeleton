@@ -1,57 +1,55 @@
-import {FC,  useRef, useState} from 'react';
-import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { ProTable } from '@ant-design/pro-components';
-import CustomerPageContainer from "@/components/CustomerPageContainer";
-import { useTranslation } from 'react-i18next';
-import {App, Button, Space,Popconfirm} from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
-import { omit } from 'lodash-es';
-import {destroyRole, queryRoles} from '@/api/auth/RoleController';
-import CreateOrEdit from "./components/CreateOrEdit";
-import CreateOrEditPermission from "./components/CreateOrEditPermission";
+import {FC, useRef, useState} from "react";
+import {ActionType, ProColumns, ProTable} from '@ant-design/pro-components';
+import {useTranslation} from "react-i18next";
+import {App, Button, Popconfirm, Space} from "antd";
+import CustomerPageContainer from '@/components/CustomerPageContainer';
+import {PlusOutlined} from "@ant-design/icons";
+import {omit} from "lodash-es";
+import {queryDepartments} from "@/api/auth/DepartmentController";
+import CreateOrEdit from './components/CreateOrEdit'
+import {treeToList} from "@/utils/utils.ts";
+
 
 export type TableListItem = {
     id: number;
     name: string;
-    is_administrator: boolean;
     created_at: number;
     update_at: number;
 };
 
-const Role: FC = () =>{
-    const { t } = useTranslation();
+
+const Department:FC = () =>{
+    const [ departmentData, setDepartmentData ] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
+    const [defaultExpandedRowKeys, setDefaultExpandedRowKeys] = useState<any>([])
     const [editId, setEditId] = useState<number | undefined>(0);
 
+    const actionRef = useRef<ActionType>(null)
+
+    const { t } = useTranslation();
 
     const { message } = App.useApp();
 
-    const actionRef = useRef<ActionType>(null);
+    //获取用户用户列表
+    const requestData = async (): Promise<any> => {
+        try {
+            const ret = await queryDepartments();
+            setDepartmentData(ret.data);
 
-    //自定查询
-    const requestData = async (params: any): Promise<any> => {
-        try{
-            const filter = omit(params,['current','pageSize']);
-            const rename = {
-                page: params.current,
-                pageSize: params.pageSize
-            }
-            const mergeParams = Object.assign({} , filter , rename);
-            const ret = await queryRoles(mergeParams);
+            const treeList = treeToList(ret.data);
+            const _defaultExpandedRowKeys = treeList.map((item)=>{
+                return item.id;
+            })
+            setDefaultExpandedRowKeys(_defaultExpandedRowKeys);
 
             return {
-                data: ret.data.data,
-                total: ret.data.meta.pagination.total,
-                success: ret.status === 200
-            }
+                data: ret.data,
+                success: ret.status === 200,
+            };
         }catch (error: any){
             message.error(error.data.message);
         }
-
-
-    }
-
+    };
 
     /**
      *  显示对话框
@@ -63,29 +61,15 @@ const Role: FC = () =>{
         setIsModalVisible(show);
     };
 
-    /**
-     *  显示对话框
-     * @param show
-     * @param id
-     */
-    const isShowDrawer = (show: boolean, id?: number | undefined) => {
-        setEditId(id);
-        setIsDrawerVisible(show);
-    };
-
 
     /**
      * 删除id
      * @param id
      */
     const confirmDel = async (id: number) => {
-        try{
-            await destroyRole(id);
-            message.success(t('global.delete.success'));
-        }catch (error: any){
 
-        }
     }
+
 
     //列表
     const columns: ProColumns<TableListItem>[] = [
@@ -96,13 +80,6 @@ const Role: FC = () =>{
             align: 'center',
             sorter: (a, b) => a.id - b.id,
             hideInSearch: true,
-        }, {
-            title: (
-                t('pages.searchTable.slug')
-            ),
-            width: 80,
-            align: 'center',
-            dataIndex: 'slug',
         }, {
             title: (
                 t('pages.searchTable.name')
@@ -136,22 +113,22 @@ const Role: FC = () =>{
             align: 'center',
             render: (_,record) => (
                 <Space>
-                    <a key="link-edit" className="text-blue-500" onClick={() => isShowModal(true, record.id)}>
+                    <a key="link" className="text-blue-500" onClick={() => isShowModal(true, record.id)}>
                         {t('pages.searchTable.edit')}
                     </a>
-                    {
-                        !record.is_administrator &&
-                            <a key="link-permission" className="text-blue-500" onClick={()=>isShowDrawer(true,record.id)}>
-                                {t('pages.searchTable.permission')}
-                            </a>
-                    }
                     <Popconfirm
                         key="del"
                         placement="top"
-                        title={t('pages.searchTable.okConfirm')}
+                        title={
+                            t('pages.searchTable.okConfirm')
+                        }
                         onConfirm={ () => confirmDel(record.id) }
-                        okText={t('pages.searchTable.ok')}
-                        cancelText={t('pages.searchTable.cancel')}
+                        okText={
+                            t('pages.searchTable.ok')
+                        }
+                        cancelText={
+                            t('pages.searchTable.cancel')
+                        }
                     >
                         <a key="delete" className="text-blue-500">
                             {t('pages.searchTable.delete')}
@@ -162,10 +139,13 @@ const Role: FC = () =>{
         },
     ];
 
+
+
+
     return (
         <CustomerPageContainer
             title={
-                t('admin.role')
+                t('admin.department')
             }
         >
             <ProTable<TableListItem>
@@ -175,7 +155,7 @@ const Role: FC = () =>{
                 rowKey="id"
                 dateFormatter="string"
                 headerTitle={
-                    t('admin.role.list')
+                    t('admin.department.list')
                 }
                 rowSelection={{ fixed: true }}
                 pagination={false}
@@ -186,26 +166,17 @@ const Role: FC = () =>{
                 ]}
             />
 
-            {isModalVisible && (
+            {isModalVisible &&
                 <CreateOrEdit
                     isModalVisible={isModalVisible}
                     isShowModal={isShowModal}
                     actionRef={actionRef}
+                    departmentData ={departmentData}
                     editId={editId}
                 />
-            )}
-
-            {isDrawerVisible && (
-                <CreateOrEditPermission
-                    isDrawerVisible={isDrawerVisible}
-                    isShowDrawer={isShowDrawer}
-                    editId={editId}
-                    actionRef={actionRef}
-                />
-            )}
-
+            }
         </CustomerPageContainer>
     )
 }
 
-export default Role;
+export default Department
