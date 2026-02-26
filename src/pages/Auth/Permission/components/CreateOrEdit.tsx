@@ -201,7 +201,8 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
                         label={
                             t('modal.createOrUpdateForm.httpMethod')
                         }
-                        labelCol={{ span: 3 }}>
+                        labelCol={{ span: 3 }}
+                    >
                         <Select
                             mode="multiple"
                             options={httpMethods}

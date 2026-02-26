@@ -136,27 +136,29 @@ const Role: FC = () =>{
             align: 'center',
             render: (_,record) => (
                 <Space>
-                    <a key="link-edit" className="text-blue-500" onClick={() => isShowModal(true, record.id)}>
-                        {t('pages.searchTable.edit')}
-                    </a>
                     {
                         !record.is_administrator &&
+                        <>
+                            <a key="link-edit" className="text-blue-500" onClick={() => isShowModal(true, record.id)}>
+                                {t('pages.searchTable.edit')}
+                            </a>
                             <a key="link-permission" className="text-blue-500" onClick={()=>isShowDrawer(true,record.id)}>
                                 {t('pages.searchTable.permission')}
                             </a>
+                            <Popconfirm
+                                key="del"
+                                placement="top"
+                                title={t('pages.searchTable.okConfirm')}
+                                onConfirm={ () => confirmDel(record.id) }
+                                okText={t('pages.searchTable.ok')}
+                                cancelText={t('pages.searchTable.cancel')}
+                            >
+                                <a key="delete" className="text-blue-500">
+                                    {t('pages.searchTable.delete')}
+                                </a>
+                            </Popconfirm>
+                        </>
                     }
-                    <Popconfirm
-                        key="del"
-                        placement="top"
-                        title={t('pages.searchTable.okConfirm')}
-                        onConfirm={ () => confirmDel(record.id) }
-                        okText={t('pages.searchTable.ok')}
-                        cancelText={t('pages.searchTable.cancel')}
-                    >
-                        <a key="delete" className="text-blue-500">
-                            {t('pages.searchTable.delete')}
-                        </a>
-                    </Popconfirm>
                 </Space>
             )
         },
