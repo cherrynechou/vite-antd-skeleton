@@ -7,5 +7,6 @@ export default {
     'menu.admin.permission': "权限列表",
     'menu.admin.menu': "菜单列表",
     'menu.admin.department': "部门列表",
+    'menu.admin.post': '岗位列表',
     'menu.admin.dict': "字典列表"
 }

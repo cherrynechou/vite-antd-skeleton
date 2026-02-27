@@ -1,27 +1,25 @@
 import { FC, useState } from 'react'
-import { App, Form, Input, Modal, Select, Skeleton, Tree } from "antd";
+import { App, Form, Input, Modal, Select, Skeleton } from "antd";
 import { useTranslation } from "react-i18next";
-import type { TreeProps } from 'antd/es/tree';
 import type { UploadFile } from 'antd/es/upload/interface';
 import { ICreateOrEditProps } from "@/interfaces/modal";
 import UploadImage from "@/components/UploadImage";
-import { useAsyncEffect } from "ahooks";
-import { queryAllRoles } from "@/api/auth/RoleController.ts";
-import { queryAllPermissions } from "@/api/auth/PermissionController.ts";
-import {buildAntdTreeData, filterTreeLeafNode, listToTree, treeToOrderList} from "@/utils/utils.ts";
+import {useAsyncEffect} from "ahooks";
+import {queryAllRoles} from "@/api/auth/RoleController";
+import {buildAntdTreeData, treeToOrderList} from "@/utils/utils";
 import {createUser, getUser, updateUser} from "@/api/auth/UserController";
-import {queryAllDepartments, queryDepartments} from "@/api/auth/DepartmentController";
+import {queryDepartments} from "@/api/auth/DepartmentController";
+import {queryPosts} from "@/api/auth/PostController";
 import {pick} from "lodash-es";
 
 
 const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
     const { t } = useTranslation();
     const [initialValues, setInitialValues] = useState<any>({});
-    const [roles, setRoles] = useState<any>([]);
+    const [roleOptions, setRoleOptions] = useState<any>([]);
+    const [postOptions, setPostOptions] = useState<any>([]);
     const [avatarFileList, setAvatarFileList] = useState<UploadFile[]>([]);
     const [treeData, setTreeData] = useState<any>([]);
-    //const [defaultCheckedKeys, setDefaultCheckedKeys] = useState<any>([]);
-    //const [userRoles, setUserRoles] = useState<any>([]);
 
     const { isModalVisible, isShowModal, editId, actionRef } = props;
 
@@ -38,7 +36,7 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
             roleData.forEach((item: any) => {
                 roleList.push({ label: item.name, value: item.id });
             });
-            setRoles(roleList);
+            setRoleOptions(roleList);
 
             //部门
             const departmentRes = await queryDepartments();
@@ -48,6 +46,15 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                 rootLabel: t('global.tree.root')
             })
             setTreeData(treeValues);
+
+            //岗位
+            const postRes = await queryPosts();
+            const postData = postRes.data;
+            const postList: any[] = [];
+            postData.forEach((item: any) => {
+                postList.push({ label: item.name, value: item.id });
+            });
+            setPostOptions(postList);
 
 
             if(editId !== undefined){
@@ -179,6 +186,7 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
 
                         {/*部门*/}
                         <Form.Item
+                            name="department_id"
                             label={
                                 t('modal.createOrUpdateForm.department')
                             }
@@ -189,6 +197,23 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                                 style={{ width: 400 }}
                                 placeholder={
                                     t('modal.createOrUpdateForm.department.placeholder')
+                                }
+                            />
+                        </Form.Item>
+
+                        {/*岗位*/}
+                        <Form.Item
+                            name="post_id"
+                            label={
+                                t('modal.createOrUpdateForm.post')
+                            }
+                            labelCol={{ span: 4 }}
+                        >
+                            <Select
+                                options={postOptions}
+                                style={{ width: 400 }}
+                                placeholder={
+                                    t('modal.createOrUpdateForm.post.placeholder')
                                 }
                             />
                         </Form.Item>
@@ -369,35 +394,12 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                         >
                             <Select
                                 mode="multiple"
-                                options={roles}
+                                options={roleOptions}
                                 placeholder={
                                     t('modal.createOrUpdateForm.role.placeholder')
                                 }
                             />
                         </Form.Item>
-
-                        {/*{!userRoles.includes('administrator') && (*/}
-                        {/*    <>*/}
-                        {/*        <Form.Item name="permissions" hidden>*/}
-                        {/*            <Input hidden />*/}
-                        {/*        </Form.Item>*/}
-                        {/*        <Form.Item*/}
-                        {/*            label={*/}
-                        {/*                t('modal.createOrUpdateForm.permission')*/}
-                        {/*            }*/}
-                        {/*            labelCol={{ span: 4 }}*/}
-                        {/*        >*/}
-                        {/*            <Tree*/}
-                        {/*                checkable*/}
-                        {/*                defaultExpandAll={false}*/}
-                        {/*                defaultCheckedKeys={defaultCheckedKeys}*/}
-                        {/*                onSelect={onSelect}*/}
-                        {/*                onCheck={onCheck}*/}
-                        {/*                treeData={treeData}*/}
-                        {/*            />*/}
-                        {/*        </Form.Item>*/}
-                        {/*    </>*/}
-                        {/*)}*/}
 
                     </Form>
                 )

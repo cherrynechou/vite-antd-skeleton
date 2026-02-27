@@ -24,7 +24,6 @@ const Role: FC = () =>{
     const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
     const [editId, setEditId] = useState<number | undefined>(0);
 
-
     const { message } = App.useApp();
 
     const actionRef = useRef<ActionType>(null);

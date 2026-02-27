@@ -14,6 +14,7 @@ export default {
     'pages.searchTable.icon': '图标',
     'pages.searchTable.edit': '编辑',
     'pages.searchTable.permission': '权限',
+    'pages.searchTable.code': '编码',
     'pages.searchTable.dict.code': '代码',
     'pages.searchTable.dict.label': '标签',
     'pages.searchTable.dict.data': '配置数据',

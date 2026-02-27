@@ -71,6 +71,12 @@ const routeConfig: RouteObject[] = [
                                     titleKey: 'router.admin.departments'
                                 }
                             },{
+                                path: '/auth/posts',
+                                element: <LazyImport lazy={lazy(() => import('@/pages/Auth/Post'))}/>,
+                                handle: {
+                                    titleKey: 'router.admin.posts'
+                                }
+                            },{
                                 path: '/auth/menu',
                                 element: <LazyImport lazy={lazy(() => import('@/pages/Auth/Menu'))}/>,
                                 handle: {

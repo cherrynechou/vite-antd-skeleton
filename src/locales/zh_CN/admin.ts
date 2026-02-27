@@ -11,5 +11,7 @@ export default {
     'admin.dict.list': '字典列表',
     'admin.dict.data.list': '字典数据列表',
     'admin.department': '部门',
-    'admin.department.list': '部门列表'
+    'admin.department.list': '部门列表',
+    'admin.post': '岗位',
+    'admin.post.list': '岗位列表',
 }

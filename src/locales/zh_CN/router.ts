@@ -6,6 +6,7 @@ export default {
     'router.admin.permissions': '权限列表',
     'router.admin.menu': '菜单列表',
     'router.admin.departments': '部门列表',
+    'router.admin.posts': '岗位列表',
     'router.admin.dict': '字典列表'
 
 }

@@ -95,7 +95,7 @@ const DictDataTable:FC<IDictDataTableProps>=(props: any)=>{
     const columns: ProColumns<TableListItem>[] = [
         {
             title: 'ID',
-            width: 80,
+            width: 40,
             dataIndex: 'id',
             align: 'center',
             sorter: (a, b) => a.id - b.id,
