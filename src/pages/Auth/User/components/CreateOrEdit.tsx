@@ -8,17 +8,18 @@ import UploadImage from "@/components/UploadImage";
 import { useAsyncEffect } from "ahooks";
 import { queryAllRoles } from "@/api/auth/RoleController.ts";
 import { queryAllPermissions } from "@/api/auth/PermissionController.ts";
-import { filterTreeLeafNode, listToTree } from "@/utils/utils.ts";
-import {createUser, getUser, updateUser} from "@/api/auth/UserController.ts";
+import {buildAntdTreeData, filterTreeLeafNode, listToTree, treeToOrderList} from "@/utils/utils.ts";
+import {createUser, getUser, updateUser} from "@/api/auth/UserController";
+import {queryAllDepartments, queryDepartments} from "@/api/auth/DepartmentController";
 import {pick} from "lodash-es";
+
 
 const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
     const { t } = useTranslation();
     const [initialValues, setInitialValues] = useState<any>({});
     const [roles, setRoles] = useState<any>([]);
     const [avatarFileList, setAvatarFileList] = useState<UploadFile[]>([]);
-    //const [treeData, setTreeData] = useState<any>([]);
-    const [treeLeafRecord, setTreeLeafRecord] = useState<any>([]);
+    const [treeData, setTreeData] = useState<any>([]);
     //const [defaultCheckedKeys, setDefaultCheckedKeys] = useState<any>([]);
     //const [userRoles, setUserRoles] = useState<any>([]);
 
@@ -39,12 +40,15 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
             });
             setRoles(roleList);
 
-            // const permissionRes = await queryAllPermissions();
-            // const permissionData = permissionRes.data;
-            // const listTreePermissionData = listToTree(permissionData);
-            //
-            // setTreeData(listTreePermissionData);
-            // setTreeLeafRecord(filterTreeLeafNode(listTreePermissionData));
+            //部门
+            const departmentRes = await queryDepartments();
+            const departmentData = departmentRes.data;
+            const orderList = treeToOrderList(departmentData);
+            const treeValues = buildAntdTreeData(orderList,{
+                rootLabel: t('global.tree.root')
+            })
+            setTreeData(treeValues);
+
 
             if(editId !== undefined){
                 const userRes = await getUser(editId);
@@ -70,17 +74,6 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                         return item.id;
                     });
                 }
-
-                // let userRoleList: any[] = [];
-                // if (currentData.roles.length > 0) {
-                //     userRoleList = currentData.roles.map((item: any) => {
-                //         return item.slug;
-                //     });
-                //     setUserRoles(userRoleList);
-                // }
-                //
-                // setDefaultCheckedKeys(permissionList);
-
                 setInitialValues({
                     username: currentData.username,
                     name: currentData.name,
@@ -103,27 +96,6 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
             avatar: fileList.length === 0 ? '' : fileList.map(v=>v.name),
         });
     }
-
-    // const onSelect: TreeProps['onSelect'] = (selectedKeys) => {
-    //     //找出叶子节点
-    //     const filterChildNodes = treeLeafRecord.map((item: any) => {
-    //         return item.id;
-    //     });
-    //     const filterSameKeys = filterChildNodes.filter((item: any) => selectedKeys.indexOf(item) > -1);
-    //     form.setFieldsValue({ permissions: JSON.stringify(filterSameKeys) });
-    // };
-    //
-    // const onCheck: TreeProps['onCheck'] = (checkedKeys) => {
-    //     // @ts-ignore
-    //     const checkedKeysResult = [...checkedKeys];
-    //     //找出叶子节点
-    //     const filterChildNodes = treeLeafRecord.map((item: any) => {
-    //         return item.id;
-    //     });
-    //     const filterSameKeys = filterChildNodes.filter((item: any) => checkedKeysResult?.indexOf(item) > -1);
-    //     form.setFieldsValue({ permissions: JSON.stringify(filterSameKeys) });
-    // };
-
 
     const handleOk =async () =>{
         try{
@@ -182,7 +154,6 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                             />
                         </Form.Item>
 
-
                         <Form.Item
                             name="name"
                             label={
@@ -204,6 +175,22 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
 
                         <Form.Item name="avatar" hidden>
                             <Input hidden />
+                        </Form.Item>
+
+                        {/*部门*/}
+                        <Form.Item
+                            label={
+                                t('modal.createOrUpdateForm.department')
+                            }
+                            labelCol={{ span: 4 }}
+                        >
+                            <Select
+                                options={treeData}
+                                style={{ width: 400 }}
+                                placeholder={
+                                    t('modal.createOrUpdateForm.department.placeholder')
+                                }
+                            />
                         </Form.Item>
 
                         {/*头像*/}

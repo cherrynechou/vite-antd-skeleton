@@ -30,3 +30,10 @@ export async function updateDepartment(id: number, params:any = {}){
 export async function destroyDepartment(id: number) {
     return request.delete(`/auth/departments/${id}`);
 }
+
+/**
+ * 所有部门
+ */
+export async function queryAllDepartments() {
+    return request.get('/department/all');
+}

@@ -25,6 +25,8 @@ export default {
     'modal.createOrUpdateForm.slug.placeholder': '请输入标识',
     'modal.createOrUpdateForm.telephone': '手机号',
     'modal.createOrUpdateForm.telephone.placeholder': '请输入手机号',
+    'modal.createOrUpdateForm.department': '部门',
+    'modal.createOrUpdateForm.department.placeholder': '请选择部门',
     'modal.createOrUpdateForm.email': '邮箱',
     'modal.createOrUpdateForm.email.placeholder': '请输入邮箱',
     'modal.createOrUpdateForm.role': '角色',

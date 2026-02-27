@@ -4,7 +4,6 @@ import {useTranslation} from "react-i18next";
 import {App, Button, Popconfirm, Space} from "antd";
 import CustomerPageContainer from '@/components/CustomerPageContainer';
 import {PlusOutlined} from "@ant-design/icons";
-import {omit} from "lodash-es";
 import {queryDepartments} from "@/api/auth/DepartmentController";
 import CreateOrEdit from './components/CreateOrEdit'
 import {treeToList} from "@/utils/utils.ts";
@@ -157,6 +156,9 @@ const Department:FC = () =>{
                 headerTitle={
                     t('admin.department.list')
                 }
+                expandable={{
+                    expandedRowKeys: defaultExpandedRowKeys
+                }}
                 rowSelection={{ fixed: true }}
                 pagination={false}
                 toolBarRender={() => [

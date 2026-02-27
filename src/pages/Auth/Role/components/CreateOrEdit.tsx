@@ -43,7 +43,6 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
 
         setDataScopeOptions(dataScopes);
 
-
         try{
             if(editId !== undefined){
                 const roleRes = await getRoleById(editId);
@@ -51,6 +50,7 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                 setInitialValues({
                     name: currentData.name,
                     slug: currentData.slug,
+                    data_scope: currentData.data_scope,
                     sort: currentData.sort,
                     status: currentData.status
                 });

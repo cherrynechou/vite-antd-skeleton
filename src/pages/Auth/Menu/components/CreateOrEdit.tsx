@@ -32,7 +32,6 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
     const [form] = Form.useForm();
     const { message } = App.useApp();
 
-
     const title = editId === undefined ? t('modal.createOrUpdateForm.create.title') : t('modal.createOrUpdateForm.edit.title');
 
     const fetchApi = async () => {
@@ -85,7 +84,6 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
             });
             setRoutes(_routeList);
         }
-
 
         const roleRes = await queryAllRoles();
         const roleData = roleRes.data;
