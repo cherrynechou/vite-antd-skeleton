@@ -13,9 +13,6 @@
   "dependencies": {
     "@ant-design/icons": "^6.1.0",
     "@ant-design/pro-components": "^2.8.10",
-    "@formily/antd": "^2.3.7",
-    "@formily/core": "^2.3.7",
-    "@formily/react": "^2.3.7",
     "ahooks": "^3.9.6",
     "antd": "^6.3.1",
     "antd-img-crop": "^4.27.0",
