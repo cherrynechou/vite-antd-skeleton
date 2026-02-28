@@ -231,7 +231,9 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
                                 }
                                 labelCol={{ span: 3 }}
                             >
-                                <IconSelector />
+                                <IconSelector placeholder={
+                                    t('modal.createOrUpdateForm.icon.placeholder')
+                                }/>
                             </Form.Item>
                         }
 
