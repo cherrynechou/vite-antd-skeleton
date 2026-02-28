@@ -6,5 +6,12 @@ export default {
     'admin.role': 'Role',
     'admin.role.list': 'Role List',
     'admin.permission': 'Permission',
-    'admin.permission.list': 'Permission List'
+    'admin.permission.list': 'Permission List',
+    'admin.dict': 'Dictionary',
+    'admin.dict.list': 'Dictionary List',
+    'admin.dict.data.list': 'Dictionary Data List',
+    'admin.department': 'Department',
+    'admin.department.list': 'Department List',
+    'admin.post': 'Post',
+    'admin.post.list': 'Post List',
 }
