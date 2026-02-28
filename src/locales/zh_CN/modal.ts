@@ -83,6 +83,5 @@ export default {
     'modal.createOrUpdateForm.department.name.required': '部门名称必须！',
     'modal.createOrUpdateForm.department.principal': '负责人',
     'modal.createOrUpdateForm.department.principal.placeholder':'请输入 负责人',
-    'modal.dict.data': '字典项列表',
 
 }

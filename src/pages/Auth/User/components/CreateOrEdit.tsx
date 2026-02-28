@@ -184,6 +184,23 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                             <Input hidden />
                         </Form.Item>
 
+                        {/*头像*/}
+                        <Form.Item
+                            label={
+                                t('modal.createOrUpdateForm.avatar')
+                            }
+                            labelCol={{ span: 4 }}
+                        >
+                            <UploadImage
+                                accept="image/*"
+                                listType="picture-card"
+                                initialFileList={avatarFileList}
+                                maxCount={1}
+                                maxSize={100}
+                                onUploadChange={handleAvatarImageChange}
+                            />
+                        </Form.Item>
+
                         {/*部门*/}
                         <Form.Item
                             name="department_id"
@@ -218,22 +235,6 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                             />
                         </Form.Item>
 
-                        {/*头像*/}
-                        <Form.Item
-                            label={
-                                t('modal.createOrUpdateForm.avatar')
-                            }
-                            labelCol={{ span: 4 }}
-                        >
-                            <UploadImage
-                                accept="image/*"
-                                listType="picture-card"
-                                initialFileList={avatarFileList}
-                                maxCount={1}
-                                maxSize={100}
-                                onUploadChange={handleAvatarImageChange}
-                            />
-                        </Form.Item>
 
                         {/*添加*/}
                         {editId === undefined && (
