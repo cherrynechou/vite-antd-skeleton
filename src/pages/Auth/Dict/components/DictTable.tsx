@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {PlusOutlined} from "@ant-design/icons";
 import {Button, App, type TableProps, Space, Popconfirm} from "antd";
-import {omit} from "lodash-es";
+import {omit} from "es-toolkit/compat";
 import {queryDicts} from "@/api/auth/DictController";
 import CreateOrEditDict from "./CreateOrEditDict";
 

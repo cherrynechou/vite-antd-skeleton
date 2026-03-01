@@ -4,11 +4,11 @@ import { useFullScreen } from "@/hooks/useFullScreen";
 import { useTranslation } from 'react-i18next';
 import { FullscreenExitOutlined, FullscreenOutlined } from "@ant-design/icons";
 
-interface Props {
+interface IProps {
     element?: Element | string;
 }
 
-const FullScreenSwitcher: FC<Props> = () => {
+const FullScreenSwitcher: FC<IProps> = () => {
     const { isFullScreen,enterFullScreen,exitFullScreen } = useFullScreen();
     const { t } = useTranslation();
 

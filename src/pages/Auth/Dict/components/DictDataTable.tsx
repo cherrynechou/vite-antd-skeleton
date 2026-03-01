@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {nanoid} from "nanoid";
 import {Popconfirm, Space, Switch, Tag, App, Button} from 'antd';
-import {omit} from 'lodash-es'
+import {omit} from 'es-toolkit/compat'
 import {queryDictDatas} from '@/api/auth/DictDataController'
 import {PlusOutlined} from '@ant-design/icons'
 import CreateOrEditDictData from './CreateOrEditDictData'

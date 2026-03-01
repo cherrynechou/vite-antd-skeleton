@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import {useAsyncEffect} from "ahooks";
 import {buildAntdTreeData, treeToOrderList} from "@/utils/utils";
 import {createDepartment, getDepartment, updateDepartment} from "@/api/auth/DepartmentController";
-import {getMenu} from "@/api/auth/MenuController.ts";
+
 
 
 export interface ICreateOrEditProps {

@@ -5,7 +5,7 @@ import {useTranslation} from "react-i18next";
 import {App, Button, Popconfirm, Space} from "antd";
 import CustomerPageContainer from '@/components/CustomerPageContainer';
 import {PlusOutlined} from "@ant-design/icons";
-import {omit} from "lodash-es";
+import {omit} from 'es-toolkit/compat';
 import {queryPosts} from "@/api/auth/PostController.ts";
 import CreateOrEdit  from './components/CreateOrEdit';
 

@@ -1,4 +1,4 @@
-import {clone} from 'lodash-es';
+import {clone} from 'es-toolkit/compat';
 
 export interface TreeNode {
     id: string | number;

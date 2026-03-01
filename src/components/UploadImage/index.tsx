@@ -8,7 +8,7 @@ import { uploadImageFile } from '@/api/system/CommonController';
 import { useTranslation } from 'react-i18next';
 import { nanoid } from "nanoid";
 
-export interface UploadImageProps {
+export interface IUploadImageProps {
     /** 最大上传数量，1为单张，大于1为多张 */
     maxCount?: number;
     /** 上传列表的内建样式 text, picture, picture-card 和 picture-circle*/
@@ -25,7 +25,7 @@ export interface UploadImageProps {
     maxSize?: number;
 }
 
-const UploadImage : FC<UploadImageProps> = (props)=>{
+const UploadImage : FC<IUploadImageProps> = (props)=>{
     const {
         maxCount = 1,
         initialFileList = [],

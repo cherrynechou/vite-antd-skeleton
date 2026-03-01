@@ -4,7 +4,7 @@ import { ProTable } from '@ant-design/pro-components';
 import { useTranslation } from 'react-i18next';
 import {App, Button, Space, Popconfirm, Tag, Switch} from "antd";
 import  {PlusOutlined} from "@ant-design/icons";
-import {omit} from "lodash-es";
+import {omit} from 'es-toolkit/compat';
 import {queryUsers} from "@/api/auth/UserController";
 import CustomerPageContainer from '@/components/CustomerPageContainer';
 import CreateOrEdit  from './components/CreateOrEdit';

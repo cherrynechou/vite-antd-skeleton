@@ -5,7 +5,7 @@ import * as AntdIcons from '@ant-design/icons';
 const allIcons: any = AntdIcons;
 
 //https://github.com/mkgrow/szdt-admin-components
-interface iconProps {
+interface IconProps {
     /**
      * @description 图标样式
      * */
@@ -32,7 +32,7 @@ interface iconProps {
     onClick?: () => void;
 }
 
-const IconFont: FC<iconProps> = (props: any) => {
+const IconFont: FC<IconProps> = (props: any) => {
 
     return (
         React.createElement(allIcons[props.name] , {style: props.style})

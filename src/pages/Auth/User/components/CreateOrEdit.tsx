@@ -10,7 +10,7 @@ import {buildAntdTreeData, treeToOrderList} from "@/utils/utils";
 import {createUser, getUser, updateUser} from "@/api/auth/UserController";
 import {queryDepartments} from "@/api/auth/DepartmentController";
 import {queryPosts} from "@/api/auth/PostController";
-import {pick} from "lodash-es";
+import {pick} from 'es-toolkit/compat';
 
 
 const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{

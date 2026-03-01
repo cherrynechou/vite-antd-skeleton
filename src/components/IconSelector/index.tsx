@@ -6,13 +6,13 @@ import Icon, { AppstoreOutlined } from '@ant-design/icons'
 import * as AntdIcons from '@ant-design/icons';
 import { iconData } from './iconData'
 
-export interface iconSelectorProps {
+export interface IconSelectorProps {
   value?: string,
   placeholder?: string
 }
 
 
-const IconSelector: FC<iconSelectorProps> = (props: any)=>{
+const IconSelector: FC<IconSelectorProps> = (props: any)=>{
   const { t } = useTranslation();
   const [ currentIcon, setCurrentIcon ] = useState<string>('');
   const [viewData, setViewData] = useState<any[]>([])

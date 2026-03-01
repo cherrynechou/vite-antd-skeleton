@@ -1,14 +1,15 @@
 import { FC, useState } from 'react'
-import {App, Form, Input, InputNumber, Modal, Radio, RadioChangeEvent, Select, Skeleton, Switch} from "antd";
+import {App, Form, Input, InputNumber, Modal, Radio, Select, Skeleton, Switch} from "antd";
+import type { RadioChangeEvent } from 'antd';
 import {useTranslation} from "react-i18next";
 import {useAsyncEffect} from "ahooks";
 import routers from '@/routers/config'; // 导入全局路由配置
-import {buildAntdTreeData, extractRoutes, treeToOrderList} from "@/utils/utils.ts";
+import {buildAntdTreeData, extractRoutes, treeToOrderList} from "@/utils/utils";
 import {LOGIN_PATH} from "@/constants/pages.ts";
 import {queryAllRoles} from "@/api/auth/RoleController.ts";
 import {createMenu, getMenu, updateMenu} from "@/api/auth/MenuController.ts";
 import IconSelector from "@/components/IconSelector";
-import {maxBy} from "lodash-es";
+import {maxBy} from 'es-toolkit/compat';
 
 export interface ICreateOrEditProps {
     isModalVisible: boolean,

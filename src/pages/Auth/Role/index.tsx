@@ -5,7 +5,7 @@ import CustomerPageContainer from "@/components/CustomerPageContainer";
 import { useTranslation } from 'react-i18next';
 import {App, Button, Space,Popconfirm} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { omit } from 'lodash-es';
+import { omit } from 'es-toolkit/compat';
 import {destroyRole, queryRoles} from '@/api/auth/RoleController';
 import CreateOrEdit from "./components/CreateOrEdit";
 import CreateOrEditPermission from "./components/CreateOrEditPermission";
