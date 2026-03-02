@@ -1,8 +1,18 @@
 import request from '@/utils/request';
 
-
+/**
+ * 登录
+ * @param params
+ */
 export function login(params: any = {}){
     return request.post('/oauth/login',params)
+}
+
+/**
+ * 退出
+ */
+export function logout(){
+    return request.get('/oauth/logout')
 }
 
 
@@ -12,7 +22,6 @@ export function login(params: any = {}){
 export function getMenuList() {
     return request.get('/getMenuList');
 }
-
 
 
 /**

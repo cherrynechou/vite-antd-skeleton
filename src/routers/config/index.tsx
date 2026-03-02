@@ -88,6 +88,8 @@ const routeConfig: RouteObject[] = [
                                 handle: {
                                     titleKey: 'router.admin.dict'
                                 }
+                            },{
+                                path: '/auth/'
                             }
                         ]
                     }

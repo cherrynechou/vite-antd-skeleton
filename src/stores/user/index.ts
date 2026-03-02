@@ -1,7 +1,7 @@
 import { create, type StateCreator } from 'zustand';
 import type {AuthUserStore, AuthUserStoreActions, AuthUserStoreState} from "./types";
 import { createJSONStorage, persist,devtools } from "zustand/middleware";
-import { login } from '@/api/system/CommonController'
+import { login,logout } from '@/api/system/CommonController'
 import { queryCurrentUser } from "@/api/auth/UserController";
 
 const authState: AuthUserStoreState = {
@@ -19,6 +19,8 @@ const authAction: StateCreator<AuthUserStore,[],[],AuthUserStoreActions> = (set,
         set({initialized: true})
     },
     logout: async () => {
+        await logout();
+        localStorage.removeItem("access_token");
         set(authState);
     },
     fetchCurrentUser:async () =>{

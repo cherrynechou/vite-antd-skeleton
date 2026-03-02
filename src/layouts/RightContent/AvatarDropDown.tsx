@@ -2,6 +2,7 @@ import { FC } from 'react';
 import {Avatar, Button, Dropdown, MenuProps, Spin} from 'antd';
 import useAuthUserStore from '@/stores/user';
 import {LogoutOutlined, SettingOutlined} from '@ant-design/icons';
+import {LOGIN_PATH} from "@/constants/pages";
 import {useTranslation} from 'react-i18next';
 
 
@@ -9,10 +10,10 @@ export type GlobalHeaderRightProps = {
     menu?: boolean;
 };
 
-
 const AvatarDropDown:FC<GlobalHeaderRightProps> = ({menu}   ) =>{
     const { t } = useTranslation();
     const currentUser = useAuthUserStore(state => state.currentUser);
+    const logout = useAuthUserStore(state => state.logout);
 
     const menuItems: MenuProps['items'] = [
         {
