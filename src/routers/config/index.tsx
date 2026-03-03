@@ -89,7 +89,25 @@ const routeConfig: RouteObject[] = [
                                     titleKey: 'router.admin.dict'
                                 }
                             },{
-                                path: '/auth/'
+                                path: '/auth/logs',
+                                children: [
+                                    {
+                                        index:true,
+                                        element: <Navigate to='/auth/logs/login' />
+                                    },{
+                                        path: '/auth/logs/login',
+                                        element: <LazyImport lazy={lazy(()=>import('@/pages/Auth/Log/Login'))}/>,
+                                        handle: {
+                                            titleKey: 'router.admin.log.login'
+                                        }
+                                    },{
+                                        path: '/auth/logs/operation',
+                                        element: <LazyImport lazy={lazy(()=>import('@/pages/Auth/Log/Operation'))}/>,
+                                        handle: {
+                                            titleKey: 'router.admin.log.operation'
+                                        }
+                                    }
+                                ]
                             }
                         ]
                     }

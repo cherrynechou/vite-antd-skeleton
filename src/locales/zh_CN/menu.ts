@@ -8,5 +8,8 @@ export default {
     'menu.admin.menu': "菜单列表",
     'menu.admin.department': "部门列表",
     'menu.admin.post': '岗位列表',
-    'menu.admin.dict': "字典列表"
+    'menu.admin.dict': "字典列表",
+    'menu.admin.log': "日志",
+    'menu.admin.log.login': "登录日志",
+    'menu.admin.log.operation': "操作日志"
 }

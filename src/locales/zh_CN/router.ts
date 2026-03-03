@@ -7,6 +7,8 @@ export default {
     'router.admin.menu': '菜单列表',
     'router.admin.departments': '部门列表',
     'router.admin.posts': '岗位列表',
-    'router.admin.dict': '字典列表'
+    'router.admin.dict': '字典列表',
+    'router.admin.log.login': '登录日志',
+    'router.admin.log.operation': '操作日志'
 
 }

@@ -4,6 +4,8 @@ export interface IMenu {
     parentId?: number,
     /** 权限的唯一标识 */
     key?: string;
+    /** 类型 */
+    type?: number,
     /** 名称 */
     name?: string;
     /** 菜单的路径，menu 的路径会被当作前缀路由 */

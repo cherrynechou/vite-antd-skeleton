@@ -8,7 +8,8 @@ const request: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL || '',
     timeout: 60000,
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
     },
     // 允许携带凭证
     withCredentials: false,
@@ -26,20 +27,6 @@ const getAccessToken = async () =>{
 
     return `Bearer ${access_token}`;
 }
-
-const handleNetworkError = async (errStatus?: number): Promise<void> => {
-    // 401 未授权 - 需要特殊处理，清除认证信息并跳转登录
-    if (errStatus === 401) {
-        // 清除本地存储的认证信息
-        // 避免在登录页重复跳转
-        if (window.location.pathname !== LOGIN_PATH) {
-            window.location.href = LOGIN_PATH;
-        }
-
-        return;
-    }
-}
-
 
 // Add a request interceptor
 request.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
@@ -88,14 +75,14 @@ request.interceptors.response.use( (response: AxiosResponse) => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     // 请求被取消（去重或手动取消）
+    if(error.response && error.response.status === HttpStatusCode.Unauthorized){
+        // 清除本地存储的认证信息
+        // 避免在登录页重复跳转
+        if (window.location.pathname !== LOGIN_PATH) {
+            window.location.href = LOGIN_PATH;
+        }
 
-    if (axios.isCancel(error)) {
         return Promise.reject(error);
-    }
-
-    if (error.response) {
-        await handleNetworkError(error.response.status);
-        return Promise.reject(error.response);
     }
 
     return Promise.reject(error);

@@ -5,7 +5,7 @@ import {useTranslation} from "react-i18next";
 import {ProTable} from "@ant-design/pro-components";
 import {App} from "antd";
 import {omit} from "es-toolkit/compat";
-import {queryOperations} from "@/api/auth/LogController";
+import {queryLogins} from "@/api/auth/LogController";
 
 export type TableListItem = {
     id: number;
@@ -14,7 +14,7 @@ export type TableListItem = {
     update_at: number;
 };
 
-const Operation:FC = () =>{
+const Login:FC = () =>{
     const { t } = useTranslation();
     const actionRef = useRef<ActionType>(null)
     const { message } = App.useApp();
@@ -28,7 +28,7 @@ const Operation:FC = () =>{
                 pageSize: params.pageSize,
             };
             const mergeParams = Object.assign({}, filter, rename);
-            const ret = await queryOperations(mergeParams);
+            const ret = await queryLogins(mergeParams);
 
             return {
                 data: ret.data.data,
@@ -39,7 +39,6 @@ const Operation:FC = () =>{
             message.error(error.data.message);
         }
     };
-
 
     //列表
     const columns: ProColumns<TableListItem>[] = [
@@ -52,33 +51,33 @@ const Operation:FC = () =>{
             hideInSearch: true,
         }, {
             title: (
-                t('pages.searchTable.createdBy')
+                t('pages.searchTable.account')
             ),
             width: 80,
             align: 'center',
-            dataIndex: 'created_by'
+            dataIndex: 'account'
         },{
             title: (
-                t('pages.searchTable.path')
+                t('pages.searchTable.loginIp')
             ),
             width: 80,
             align: 'center',
-            dataIndex: 'path'
+            dataIndex: 'login_ip'
         },{
             title: (
-                t('pages.searchTable.httpMethod')
+                t('pages.searchTable.browser')
             ),
             width: 80,
             align: 'center',
-            dataIndex: 'http_method',
+            dataIndex: 'browser',
             hideInSearch: true,
         }, {
             title: (
-                t('pages.searchTable.ip')
+                t('pages.searchTable.platform')
             ),
             width: 80,
             align: 'center',
-            dataIndex: 'ip',
+            dataIndex: 'platform',
             hideInSearch: true,
         },{
             title: (
@@ -130,4 +129,4 @@ const Operation:FC = () =>{
     )
 }
 
-export default Operation;
+export default Login;

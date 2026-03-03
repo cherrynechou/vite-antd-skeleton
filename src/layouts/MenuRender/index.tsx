@@ -37,7 +37,9 @@ const MenuRender = () =>{
             if(currentMenu.key !== undefined){
                 setBreadcrumb(breadcrumbMap[currentMenu.key]);
             }
+            console.log( splitNodes, currentNode);
             setOpenKeys([splitNodes[0]]);
+
             // //子节点
             setSelectedKeys([currentNode.key]);
             //当前打开的项目

@@ -14,4 +14,8 @@ export default {
     'admin.department.list': '部门列表',
     'admin.post': '岗位',
     'admin.post.list': '岗位列表',
+    'admin.log.operation': '操作日志',
+    'admin.log.operation.list': '操作日志列表',
+    'admin.log.login': '登录日志',
+    'admin.log.login.list': '登录日志列表',
 }

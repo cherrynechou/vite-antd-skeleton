@@ -7,6 +7,8 @@ export function queryOperations(params: any = {}) {
 }
 
 
-export function queryLogin(params: any = {}) {
-    return request.get('/auth/log/logins',{})
+export function queryLogins(params: any = {}) {
+    return request.get('/auth/log/logins',{
+        params
+    })
 }
