@@ -32,18 +32,19 @@ const MenuRender = () =>{
         if(currentNode?.key !== undefined) {
             const splitNodes = currentNode.key.split(".")
 
+            console.log(splitNodes)
+
             const currentMenu: IMenu = menuMap[currentNode.key];
             //TS2538: Type undefined cannot be used as an index type.
             if(currentMenu.key !== undefined){
                 setBreadcrumb(breadcrumbMap[currentMenu.key]);
             }
-            console.log( splitNodes, currentNode);
-            setOpenKeys([splitNodes[0]]);
+            setOpenKeys(['admin','admin.log']);
 
             // //子节点
             setSelectedKeys([currentNode.key]);
             //当前打开的项目
-            localStorage.setItem('menu-open-keys', JSON.stringify([splitNodes[0]]));
+            localStorage.setItem('menu-open-keys', JSON.stringify(['admin','admin.log']));
         }
     }, [location.pathname]);
 
@@ -98,7 +99,7 @@ const MenuRender = () =>{
         const menu: IMenu = menuMap[current.key];
 
         if(menu.isBackLink){
-            window.open(menu.url,menu.target);
+            window.open(menu.url, menu.target);
         }else{
             navigate({
                 pathname: menu.path
@@ -107,6 +108,7 @@ const MenuRender = () =>{
     },[menuMap, navigate])
 
     const onOpenChange=(newOpenKeys: any)=>{
+        console.log(newOpenKeys);
         setOpenKeys(newOpenKeys);
     }
 
