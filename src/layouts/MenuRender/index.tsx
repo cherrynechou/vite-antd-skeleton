@@ -39,12 +39,16 @@ const MenuRender = () =>{
             if(currentMenu.key !== undefined){
                 setBreadcrumb(breadcrumbMap[currentMenu.key]);
             }
-            setOpenKeys(['admin','admin.log']);
+
+            const newSplitNodes = splitNodes.reduce((acc, cur) => (acc.push(acc.length === 0 ? cur : acc[acc.length - 1] + '.' + cur), acc), []);
+            const newOpenKeys =newSplitNodes.pop();
+
+            setOpenKeys(newOpenKeys);
 
             // //子节点
             setSelectedKeys([currentNode.key]);
             //当前打开的项目
-            localStorage.setItem('menu-open-keys', JSON.stringify(['admin','admin.log']));
+            localStorage.setItem('menu-open-keys', JSON.stringify(newOpenKeys));
         }
     }, [location.pathname]);
 
