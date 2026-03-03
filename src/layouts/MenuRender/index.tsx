@@ -32,8 +32,6 @@ const MenuRender = () =>{
         if(currentNode?.key !== undefined) {
             const splitNodes = currentNode.key.split(".")
 
-            console.log(splitNodes)
-
             const currentMenu: IMenu = menuMap[currentNode.key];
             //TS2538: Type undefined cannot be used as an index type.
             if(currentMenu.key !== undefined){
@@ -43,9 +41,9 @@ const MenuRender = () =>{
             const newSplitNodes = splitNodes.reduce((acc, cur) => (acc.push(acc.length === 0 ? cur : acc[acc.length - 1] + '.' + cur), acc), []);
             const newOpenKeys =newSplitNodes.pop();
 
+            //父节点
             setOpenKeys(newOpenKeys);
-
-            // //子节点
+            //子节点
             setSelectedKeys([currentNode.key]);
             //当前打开的项目
             localStorage.setItem('menu-open-keys', JSON.stringify(newOpenKeys));
