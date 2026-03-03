@@ -13,8 +13,8 @@ type Locale = ConfigProviderProps['locale'];
  * 语言选项配置
  */
 export const LANGUAGE_OPTIONS = [
-    { label: '简体中文', value: 'zh', antdLocale: zh_CN, dayjsLocale: 'zh-cn' },
-    { label: 'English', value: 'en', antdLocale: en_US, dayjsLocale: 'en' },
+    { label: '简体中文', value: 'zh-CN', antdLocale: zh_CN, dayjsLocale: 'zh-cn' },
+    { label: 'English', value: 'en-us', antdLocale: en_US, dayjsLocale: 'en' },
 ] as const;
 
 /**
