@@ -38,15 +38,19 @@ const MenuRender = () =>{
                 setBreadcrumb(breadcrumbMap[currentMenu.key]);
             }
 
-            const newSplitNodes = splitNodes.reduce((acc, cur) => (acc.push(acc.length === 0 ? cur : acc[acc.length - 1] + '.' + cur), acc), []);
-            const newOpenKeys =newSplitNodes.pop();
+            const newSplitNodes: any[] = splitNodes.reduce((acc: any[], current:string) => {
+                const last =acc.length>0 ? acc[acc.length-1] + '.' + current: current;
+                return [...acc, last];
+            },[]);
+            //删除最后一个元素
+            newSplitNodes.pop();
 
             //父节点
-            setOpenKeys(newOpenKeys);
+            setOpenKeys(newSplitNodes);
             //子节点
             setSelectedKeys([currentNode.key]);
             //当前打开的项目
-            localStorage.setItem('menu-open-keys', JSON.stringify(newOpenKeys));
+            localStorage.setItem('menu-open-keys', JSON.stringify(newSplitNodes));
         }
     }, [location.pathname]);
 
