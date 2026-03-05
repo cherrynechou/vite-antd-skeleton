@@ -36,7 +36,7 @@ const Operation:FC = () =>{
                 success: ret.success,
             };
         }catch (error: any){
-            message.error(error.data.message);
+            message.error(error.message);
         }
     };
 

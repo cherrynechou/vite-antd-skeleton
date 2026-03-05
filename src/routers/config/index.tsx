@@ -83,6 +83,12 @@ const routeConfig: RouteObject[] = [
                                     titleKey: 'router.admin.menu'
                                 }
                             },{
+                                path: '/auth/settings',
+                                element: <LazyImport lazy={lazy(() => import('@/pages/Auth/AdvancedSetting'))}/>,
+                                handle: {
+                                    titleKey: 'router.admin.setting'
+                                }
+                            },{
                                 path: '/auth/dicts',
                                 element: <LazyImport lazy={lazy(()=>import('@/pages/Auth/Dict'))}/>,
                                 handle: {
@@ -110,8 +116,21 @@ const routeConfig: RouteObject[] = [
                                 ]
                             }
                         ]
+                    },{
+                        path: '/form-design',
+                        children: [
+                            {
+                                index:true,
+                                element: <Navigate to='/form-deisgn/configs' />
+                            },{
+                                path: '/form-design/configs',
+                                element: <LazyImport lazy={lazy(()=>import('@/pages/FormDesign/Config'))}/>,
+                                handle: {
+                                    titleKey: 'router.form.design.config'
+                                }
+                            }
+                        ]
                     }
-
                 ]
             },{
                 path: '*',

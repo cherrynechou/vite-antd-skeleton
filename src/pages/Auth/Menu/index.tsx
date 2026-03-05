@@ -1,4 +1,4 @@
-import {FC,  useEffect, useRef, useState} from 'react';
+import {FC, useRef, useState} from 'react';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {ProTable} from '@ant-design/pro-components';
 import CustomerPageContainer from '@/components/CustomerPageContainer';
@@ -51,7 +51,7 @@ const Menu: FC = () =>{
                 success: ret.success,
             }
         }catch (error: any){
-            message.error(error.data.message);
+            message.error(error.message);
         }
     }
 

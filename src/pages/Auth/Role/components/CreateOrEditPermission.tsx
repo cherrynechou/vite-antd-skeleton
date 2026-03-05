@@ -105,7 +105,7 @@ const CreateOrEditPermission: FC <ICreateOrEditProps> = (props: any)=>{
             actionRef.current.reload();
 
         }catch (error: any){
-
+            message.error(error.message);
         }
     }
 
