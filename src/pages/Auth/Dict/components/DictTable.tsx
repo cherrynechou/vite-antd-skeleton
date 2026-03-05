@@ -71,7 +71,7 @@ const DictTable:FC<IDictTableProps>=(props: any)=>{
             return {
                 data: retData,
                 total: ret.data.meta.pagination.total,
-                success: ret.status === 200
+                success: ret.success,
             }
 
         }catch (error: any){

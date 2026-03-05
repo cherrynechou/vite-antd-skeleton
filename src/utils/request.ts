@@ -1,5 +1,9 @@
 import axios, {
-    AxiosInstance, AxiosResponse, AxiosError, InternalAxiosRequestConfig, HttpStatusCode
+    AxiosInstance,
+    AxiosResponse,
+    AxiosError,
+    InternalAxiosRequestConfig,
+    HttpStatusCode
 } from 'axios';
 
 import {LOGIN_PATH} from '@/constants/pages';
@@ -59,17 +63,17 @@ request.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
 });
 
 // Add a response interceptor
-request.interceptors.response.use( (response: AxiosResponse) => {
+request.interceptors.response.use( (response: AxiosResponse)  => {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
 
-    //console.log(response);
+    console.log(response);
 
     if(response.status === HttpStatusCode.Ok){
         return response.data;
     }
 
-    return Promise.reject(response.data);
+    return  Promise.reject(response.data);
 
 },  async (error: AxiosError) => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
@@ -81,8 +85,6 @@ request.interceptors.response.use( (response: AxiosResponse) => {
         if (window.location.pathname !== LOGIN_PATH) {
             window.location.href = LOGIN_PATH;
         }
-
-        return Promise.reject(error);
     }
 
     return Promise.reject(error);

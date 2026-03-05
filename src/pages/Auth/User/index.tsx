@@ -55,7 +55,7 @@ const User: FC = () =>{
             return {
                 data: ret.data.data,
                 total: ret.data.meta.pagination.total,
-                success: ret.status === 200,
+                success: ret.success,
             };
         }catch (error: any){
             message.error(error.data.message);

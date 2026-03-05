@@ -36,18 +36,18 @@ const Permission: FC = () =>{
     //自定查询
     const requestData = async (): Promise<any> =>{
         try {
-            const res = await queryPermissions();
-            setPermissionTreeData(res.data);
+            const ret = await queryPermissions();
+            setPermissionTreeData(ret.data);
 
-            const treeList = treeToList(res.data);
+            const treeList = treeToList(ret.data);
             const _defaultExpandedRowKeys = treeList.map((item)=>{
                 return item.id;
             })
             setDefaultExpandedRowKeys(_defaultExpandedRowKeys);
 
             return {
-                data: res.data,
-                success: res.status === 200
+                data: ret.data,
+                success: ret.success,
             }
         }catch (error: any){
             message.error(error.data.message);

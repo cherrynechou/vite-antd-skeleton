@@ -43,7 +43,7 @@ const Department:FC = () =>{
 
             return {
                 data: ret.data,
-                success: ret.status === 200,
+                success: ret.success,
             };
         }catch (error: any){
             message.error(error.data.message);
