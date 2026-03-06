@@ -80,12 +80,10 @@ const CreateOrEditPermission: FC <ICreateOrEditProps> = (props: any)=>{
     const onCheck: TreeProps['onCheck'] = (checkedKeys) => {
         // @ts-ignore
         const checkedKeysResult = [...checkedKeys];
-
         //找出叶子节点
         const filterChildNodes = treeLeafRecord.map((item: any) => {
             return item.id;
         });
-
         const filterSameKeys = filterChildNodes.filter((item: any) => checkedKeysResult?.indexOf(item) > -1);
         form.setFieldsValue({ permissionIds: checkedKeysResult.length===0 ? [] : filterSameKeys });
     };
@@ -93,20 +91,30 @@ const CreateOrEditPermission: FC <ICreateOrEditProps> = (props: any)=>{
     const handleOk = async () =>{
         try {
             const fieldsValue = await form.validateFields();
-
             await updatePermissionByRoleId(editId,fieldsValue);
-
             isShowDrawer(false);
-
             const defaultUpdateSuccessMessage = editId === undefined ? t('global.create.success'): t('global.update.success');
-
             message.success(defaultUpdateSuccessMessage);
-
             actionRef.current.reload();
-
         }catch (error: any){
             message.error(error.message);
         }
+    }
+
+    /**
+     * 渲染footer
+     */
+    const renderFooter =  () =>{
+        return (
+            <div style={{ textAlign: "right" }}>
+                <Space>
+                    <Button onClick={()=>isShowDrawer(false)}>取消</Button>
+                    <Button type="primary" onClick={handleOk}>
+                        确定
+                    </Button>
+                </Space>
+            </div>
+        )
     }
 
     return (
@@ -114,16 +122,7 @@ const CreateOrEditPermission: FC <ICreateOrEditProps> = (props: any)=>{
             title={title}
             open={isDrawerVisible}
             onClose={() => isShowDrawer(false)}
-            footer={
-                <div style={{ textAlign: "right" }}>
-                    <Space>
-                        <Button onClick={()=>isShowDrawer(false)}>取消</Button>
-                        <Button type="primary" onClick={handleOk}>
-                            确定
-                        </Button>
-                    </Space>
-                </div>
-            }
+            footer={renderFooter()}
             size={750}
         >
             {

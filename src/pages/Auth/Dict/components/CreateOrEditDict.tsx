@@ -66,11 +66,8 @@ const CreateOrEditDict: FC<ICreateOrEditProps> = (props: any) =>{
                 await updateDict(editId,transformedData);
             }
             isShowModal(false);
-
             const defaultUpdateSuccessMessage = editId === undefined ? t('global.create.success'): t('global.update.success');
-
             message.success(defaultUpdateSuccessMessage);
-
             actionRef?.current?.reload();
         }catch (error: any){
             message.error(error.data.message);

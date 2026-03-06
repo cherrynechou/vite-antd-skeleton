@@ -1,21 +1,22 @@
-import {FC, useState, ReactNode, useEffect} from "react";
-import {Form, Button, Space, Input, App} from 'antd';
+import {FC, useState, useEffect} from "react";
+import {Form, Button, Space, Input, App, Skeleton, InputNumber, Select, Radio, Switch} from 'antd';
 import CustomerPageContainer from '@/components/CustomerPageContainer';
 import { Card } from 'antd';
 import {useTranslation} from "react-i18next";
-import {queryAllConfig} from "@/api/auth/ConfigController.ts";
+import {updateConfigByGroup, queryAllConfig} from "@/api/auth/SettingController";
 import {useNavigate} from "react-router-dom";
 
 const tailLayout = {
     wrapperCol: { offset: 2, span: 16 },
 };
 
+const { TextArea } = Input;
+
 const AdvancedSetting: FC = () =>{
     const { t } = useTranslation();
-    const [tabLoading, setTabLoading] = useState<boolean>(true);
+    const [ initialValues, setInitialValues ] = useState<any>({});
     const [tabData, setTabData] = useState<any>([]);
     const [activeTabKey, setActiveTabKey] = useState('');
-    const [ tabKey, setTabKey ] = useState<string>('');
     const navigate = useNavigate();
 
     const [ form ] = Form.useForm();
@@ -32,6 +33,15 @@ const AdvancedSetting: FC = () =>{
                     content: renderFormItems(item.configs)
                 }));
 
+                //配置数组
+                const configData:any = {};
+                retData.forEach((sub: any) => {
+                    sub.configs.forEach((element: any) => {
+                        configData[element.key] = element.value;
+                    });
+                });
+
+                setInitialValues(configData);
                 setTabData(tabs);
                 if (tabs.length > 0) {
                     setActiveTabKey(tabs[0].key);
@@ -45,15 +55,11 @@ const AdvancedSetting: FC = () =>{
     }, []);
 
 
-    useEffect(() => {
-
-    }, [activeTabKey]);
-
     //表单内容
     const currentContent = tabData.find((item: any) => item.key === activeTabKey)?.content || '暂无内容';
 
     const onTabChange = (key: string) => {
-        setTabKey(key);
+        setActiveTabKey(key);
     };
 
 
@@ -69,20 +75,84 @@ const AdvancedSetting: FC = () =>{
                 case 'input':
                     return (
                         <Form.Item
+                            key={field.key}
                             {...commonProps}
                         >
-                            <Input key={field.key}  placeholder={
+                            <Input  placeholder={
                                 field.placeholder
                             }/>
                         </Form.Item>
                     );
+                case 'inputNumber':
+                    return (
+                        <Form.Item
+                            key={field.key}
+                            {...commonProps}
+                        >
+                            <InputNumber placeholder={
+                                field.placeholder
+                            }/>
+                        </Form.Item>
+                    );
+                case 'select':
+                    return (
+                        <Form.Item
+                            key={field.key}
+                            {...commonProps}
+                        >
+                            <Select
+                                options={field.options}
+                                style={{ width: 400 }}
+                                placeholder={
+                                    field.placeholder
+                                }
+                            />
+                        </Form.Item>
+                    )
+                case 'textArea':
+                    return (
+                        <Form.Item
+                            key={field.key}
+                            {...commonProps}
+                        >
+                            <TextArea
+                                rows={field.rows}
+                            />
+                        </Form.Item>
+                    )
+                case 'radio':
+                    return (
+                        <Form.Item
+                            key={field.key}
+                            {...commonProps}
+                        >
+                            <Radio.Group
+                                options={field.options}
+                            />
+                        </Form.Item>
+                    )
+                case 'switch':
+                    return (
+                        <Form.Item
+                            key={field.key}
+                            {...commonProps}
+                        >
+                            <Switch />
+                        </Form.Item>
+                    )
             }
         })
     }
 
 
     const onFinish = async (values: any) =>{
-        console.log(values)
+        try{
+            await updateConfigByGroup(activeTabKey, values);
+            message.success(t('global.update.success'));
+        }catch (error: any){
+            message.error(error.message);
+        }
+
     }
 
     return (
@@ -102,27 +172,31 @@ const AdvancedSetting: FC = () =>{
                     onTabChange(key);
                 }}
             >
-                <Form
-                    name="config-set"
-                    labelCol={{ span: 2 }}
-                    wrapperCol={{ span: 16 }}
-                    form={form}
-                    onFinish={onFinish}
-                    autoComplete="off"
-                >
-                    {currentContent}
-
-                    <Form.Item {...tailLayout}>
-                        <Space>
-                            <Button type="primary" htmlType="submit">
-                                提交
-                            </Button>
-                            <Button htmlType="button">
-                                重置
-                            </Button>
-                        </Space>
-                    </Form.Item>
-                </Form>
+                {
+                    Object.keys(initialValues).length === 0 ? <Skeleton paragraph={{ rows: 4 }} /> : (
+                        <Form
+                            name="config-set"
+                            labelCol={{ span: 2 }}
+                            wrapperCol={{ span: 16 }}
+                            form={form}
+                            initialValues={initialValues}
+                            onFinish={onFinish}
+                            autoComplete="off"
+                        >
+                            {currentContent}
+                            <Form.Item {...tailLayout}>
+                                <Space>
+                                    <Button type="primary" htmlType="submit">
+                                        提交
+                                    </Button>
+                                    <Button htmlType="button">
+                                        重置
+                                    </Button>
+                                </Space>
+                            </Form.Item>
+                        </Form>
+                    )
+                }
             </Card>
         </CustomerPageContainer>
     )

@@ -125,8 +125,8 @@ const DictDataTable:FC<IDictDataTableProps>=(props: any)=>{
             render: (_, record) => (
                 <Switch
                     key={nanoid()}
-                    checkedChildren={t('global.switch.true.label')}
-                    unCheckedChildren={t('global.switch.false.label')}
+                    checkedChildren={t('global.true.label')}
+                    unCheckedChildren={t('global.false.label')}
                     defaultChecked={record.isDefault === 1}
                 />
             ),

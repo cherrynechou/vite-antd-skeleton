@@ -20,7 +20,7 @@ export type TableListItem = {
 
 const Role: FC = () =>{
     const { t } = useTranslation();
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
     const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
     const [editId, setEditId] = useState<number | undefined>(0);
 

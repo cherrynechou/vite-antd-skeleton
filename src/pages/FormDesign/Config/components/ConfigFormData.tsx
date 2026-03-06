@@ -7,16 +7,19 @@ import {omit} from 'es-toolkit/compat'
 import {App, Button, Popconfirm, Space} from "antd";
 import {queryConfigDatas} from "@/api/auth/ConfigController.ts";
 import {PlusOutlined} from "@ant-design/icons";
-import CreateOrEditConfigFormData from "./CreateOrEditConfigFormData.tsx";
+import CreateOrEditConfigFormData from "./CreateOrEditConfigFormData";
+import CreateOrEditConfigFormOption from "./CreateOrEditConfigFormOption";
 
 export interface IConfigDataTableProps {
-    currentGroupId?: number | undefined;
+    currentGroupId?: number | undefined
 }
 
 export type TableListItem = {
     id: number;
     key: string;
     label: string;
+    value: number;
+    type: string;
     createdAt: number;
     updateAt: number;
 };
@@ -24,6 +27,7 @@ export type TableListItem = {
 const ConfigFormTable: FC<IConfigDataTableProps> = (props: any) =>{
     const { t } = useTranslation();
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+    const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
     const [editId, setEditId] = useState<number | undefined>(0);
     const actionRef = useRef<ActionType>(null);
 
@@ -70,10 +74,20 @@ const ConfigFormTable: FC<IConfigDataTableProps> = (props: any) =>{
      * @param show
      * @param id
      */
-    const isShowDataModal = (show: boolean, id?: number | undefined)=> {
+    const isShowModal = (show: boolean, id?: number | undefined)=> {
         setEditId(id);
         setIsModalVisible(show);
     }
+
+    /**
+     *  显示对话框
+     * @param show
+     * @param id
+     */
+    const isShowDrawer = (show: boolean, id?: number | undefined) => {
+        setEditId(id);
+        setIsDrawerVisible(show);
+    };
 
     /**
      * 删除id
@@ -101,37 +115,48 @@ const ConfigFormTable: FC<IConfigDataTableProps> = (props: any) =>{
             title: (
                 t('pages.searchTable.config.data.label')
             ),
-            width: 80,
+            width: 40,
             align: 'center',
             dataIndex: 'label'
         },{
             title: (
                 t('pages.searchTable.config.data.key')
             ),
-            width: 80,
+            width: 20,
             align: 'center',
             dataIndex: 'key'
         },{
             title: (
-                t('pages.searchTable.dict.data.sort')
+                t('pages.searchTable.config.data.type')
             ),
-            width: 80,
+            width: 10,
             align: 'center',
-            dataIndex: 'sort',
-            hideInSearch: true,
+            dataIndex: 'type'
+        },{
+            title: (
+                t('pages.searchTable.config.data.value')
+            ),
+            width: 20,
+            align: 'center',
+            dataIndex: 'value'
         },{
             title: (
                 t('pages.searchTable.action')
             ),
-            width: 80,
+            width: 60,
             key: 'option',
             valueType: 'option',
             align: 'center',
             render: (_,record) => (
                 <Space>
-                    <a key="link" className="text-blue-500" onClick={()=>isShowDataModal(true,record.id)}>
+                    <a key="link" className="text-blue-500" onClick={()=>isShowModal(true,record.id)}>
                         {t('pages.searchTable.edit')}
                     </a>
+                    {(record.type === 'select' || record.type === 'radio') && <>
+                        <a key="link-permission" className="text-blue-500" onClick={()=>isShowDrawer(true,record.id)}>
+                            {t('pages.searchTable.config.option.select.edit')}
+                        </a>
+                    </>}
                     <Popconfirm
                         key="del"
                         placement="top"
@@ -163,7 +188,6 @@ const ConfigFormTable: FC<IConfigDataTableProps> = (props: any) =>{
                 request={requestData}
                 className={'h-full'}
                 rowKey="id"
-                options={false}
                 search={false}
                 actionRef={actionRef}
                 dateFormatter="string"
@@ -176,7 +200,7 @@ const ConfigFormTable: FC<IConfigDataTableProps> = (props: any) =>{
                     showQuickJumper: true
                 }}
                 toolBarRender={() => [
-                    <Button key="button" type="primary" icon={<PlusOutlined />}  onClick={()=>isShowDataModal(true)}>
+                    <Button key="button" type="primary" icon={<PlusOutlined />}  onClick={()=>isShowModal(true)}>
                         {t('pages.searchTable.new')}
                     </Button>,
                 ]}
@@ -185,10 +209,19 @@ const ConfigFormTable: FC<IConfigDataTableProps> = (props: any) =>{
             {isModalVisible&&
                 <CreateOrEditConfigFormData
                     isModalVisible={isModalVisible}
-                    isShowModal={isShowDataModal}
+                    isShowModal={isShowModal}
                     actionRef = {actionRef}
-                    dictId={currentGroupId}
+                    groupId={currentGroupId}
                     editId={editId}
+                />
+            }
+
+            {isDrawerVisible&&
+                <CreateOrEditConfigFormOption
+                    isDrawerVisible={isDrawerVisible}
+                    isShowDrawer={isShowDrawer}
+                    editId={editId}
+                    actionRef={actionRef}
                 />
             }
 

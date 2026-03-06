@@ -54,25 +54,19 @@ const ConfigTable:FC<IConfigGroupTableProps> = (props: any) =>{
     const requestData = async (params: any): Promise<any> =>{
         try{
             const filter = omit(params, ['current', 'pageSize']);
-
             const rename = {
                 page: params.current,
                 pageSize: params.pageSize,
             };
-
             const mergeParams = Object.assign({}, filter, rename);
             const ret = await queryGroups(mergeParams);
-
             const retData = ret?.data?.data;
-
             setTableData(retData);
-
             return {
                 data: retData,
                 total: ret.data.meta.pagination.total,
                 success: ret.success,
             }
-
         }catch (error: any){
             message.error(error.message);
         }
@@ -185,6 +179,7 @@ const ConfigTable:FC<IConfigGroupTableProps> = (props: any) =>{
                 rowKey="id"
                 actionRef={actionRef}
                 tableAlertRender={false}    // 去掉默认的信息提示框
+                search={false}
                 dateFormatter="string"
                 headerTitle={
                     t('admin.config.group.list')

@@ -2,7 +2,7 @@ import {FC, useState} from "react";
 import { useTranslation } from "react-i18next";
 import {useAsyncEffect} from "ahooks";
 import {getDict} from "@/api/auth/DictController.ts";
-import {createDictData, getDictData, updateDictData} from "@/api/auth/DictDataController.ts";
+import {createDictData, getDictData, updateDictData} from "@/api/auth/DictDataController";
 import {App, Form, Input, InputNumber, Modal, Skeleton, Switch} from "antd";
 
 export interface ICreateOrEditProps {
@@ -30,8 +30,6 @@ const CreateOrEditDictData:FC<ICreateOrEditProps> = (props: any) =>{
 
     const title = editId === undefined ? t('modal.createOrUpdateForm.create.title') : t('modal.createOrUpdateForm.edit.title');
 
-    console.log(editId,dictId);
-
     const fetchApi = async () => {
         const dictRes = await getDict(dictId);
         const dictData = dictRes.data;
@@ -46,13 +44,13 @@ const CreateOrEditDictData:FC<ICreateOrEditProps> = (props: any) =>{
                 sort: currentData.sort,
                 status: currentData.status,
                 is_default: currentData.isDefault,
-                code: dictData.code
+                dict_code: dictData.code
             })
         }else{
             form.setFieldsValue({
                 sort: 1,
                 status: 1,
-                code: dictData.code,
+                dict_code: dictData.code,
                 is_default: 0,
                 dict_id: dictId
             })
@@ -129,7 +127,7 @@ const CreateOrEditDictData:FC<ICreateOrEditProps> = (props: any) =>{
                         </Form.Item>
 
                         <Form.Item
-                            name="code"
+                            name="dict_code"
                             hidden
                         >
                             <Input hidden />
@@ -175,8 +173,8 @@ const CreateOrEditDictData:FC<ICreateOrEditProps> = (props: any) =>{
                             valuePropName="checked"
                         >
                             <Switch
-                                checkedChildren={t('global.switch.true.label')}
-                                unCheckedChildren={t('global.switch.false.label')}
+                                checkedChildren={t('global.true.label')}
+                                unCheckedChildren={t('global.false.label')}
                             />
                         </Form.Item>
 

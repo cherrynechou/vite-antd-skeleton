@@ -5,6 +5,7 @@ import {ConfigTable,ConfigFormTable} from './components';
 
 const Config:FC = () =>{
     const [currentGroupId,setCurrentGroupId] = useState<number | undefined>(0);
+
     return (
         <>
             <Row
