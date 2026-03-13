@@ -143,9 +143,7 @@ const UploadImage : FC<IUploadImageProps> = (props)=>{
                 if (onUploadChange) {
                     onUploadChange(finalFiles);
                 }
-            }).catch(error:any){
-                onProgress({ percent: 100 });
-            }
+            })
         });
     }
 
