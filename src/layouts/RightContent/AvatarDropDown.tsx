@@ -1,0 +1,84 @@
+import { FC } from 'react';
+import {Avatar, Button, MenuProps, Spin} from 'antd';
+import useAuthUserStore from '@/stores/user';
+import {LogoutOutlined, SettingOutlined} from '@ant-design/icons';
+import {LOGIN_PATH} from "@/constants/pages";
+import HeaderDropdown from '@/components/HeaderDropdown';
+import {useTranslation} from 'react-i18next';
+
+
+export type GlobalHeaderRightProps = {
+    menu?: boolean;
+};
+
+const AvatarDropDown:FC<GlobalHeaderRightProps> = ({menu}   ) =>{
+    const { t } = useTranslation();
+    const currentUser = useAuthUserStore(state => state.currentUser);
+    const logout = useAuthUserStore(state => state.logout);
+
+    const menuItems: MenuProps['items'] = [
+        ...(menu 
+            ? [
+                {
+                    key: 'settings',
+                    icon: <SettingOutlined />,
+                    label: t('global.layout.header.settings'),
+                    onClick: async ()=>{
+                        console.log("setting");
+                    }
+                },
+                {
+                    key: 'logout',
+                    icon: <LogoutOutlined />,
+                    label: t('global.layout.header.logout'),
+                    onClick: async ()=>{
+                        logout().then(() => {
+                            window.location.href = LOGIN_PATH;
+                        })
+                    }
+                },
+            ]    
+            : []),
+            {
+                key: 'logout',
+                icon: <LogoutOutlined />,
+                label: t('global.layout.header.logout'),
+                onClick: async ()=>{
+                    logout().then(() => {
+                        window.location.href = LOGIN_PATH;
+                    })
+                }
+            },
+        ];
+
+    const loading = (
+        <span>
+            <Spin
+                size="small"
+                style={{
+                  marginLeft: 8,
+                  marginRight: 8,
+                }}
+            />
+        </span>
+    );
+
+    if (!currentUser || !currentUser.name) {
+        return loading;
+    }
+
+    return (
+        <HeaderDropdown
+            menu={{
+                items: menuItems
+            }}
+        >
+            <Button size={"large"} type={'text'}  >
+                <div>{currentUser.name}</div>
+                <Avatar src={currentUser.avatarUrl} alt="avatar" size={32}  />
+            </Button>
+        </HeaderDropdown>
+    )
+}
+
+export default AvatarDropDown;
