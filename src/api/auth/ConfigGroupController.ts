@@ -14,11 +14,11 @@ export async function createGroup(params:any = {}){
     return request.post('/auth/config/groups',params)
 }
 
-export async function getGroup(id: number){
+export async function getGroup(id: string | number){
     return request.get(`/auth/config/groups/${id}`)
 }
 
-export async function updateGroup(id: number, params:any = {}){
+export async function updateGroup(id: string | number, params:any = {}){
     return request.put(`/auth/config/groups/${id}`,params)
 }
 
@@ -26,6 +26,6 @@ export async function updateGroup(id: number, params:any = {}){
  * 删除菜单
  * @param id
  */
-export async function destroyGroup(id: number) {
+export async function destroyGroup(id: string | number) {
     return request.delete(`/auth/config/groups/${id}`);
 }

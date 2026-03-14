@@ -23,7 +23,7 @@ export type TableListItem = {
 
 const DictTable:FC<IDictTableProps>=(props: any)=>{
     const { t } = useTranslation();
-    const [editId, setEditId] = useState<number | undefined>(0);
+    const [editId, setEditId] = useState<number | string>(0);
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
     const [tableData, setTableData] = useState<any>([]);

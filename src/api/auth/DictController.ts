@@ -14,11 +14,11 @@ export async function createDict(params:any = {}){
     return request.post('/auth/dicts',params)
 }
 
-export async function getDict(id: number){
+export async function getDict(id: string | number){
     return request.get(`/auth/dicts/${id}`)
 }
 
-export async function updateDict(id: number, params:any = {}){
+export async function updateDict(id: string | number, params:any = {}){
     return request.put(`/auth/dicts/${id}`,params)
 }
 
@@ -27,6 +27,6 @@ export async function updateDict(id: number, params:any = {}){
  * 删除菜单
  * @param id
  */
-export async function destroyDict(id: number) {
+export async function destroyDict(id: string | number) {
     return request.delete(`/auth/dicts/${id}`);
 }

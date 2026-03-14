@@ -22,7 +22,7 @@ export async function createRole(params: any = {}) {
  * 查询角色信息
  * @param roleId
  */
-export async function getRoleById(roleId: string) {
+export async function getRoleById(roleId: string | number) {
     return request.get('/auth/roles/' + roleId);
 }
 
@@ -30,7 +30,7 @@ export async function getRoleById(roleId: string) {
  * 查询角色权限
  * @param id
  */
-export async function getPermissionIdsByRoleId(id: number) {
+export async function getPermissionIdsByRoleId(id: string | number) {
     return request.get(`/role/${id}/permissions`);
 }
 
@@ -39,7 +39,7 @@ export async function getPermissionIdsByRoleId(id: number) {
  * @param id
  * @param params
  */
-export async function updatePermissionByRoleId(id: number, params: any = {}) {
+export async function updatePermissionByRoleId(id: string | number, params: any = {}) {
     return request.put(`/role/${id}/permissions`,params);
 }
 
@@ -49,7 +49,7 @@ export async function updatePermissionByRoleId(id: number, params: any = {}) {
  * @param id
  * @param params
  */
-export async function updateRole(id: number, params: any = {}) {
+export async function updateRole(id: string | number, params: any = {}) {
     return request.put(`/auth/roles/${id}`, params);
 }
 
@@ -57,7 +57,7 @@ export async function updateRole(id: number, params: any = {}) {
  * 删除角色
  * @param id
  */
-export async function destroyRole(id: number) {
+export async function destroyRole(id: string | number) {
     return request.delete(`/auth/roles/${id}`);
 }
 

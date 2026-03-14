@@ -19,7 +19,7 @@ export async function createMenu(params: any = {}) {
  * 获取当前菜单
  * @param id
  */
-export async function getMenu(id: number) {
+export async function getMenu(id: string | number) {
     return request.get(`/auth/menu/${id}`);
 }
 
@@ -27,7 +27,7 @@ export async function getMenu(id: number) {
  * 删除菜单
  * @param id
  */
-export async function destroyMenu(id: number) {
+export async function destroyMenu(id: string | number) {
     return request.delete(`/auth/menu/${id}`);
 }
 
@@ -36,6 +36,6 @@ export async function destroyMenu(id: number) {
  * @param id
  * @param params
  */
-export async function updateMenu(id: string, params: any = {}) {
+export async function updateMenu(id: string | number, params: any = {}) {
     return request.put(`/auth/menu/${id}`, params);
 }

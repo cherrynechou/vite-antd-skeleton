@@ -6,6 +6,12 @@ export async function queryPosts(params: any = {}) {
     });
 }
 
+export async function queryAllPosts(params: any = {}) {
+    return request.get('/post/all',{
+        params
+    });
+}
+
 /**
  * 创建菜单
  * @param params
@@ -19,7 +25,7 @@ export async function createPost(params: any = {}) {
  * 获取当前菜单
  * @param id
  */
-export async function getPost(id: number) {
+export async function getPost(id: string | number) {
     return request.get(`/auth/posts/${id}`);
 }
 
@@ -27,7 +33,7 @@ export async function getPost(id: number) {
  * 删除菜单
  * @param id
  */
-export async function destroyPost(id: number) {
+export async function destroyPost(id: string | number) {
     return request.delete(`/auth/posts/${id}`);
 }
 
@@ -36,6 +42,6 @@ export async function destroyPost(id: number) {
  * @param id
  * @param params
  */
-export async function updatePost(id: string, params: any = {}) {
+export async function updatePost(id: string | number, params: any = {}) {
     return request.put(`/auth/posts/${id}`, params);
 }

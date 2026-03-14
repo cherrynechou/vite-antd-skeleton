@@ -1,7 +1,7 @@
 import {FC, useRef, useState} from "react";
 import {ActionType, ProColumns, ProTable} from '@ant-design/pro-components';
 import {useTranslation} from "react-i18next";
-import {App, Button, Popconfirm, Space} from "antd";
+import {App, Button, Popconfirm, Space, Tag} from "antd";
 import CustomerPageContainer from '@/components/CustomerPageContainer';
 import {PlusOutlined} from "@ant-design/icons";
 import {queryDepartments} from "@/api/auth/DepartmentController";
@@ -12,6 +12,7 @@ import {treeToList} from "@/utils/utils.ts";
 export type TableListItem = {
     id: number;
     name: string;
+    status: number;
     created_at: number;
     update_at: number;
 };
@@ -86,7 +87,28 @@ const Department:FC = () =>{
             width: 80,
             align: 'center',
             dataIndex: 'name',
+        },{
+            title: (
+                t('pages.searchTable.sort')
+            ),
+            width: 120,
+            align: 'center',
+            dataIndex: 'sort',
+            hideInSearch: true,
         }, {
+            title: (
+                t('pages.searchTable.status')
+            ),
+            width: 80,
+            align: 'center',
+            dataIndex: 'status',
+            hideInSearch: true,
+            render:(_,record)=>(
+                record.status == 0 ?
+                    <Tag color="red">{t('global.switch.unChecked.label')}</Tag> :
+                    <Tag color="green">{t('global.switch.checked.label')}</Tag>
+            )
+        },{
             title: (
                 t('pages.searchTable.createdAt')
             ),

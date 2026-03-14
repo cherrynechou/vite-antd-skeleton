@@ -13,7 +13,7 @@ export interface IMenu {
     /** 路由的图标 */
     icon?: string;
     /**是否为外链*/
-    isBackLink?: boolean;
+    is_back_link?: boolean;
     /** 目标  */
     target?: string;
     /** 目标地址 **/

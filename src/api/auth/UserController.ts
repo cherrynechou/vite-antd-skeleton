@@ -28,7 +28,7 @@ export async function createUser(params: any = {}) {
  * 当前查询用户
  * @param id
  */
-export async function getUser(id: number) {
+export async function getUser(id: string | number) {
     return request.get(`/auth/users/${id}`);
 }
 
@@ -37,7 +37,7 @@ export async function getUser(id: number) {
  * @param id
  * @param params
  */
-export async function updateUser(id: number, params: any = {}) {
+export async function updateUser(id: string | number, params: any = {}) {
     return request.put(`/auth/users/${id}`, params);
 }
 
@@ -45,6 +45,6 @@ export async function updateUser(id: number, params: any = {}) {
  * 删除用户
  * @param id
  */
-export async function destroyUser(id: number) {
+export async function destroyUser(id: string | number) {
     return request.delete(`/auth/user/${id}`);
 }

@@ -2,7 +2,7 @@ import {FC, useState} from "react";
 import {App, Form, Input, InputNumber, Modal, Select, Skeleton, Switch} from "antd";
 import {useTranslation} from "react-i18next";
 import {useAsyncEffect} from "ahooks";
-import {buildAntdTreeData, treeToOrderList} from "@/utils/utils";
+import {buildAntdListToTreeData, treeToOrderList} from "@/utils/utils";
 import {createDepartment, getDepartment, updateDepartment} from "@/api/auth/DepartmentController";
 
 
@@ -10,17 +10,21 @@ import {createDepartment, getDepartment, updateDepartment} from "@/api/auth/Depa
 export interface ICreateOrEditProps {
     isModalVisible: boolean,
     isShowModal: (show: boolean, id?: number | undefined) => void,
-    editId : number | undefined,
+    editId : number | string| undefined,
     departmentData: any[],
     actionRef: any
 }
 
-const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
+const CreateOrEdit : FC<ICreateOrEditProps> = ({
+    isModalVisible, 
+    isShowModal, 
+    editId, 
+    departmentData, 
+    actionRef
+})=>{
     const { t } = useTranslation();
     const [treeData, setTreeData] = useState<any>([]);
     const [initialValues, setInitialValues] = useState<any>({});
-
-    const { isModalVisible, isShowModal, editId, departmentData, actionRef } = props;
 
     const [form] = Form.useForm();
     const { message } = App.useApp();
@@ -29,9 +33,7 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
 
     const fetchApi = async () => {
         const orderList = treeToOrderList(departmentData);
-        const treeValues = buildAntdTreeData(orderList,{
-            rootLabel: t('global.tree.root')
-        })
+        const treeValues = buildAntdListToTreeData(orderList)
         setTreeData(treeValues);
 
         if(editId !== undefined){
@@ -96,7 +98,11 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
         >
             {
                 Object.keys(initialValues).length === 0 && editId !== undefined ? <Skeleton paragraph={{ rows: 4 }} /> : (
-                    <Form form={form} initialValues={initialValues} autoComplete="off">
+                    <Form
+                        form={form}
+                        initialValues={initialValues}
+                        autoComplete="off"
+                    >
                         {/* 父级对象*/}
                         <Form.Item
                             name="parent_id"

@@ -33,13 +33,10 @@ export type RoleItem = {
 const User: FC = () =>{
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editId, setEditId] = useState<number | undefined>(0);
-
     const actionRef = useRef<ActionType>(null)
-
     const { t } = useTranslation();
 
     const { message } = App.useApp();
-
 
     //获取用户用户列表
     const requestData = async (params: any): Promise<any> => {
@@ -184,32 +181,30 @@ const User: FC = () =>{
             align: 'center',
             render: (_,record) => (
                 <Space>
-                    {
-                        !record.is_administrator &&
-                        <>
-                            <a key="link" className="text-blue-500" onClick={() => isShowModal(true, record.id)}>
-                                {t('pages.searchTable.edit')}
+                    <a key="link" className="text-blue-500" onClick={() => isShowModal(true, record.id)}>
+                        {t('pages.searchTable.edit')}
+                    </a>
+                    {!record.is_administrator &&
+                        <Popconfirm
+                            key="del"
+                            placement="top"
+                            title={
+                                t('pages.searchTable.okConfirm')
+                            }
+                            onConfirm={ () => confirmDel(record.id) }
+                            okText={
+                                t('pages.searchTable.ok')
+                            }
+                            cancelText={
+                                t('pages.searchTable.cancel')
+                            }
+                        >
+                            <a key="delete" className="text-blue-500">
+                                {t('pages.searchTable.delete')}
                             </a>
-                            <Popconfirm
-                                key="del"
-                                placement="top"
-                                title={
-                                    t('pages.searchTable.okConfirm')
-                                }
-                                onConfirm={ () => confirmDel(record.id) }
-                                okText={
-                                    t('pages.searchTable.ok')
-                                }
-                                cancelText={
-                                    t('pages.searchTable.cancel')
-                                }
-                            >
-                                <a key="delete" className="text-blue-500">
-                                    {t('pages.searchTable.delete')}
-                                </a>
-                            </Popconfirm>
-                        </>
+                        </Popconfirm>
                     }
+
                 </Space>
             )
         },

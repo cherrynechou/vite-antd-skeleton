@@ -1,15 +1,18 @@
 import { FC, useState } from 'react'
 import {App, Form, Input, InputNumber, Modal, Skeleton, Switch, Select} from 'antd';
 import { useTranslation } from 'react-i18next';
-import { ICreateOrEditProps } from "@/interfaces/modal.ts";
+import { ICreateOrEditProps } from "@/interfaces/modal";
 import { useAsyncEffect } from "ahooks";
 import {createRole, getRoleById, updateRole} from "@/api/auth/RoleController";
 
-const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
+const CreateOrEdit : FC<ICreateOrEditProps> = ({
+    isModalVisible,
+    isShowModal,
+    editId,
+    actionRef
+})=>{
     const { t } = useTranslation();
-    const [dataScopeOptions, setDataScopeOptions] = useState<any>([]);
     const [initialValues, setInitialValues] = useState<any>({});
-    const { isModalVisible, isShowModal, editId, actionRef } = props;
 
     const [form] = Form.useForm();
     const { message } = App.useApp();
@@ -17,31 +20,6 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
     const title = editId === undefined ? t('modal.createOrUpdateForm.create.title') : t('modal.createOrUpdateForm.edit.title');
 
     const fetchApi = async () => {
-
-        const dataScopes = [
-            {
-                label: t('modal.createOrUpdateForm.role.dataScope.all'),
-                value: 1
-            },
-            {
-                label: t('modal.createOrUpdateForm.role.dataScope.custom'),
-                value: 2
-            },
-            {
-                label: t('modal.createOrUpdateForm.role.dataScope.dept'),
-                value: 3
-            },
-            {
-                label: t('modal.createOrUpdateForm.role.dataScope.dept.child'),
-                value: 4
-            },
-            {
-                label: t('modal.createOrUpdateForm.role.dataScope.self'),
-                value: 5
-            },
-        ];
-
-        setDataScopeOptions(dataScopes);
 
         try{
             if(editId !== undefined){
@@ -68,6 +46,8 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
     useAsyncEffect(async () => {
         await fetchApi();
     }, []);
+
+
 
     const handleOk = async () =>{
         try {
@@ -153,23 +133,6 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
                                 t('modal.createOrUpdateForm.slug.placeholder')
                             }
                             />
-                        </Form.Item>
-
-
-                        <Form.Item
-                            name="data_scope"
-                            label={
-                                t('modal.createOrUpdateForm.role.dataScope')
-                            }
-                            labelCol={{ span: 3 }}
-                        >
-                            <Select
-                                options={dataScopeOptions}
-                                placeholder={
-                                    t('modal.createOrUpdateForm.role.dataScope.placeholder')
-                                }
-                            />
-
                         </Form.Item>
 
                         <Form.Item

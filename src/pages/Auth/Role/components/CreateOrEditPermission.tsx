@@ -5,25 +5,29 @@ import {useTranslation} from "react-i18next";
 import {nanoid} from "nanoid";
 import {useAsyncEffect} from "ahooks";
 import {filterTreeLeafNode, listToTree} from "@/utils/utils.ts";
-import {queryAllPermissions} from "@/api/auth/PermissionController.ts";
-import {getPermissionIdsByRoleId, updatePermissionByRoleId} from "@/api/auth/RoleController.ts";
+import {queryAllPermissions} from "@/api/auth/PermissionController";
+import {getPermissionIdsByRoleId, updatePermissionByRoleId} from "@/api/auth/RoleController";
 
 export interface ICreateOrEditProps  {
     isDrawerVisible: boolean;
     isShowDrawer: (show: boolean, id?: number | undefined) => void;
-    editId : number | undefined;
+    editId : number | string | undefined;
     actionRef: any;
 }
 
-const CreateOrEditPermission: FC <ICreateOrEditProps> = (props: any)=>{
+const CreateOrEditPermission: FC <ICreateOrEditProps> = ({
+    isDrawerVisible, 
+    isShowDrawer, 
+    editId, 
+    actionRef
+})=>{
     const { t } = useTranslation();
     const [initialValues, setInitialValues] = useState<any>({});
     const [defaultExpandedRowKeys, setDefaultExpandedRowKeys] = useState<any>([])
     const [treeData, setTreeData] = useState<any>([]);
     const [treeLeafRecord, setTreeLeafRecord] = useState<any>([]);
     const [defaultCheckedKeys, setDefaultCheckedKeys] = useState<any>([]);
-    const { isDrawerVisible, isShowDrawer, editId, actionRef } = props;
-
+ 
     const { message } = App.useApp();
     const [form] = Form.useForm();
 
@@ -74,7 +78,7 @@ const CreateOrEditPermission: FC <ICreateOrEditProps> = (props: any)=>{
             return item.id;
         });
         const filterSameKeys = filterChildNodes.filter((item: any) => selectedKeys.indexOf(item) > -1);
-        form.setFieldsValue({ permissions: JSON.stringify(filterSameKeys) });
+        form.setFieldsValue({ permissionIds: JSON.stringify(filterSameKeys) });
     };
 
     const onCheck: TreeProps['onCheck'] = (checkedKeys) => {
@@ -91,7 +95,7 @@ const CreateOrEditPermission: FC <ICreateOrEditProps> = (props: any)=>{
     const handleOk = async () =>{
         try {
             const fieldsValue = await form.validateFields();
-            await updatePermissionByRoleId(editId,fieldsValue);
+            await updatePermissionByRoleId(editId, fieldsValue);
             isShowDrawer(false);
             const defaultUpdateSuccessMessage = editId === undefined ? t('global.create.success'): t('global.update.success');
             message.success(defaultUpdateSuccessMessage);

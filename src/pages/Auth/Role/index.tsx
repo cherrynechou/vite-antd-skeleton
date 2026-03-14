@@ -3,12 +3,13 @@ import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import CustomerPageContainer from "@/components/CustomerPageContainer";
 import { useTranslation } from 'react-i18next';
-import {App, Button, Space,Popconfirm} from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import {App, Button, Space, Popconfirm, Dropdown, MenuProps} from 'antd';
+import {CheckCircleOutlined, DoubleRightOutlined, KeyOutlined, PlusOutlined} from '@ant-design/icons';
 import { omit } from 'es-toolkit/compat';
 import {destroyRole, queryRoles} from '@/api/auth/RoleController';
 import CreateOrEdit from "./components/CreateOrEdit";
 import CreateOrEditPermission from "./components/CreateOrEditPermission";
+import CreateOrEditDataScope from "./components/CreateOrEditDataScope";
 
 export type TableListItem = {
     id: number;
@@ -21,6 +22,7 @@ export type TableListItem = {
 const Role: FC = () =>{
     const { t } = useTranslation();
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+    const [isDataScopeModalVisible,setIsDataScopeModalVisible] = useState<boolean>(false);
     const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
     const [editId, setEditId] = useState<number | undefined>(0);
 
@@ -47,10 +49,7 @@ const Role: FC = () =>{
         }catch (error: any){
             message.error(error.message);
         }
-
-
     }
-
 
     /**
      *  显示对话框
@@ -72,6 +71,11 @@ const Role: FC = () =>{
         setIsDrawerVisible(show);
     };
 
+    const isShowDataScopeModal = (show: boolean, id?: number | undefined) => {
+        setEditId(id);
+        setIsDataScopeModalVisible(show);
+    };
+
 
     /**
      * 删除id
@@ -82,9 +86,44 @@ const Role: FC = () =>{
             await destroyRole(id);
             message.success(t('global.delete.success'));
         }catch (error: any){
-
+            message.error(error.message);
         }
     }
+
+    const getMenuItems = (record: TableListItem) =>{
+        const items: MenuProps['items'] = [
+            {
+                key: 'dataScope',
+                icon: <CheckCircleOutlined />,
+                label: t('global.table.data.scope'),
+                onClick: ()=>isShowDataScopeModal(true,record.id)
+            },{
+                key: 'permission',
+                icon: <KeyOutlined />,
+                label: t('global.table.data.permission'),
+                onClick:()=> isShowDrawer(true,record.id)
+            }
+        ]
+        return items;
+    }
+
+
+
+
+    //更多
+    const MoreAction = ( props: any)=>{
+        const {record} = props;
+        return (
+            <Dropdown
+                menu={{ items: getMenuItems(record) }}
+            >
+                <a onClick={(e) => e.preventDefault()}>
+                    {t('global.table.more')} <DoubleRightOutlined />
+                </a>
+            </Dropdown>
+        )
+    }
+
 
     //列表
     const columns: ProColumns<TableListItem>[] = [
@@ -135,29 +174,24 @@ const Role: FC = () =>{
             align: 'center',
             render: (_,record) => (
                 <Space>
-                    {
-                        !record.is_administrator &&
-                        <>
-                            <a key="link-edit" className="text-blue-500" onClick={() => isShowModal(true, record.id)}>
-                                {t('pages.searchTable.edit')}
+                    <a key="link-edit" className="text-blue-500" onClick={() => isShowModal(true, record.id)}>
+                        {t('pages.searchTable.edit')}
+                    </a>
+                    {!record.is_administrator &&
+                        <Popconfirm
+                            key="del"
+                            placement="top"
+                            title={t('pages.searchTable.okConfirm')}
+                            onConfirm={ () => confirmDel(record.id) }
+                            okText={t('pages.searchTable.ok')}
+                            cancelText={t('pages.searchTable.cancel')}
+                        >
+                            <a key="delete" className="text-blue-500">
+                                {t('pages.searchTable.delete')}
                             </a>
-                            <a key="link-permission" className="text-blue-500" onClick={()=>isShowDrawer(true,record.id)}>
-                                {t('pages.searchTable.permission')}
-                            </a>
-                            <Popconfirm
-                                key="del"
-                                placement="top"
-                                title={t('pages.searchTable.okConfirm')}
-                                onConfirm={ () => confirmDel(record.id) }
-                                okText={t('pages.searchTable.ok')}
-                                cancelText={t('pages.searchTable.cancel')}
-                            >
-                                <a key="delete" className="text-blue-500">
-                                    {t('pages.searchTable.delete')}
-                                </a>
-                            </Popconfirm>
-                        </>
+                        </Popconfirm>
                     }
+                    <MoreAction key='more' record={record}/>
                 </Space>
             )
         },
@@ -202,6 +236,15 @@ const Role: FC = () =>{
                     isShowDrawer={isShowDrawer}
                     editId={editId}
                     actionRef={actionRef}
+                />
+            )}
+
+            {isDataScopeModalVisible &&(
+                <CreateOrEditDataScope
+                    isModalVisible={isDataScopeModalVisible}
+                    isShowModal={isShowDataScopeModal}
+                    actionRef={actionRef}
+                    editId={editId}
                 />
             )}
 

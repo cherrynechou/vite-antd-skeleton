@@ -13,11 +13,11 @@ export async function createConfigData(params:any = {}){
     return request.post('/auth/config/datas',params)
 }
 
-export async function getConfigData(id: number){
+export async function getConfigData(id: string | number){
     return request.get(`/auth/config/datas/${id}`)
 }
 
-export async function updateConfigData(id: number, params:any = {}){
+export async function updateConfigData(id: string | number, params:any = {}){
     return request.put(`/auth/config/datas/${id}`,params)
 }
 
@@ -25,6 +25,6 @@ export async function updateConfigData(id: number, params:any = {}){
  * 删除菜单
  * @param id
  */
-export async function destroyConfigData(id: number) {
+export async function destroyConfigData(id: string | number) {
     return request.delete(`/auth/config/datas/${id}`);
 }

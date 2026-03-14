@@ -4,7 +4,7 @@ import type { RadioChangeEvent } from 'antd';
 import {useTranslation} from "react-i18next";
 import {useAsyncEffect} from "ahooks";
 import routers from '@/routers/config'; // 导入全局路由配置
-import {buildAntdTreeData, extractRoutes, treeToOrderList} from "@/utils/utils";
+import {buildAntdListToTreeData, extractRoutes, treeToOrderList} from "@/utils/utils";
 import {LOGIN_PATH} from "@/constants/pages.ts";
 import {queryAllRoles} from "@/api/auth/RoleController.ts";
 import {createMenu, getMenu, updateMenu} from "@/api/auth/MenuController.ts";
@@ -14,19 +14,24 @@ import {maxBy} from 'es-toolkit/compat';
 export interface ICreateOrEditProps {
     isModalVisible: boolean,
     isShowModal: (show: boolean, id?: number | undefined) => void,
-    editId : number | undefined,
+    editId : number | string| undefined,
     menuData: any[];
     actionRef: any
 }
 
-const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
+const CreateOrEdit : FC<ICreateOrEditProps>=({
+    isModalVisible, 
+    isShowModal, 
+    editId, 
+    menuData
+})=>{
     const { t } = useTranslation();
     const [treeData, setTreeData] = useState<any>([]);
     const [initialValues, setInitialValues] = useState<any>({});
     const [linkTarget, setLinkTarget] = useState<any>([]);
     const [menuTypes,setMenuTypes] = useState<any>([]);
     const [currentMenuType,setCurrentType] = useState<any>(1);
-    const {isModalVisible, isShowModal, editId, menuData } = props;
+
     const [roles, setRoles] = useState<any>([]);
     const [routes, setRoutes] = useState<any>([]);
 
@@ -37,9 +42,7 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
 
     const fetchApi = async () => {
         const orderList = treeToOrderList(menuData);
-        const treeValues = buildAntdTreeData(orderList,{
-            rootLabel: t('global.tree.root')
-        })
+        const treeValues = buildAntdListToTreeData(orderList)
         setTreeData(treeValues);
 
         const targets = [
@@ -122,7 +125,7 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
             });
 
         }else{
-            const oldestList = maxBy(orderList, list => list.sort);
+            const oldestList: any = maxBy(orderList, list => list.sort);
             form.setFieldsValue({
                 sort: oldestList.sort + 1,
                 type: 1,

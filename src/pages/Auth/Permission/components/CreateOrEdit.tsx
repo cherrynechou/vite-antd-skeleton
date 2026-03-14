@@ -2,7 +2,7 @@ import {FC, useState} from 'react'
 import {App, Form, Input, Modal, Select, Skeleton} from "antd";
 import {useTranslation} from "react-i18next";
 import {useAsyncEffect} from "ahooks";
-import {buildAntdTreeData, treeToOrderList} from "@/utils/utils.ts";
+import {buildAntdListToTreeData, treeToOrderList} from "@/utils/utils.ts";
 import {
     createPermission,
     queryAllPermissionRoutes,
@@ -16,12 +16,18 @@ import {
 export interface ICreateOrEditProps {
     isModalVisible: boolean,
     isShowModal: (show: boolean, id?: number | undefined) => void,
-    editId : number | undefined,
+    editId : number | string| undefined,
     permissionTreeData: any[],
     actionRef: any
 }
 
-const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
+const CreateOrEdit : FC<ICreateOrEditProps>=({
+    isModalVisible, 
+    isShowModal, 
+    permissionTreeData, 
+    editId, 
+    actionRef 
+})=>{
     const { t } = useTranslation();
     const [initialValues, setInitialValues] = useState<any>({});
     const [treeData, setTreeData] = useState<any>([]);
@@ -29,9 +35,6 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
     const [httpPaths, setHttpPaths] = useState<any>([]);
 
     const [ form] = Form.useForm();
-
-    const { isModalVisible, isShowModal, permissionTreeData, editId, actionRef } = props;
-
     const { message } = App.useApp();
 
     const title = editId === undefined ? t('modal.createOrUpdateForm.create.title') : t('modal.createOrUpdateForm.edit.title');
@@ -39,9 +42,7 @@ const CreateOrEdit : FC<ICreateOrEditProps>=(props: any)=>{
     const fetchApi = async () => {
         const orderList = treeToOrderList(permissionTreeData);
 
-        setTreeData(buildAntdTreeData(orderList,{
-            rootLabel: t('global.tree.root')
-        }));
+        setTreeData(buildAntdListToTreeData(orderList));
 
         const allMethods: any[] = [
             { label: 'GET', value: 'GET' },

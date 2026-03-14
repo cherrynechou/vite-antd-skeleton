@@ -9,7 +9,7 @@ const { TextArea } = Input;
 export interface ICreateOrEditProps {
     isModalVisible: boolean,
     isShowModal: (show: boolean, id?: number | undefined) => void,
-    editId : number | undefined,
+    editId : number | string| undefined,
     actionRef: any
 }
 
@@ -18,10 +18,14 @@ export interface ICreateOrEditProps {
  * @param props
  * @constructor
  */
-const CreateOrEditDict: FC<ICreateOrEditProps> = (props: any) =>{
+const CreateOrEditDict: FC<ICreateOrEditProps> = ({
+    isModalVisible, 
+    isShowModal, 
+    editId, 
+    actionRef
+}) =>{
     const { t } = useTranslation();
     const [initialValues, setInitialValues] = useState<any>({});
-    const { isModalVisible, isShowModal, editId, actionRef } = props;
 
     const [form] = Form.useForm();
     const { message} = App.useApp();

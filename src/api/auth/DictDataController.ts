@@ -17,16 +17,16 @@ export async function createDictData(params:any = {}){
     return request.post('/auth/dict/datas',params);
 }
 
-export async function getDictData(id: number){
+export async function getDictData(id: string | number){
     return request.get(`/auth/dict/datas/${id}`)
 }
 
-export async function updateDictData(id: number, params:any = {}){
+export async function updateDictData(id: string | number, params:any = {}){
     return request.put(`/auth/dict/datas/${id}`)
 }
 
 //设置默认值
-export async function setDictDataDefault(id: number, params:any = {}){
+export async function setDictDataDefault(id: string | number, params:any = {}){
     return request.put(`/auth/dict/setDefault/${id}`,params)
 }
 
@@ -34,6 +34,6 @@ export async function setDictDataDefault(id: number, params:any = {}){
  * 删除菜单
  * @param id
  */
-export async function destroyDictData(id: number) {
+export async function destroyDictData(id: string | number) {
     return request.delete(`/auth/dict/datas/${id}`);
 }

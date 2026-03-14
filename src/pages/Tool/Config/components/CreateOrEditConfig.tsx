@@ -7,7 +7,7 @@ import {getGroup, createGroup, updateGroup} from "@/api/auth/ConfigGroupControll
 export interface ICreateOrEditProps {
     isModalVisible: boolean,
     isShowModal: (show: boolean, id?: number | undefined) => void,
-    editId : number | undefined,
+    editId : number | string| undefined,
     actionRef: any
 }
 

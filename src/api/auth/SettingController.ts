@@ -23,7 +23,7 @@ export async function updateConfigByGroup(name: string, params: any = {}) {
  * 获取醘置
  * @param id
  */
-export async function getConfigOptions(id: number){
+export async function getConfigOptions(id: string | number){
     return request.get(`/setting/config/options/${id}`);
 }
 
@@ -32,6 +32,6 @@ export async function getConfigOptions(id: number){
  * @param id
  * @param params
  */
-export async function updateConfigOptions(id: number,params: any = {}) {
+export async function updateConfigOptions(id: string | number, params: any = {}) {
     return request.post(`/setting/config/options/${id}/update`,params);
 }

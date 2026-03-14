@@ -8,7 +8,7 @@ import {App, Form, Input, InputNumber, Modal, Skeleton, Switch} from "antd";
 export interface ICreateOrEditProps {
     isModalVisible: boolean,
     isShowModal: (show: boolean, id?: number | undefined) => void,
-    editId : number | undefined,
+    editId : number | string | undefined,
     dictId: number | undefined,
     actionRef: any
 }
@@ -20,10 +20,15 @@ const { TextArea } = Input;
  * @param props
  * @constructor
  */
-const CreateOrEditDictData:FC<ICreateOrEditProps> = (props: any) =>{
+const CreateOrEditDictData:FC<ICreateOrEditProps> = ({
+    isModalVisible, 
+    isShowModal, 
+    editId, 
+    dictId, 
+    actionRef 
+}) =>{
     const { t } = useTranslation();
     const [initialValues, setInitialValues] = useState<any>({});
-    const { isModalVisible, isShowModal, editId, dictId, actionRef } = props;
 
     const [form] = Form.useForm();
     const { message} = App.useApp();

@@ -6,10 +6,14 @@ import {useAsyncEffect} from "ahooks";
 
 const { TextArea } = Input;
 
-const CreateOrEdit:FC<ICreateOrEditProps> = (props: any) =>{
+const CreateOrEdit:FC<ICreateOrEditProps> = ({
+    isModalVisible, 
+    isShowModal, 
+    editId, 
+    actionRef
+}) =>{
     const { t } = useTranslation();
     const [initialValues, setInitialValues] = useState<any>({});
-    const { isModalVisible, isShowModal, editId, actionRef } = props;
 
     const [form] = Form.useForm();
     const { message } = App.useApp();
@@ -51,7 +55,11 @@ const CreateOrEdit:FC<ICreateOrEditProps> = (props: any) =>{
         >
             {
                 Object.keys(initialValues).length === 0 && editId !== undefined ? <Skeleton paragraph={{ rows: 4 }} /> : (
-                    <Form form={form} initialValues={initialValues} autoComplete="off">
+                    <Form
+                        form={form}
+                        initialValues={initialValues}
+                        autoComplete="off"
+                    >
                         <Form.Item
                             name="name"
                             label={

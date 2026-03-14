@@ -1,4 +1,5 @@
 import {clone} from 'es-toolkit/compat';
+import {t} from "i18next";
 
 export interface TreeNode {
     id: string | number;
@@ -29,27 +30,30 @@ const treeToOrderList=(trees : TreeNode[], options: {
        levelKey?: string;
        childrenKey?: string;
        keepChildren?: boolean;
+       rootParentId?: number | string | null; // 根节点的父ID
    } = {}
-)=>{
+):ListNode[] =>{
     const {
         idKey = 'id',
         parentKey = 'parent_id',
         levelKey = 'level',
         childrenKey = 'children',
-        keepChildren = false
+        keepChildren = false,
+        rootParentId = 0
     } = options;
 
     const result: any[] = [];
 
-    function traverse(nodes: any[], parentId: number | string | null = null, level: number = 1) {
-        nodes.forEach(node => {
+    function traverse(nodes: any[], parentId: number | string | null = rootParentId, level: number = 1) {
+        nodes.forEach((node: any) => {
             const newNode = { ...node };
-      const children = newNode[childrenKey] as any[] | undefined;
+            const children = newNode[childrenKey] as any[] | undefined;
 
             // 设置额外属性
             newNode[parentKey] = parentId ?? 0 ;
             newNode[levelKey] = level;
             newNode[childrenKey] = children;
+
             // 是否保留children
             if (!keepChildren && childrenKey === 'children') {
                 delete newNode[childrenKey];
@@ -67,12 +71,13 @@ const treeToOrderList=(trees : TreeNode[], options: {
     return result;
 }
 
+
 /**
  * 生成select树型节点
  * @param data
  * @param options
  */
-const buildAntdTreeData = (data: ListNode[], options: {
+const buildAntdListToTreeData = (data: ListNode[], options: {
     idKey?: string | number;
     nameKey?: string ;
     parentKey?: string;
@@ -84,16 +89,24 @@ const buildAntdTreeData = (data: ListNode[], options: {
         idKey = 'id',
         nameKey = 'name',
         parentKey = 'parent_id',
-        rootLabel,
+        rootLabel = t('global.tree.root'),
     } = options;
 
     const result: any[] = [];
 
     const rows = clone(data);
 
+    //首先格式化数据
+    const formatedRows = rows.map((item: any) => {
+        return {
+            ...item,
+            name: item[nameKey]
+        }
+    })
+
     //根节点
     const root: ListNode = { id: 0 , name: rootLabel, level: 0, parent_id: -1 };
-    rows.unshift(root);
+    formatedRows.unshift(root);
 
     //格式化列表
     const formatLabelName = (level: number) => {
@@ -109,13 +122,15 @@ const buildAntdTreeData = (data: ListNode[], options: {
     }
 
     //格式化树
-    rows.forEach((item: any)=>{
+    formatedRows.forEach((item: any)=>{
         const formatLabel = formatLabelName(item.level);
 
+        const prefix = item[parentKey] > 0 ? item[parentKey] : 0;
+
         result.push({
-            label: formatLabel + item[nameKey],
+            label: formatLabel + item.name,
             value: item.id,
-            key: item[parentKey] + "-" + item[idKey]
+            key: prefix + "-" + item[idKey]
         })
     })
 
@@ -181,8 +196,10 @@ const listToTree = (data: ListNode[], options:{
     childrenKey?: string,
     keepNameField?: boolean,   //保存name
     rootId?: number | null,
+    levelKey?: string;         // 新增：层级的键名
+    startLevel?: number;       // 新增：起始层级（默认1）
   } = {}
-) : ListNode[] => {
+) : any[] => {
 
     const {
         idKey = 'id',
@@ -193,6 +210,8 @@ const listToTree = (data: ListNode[], options:{
         childrenKey = 'children',
         keepNameField = false,
         rootId = 0,
+        levelKey = 'level',     // 默认层级键名
+        startLevel = 1,          // 默认起始层级为1
     } = options;
 
     if (!data || !Array.isArray(data)) return [];
@@ -203,7 +222,7 @@ const listToTree = (data: ListNode[], options:{
         nodeMap.set(node[idKey], { ...node }); // 浅拷贝，避免修改原数据
     });
 
-    const trees: ListNode[] = [];
+    const trees: any[] = [];
     nodeMap.forEach(node => {
         const parentId = node[parentIdKey];
         //通用字段
@@ -214,16 +233,21 @@ const listToTree = (data: ListNode[], options:{
         }
         // 找到根节点：pid匹配rootPid，直接加入树形根节点数组
         if (parentId === rootId) {
+            // 根节点层级为 startLevel
+            node[levelKey] = startLevel;
             trees.push(node);
         } else {
             // 找到父节点，将当前节点加入父节点的children数组
             const parentNode = nodeMap.get(parentId);
             if (parentNode) {
+                // 当前节点的层级 = 父节点层级 + 1
+                node[levelKey] = (parentNode[levelKey] || startLevel) + 1;
                 parentNode[childrenKey] = parentNode[childrenKey] || [];
                 parentNode[childrenKey].push(node);
             }
         }
     });
+
     return trees;
 }
 
@@ -283,7 +307,7 @@ const extractRoutes = (routeList: any, parentPath = '') => {
 
 export {
     treeToOrderList,
-    buildAntdTreeData,
+    buildAntdListToTreeData,
     listToTree,
     treeToList,
     filterTreeLeafNode,

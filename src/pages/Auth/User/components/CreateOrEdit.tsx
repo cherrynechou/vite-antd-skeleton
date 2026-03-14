@@ -6,22 +6,25 @@ import { ICreateOrEditProps } from "@/interfaces/modal";
 import UploadImage from "@/components/UploadImage";
 import {useAsyncEffect} from "ahooks";
 import {queryAllRoles} from "@/api/auth/RoleController";
-import {buildAntdTreeData, treeToOrderList} from "@/utils/utils";
+import {buildAntdListToTreeData, listToTree, treeToOrderList} from "@/utils/utils";
 import {createUser, getUser, updateUser} from "@/api/auth/UserController";
-import {queryDepartments} from "@/api/auth/DepartmentController";
-import {queryPosts} from "@/api/auth/PostController";
+import {queryAllDepartments} from "@/api/auth/DepartmentController";
 import {pick} from 'es-toolkit/compat';
+import {queryAllPosts} from "@/api/auth/PostController";
 
 
-const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
+const CreateOrEdit : FC<ICreateOrEditProps> = ({
+    isModalVisible, 
+    isShowModal, 
+    editId, 
+    actionRef
+})=>{
     const { t } = useTranslation();
     const [initialValues, setInitialValues] = useState<any>({});
     const [roleOptions, setRoleOptions] = useState<any>([]);
     const [postOptions, setPostOptions] = useState<any>([]);
     const [avatarFileList, setAvatarFileList] = useState<UploadFile[]>([]);
     const [treeData, setTreeData] = useState<any>([]);
-
-    const { isModalVisible, isShowModal, editId, actionRef } = props;
 
     const [form] = Form.useForm();
     const { message } = App.useApp();
@@ -39,16 +42,19 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
             setRoleOptions(roleList);
 
             //部门
-            const departmentRes = await queryDepartments();
+            const departmentRes = await queryAllDepartments();
             const departmentData = departmentRes.data;
-            const orderList = treeToOrderList(departmentData);
-            const treeValues = buildAntdTreeData(orderList,{
-                rootLabel: t('global.tree.root')
+            const treeData = listToTree(departmentData);
+            const orderList = treeToOrderList(treeData);
+            const treeValues = buildAntdListToTreeData(orderList,{
+                nameKey: 'title'
             })
+
             setTreeData(treeValues);
 
+
             //岗位
-            const postRes = await queryPosts();
+            const postRes = await queryAllPosts();
             const postData = postRes.data;
             const postList: any[] = [];
             postData.forEach((item: any) => {
@@ -104,7 +110,7 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
         });
     }
 
-    const handleOk =async () =>{
+    const handleOk = async () =>{
         try{
             const fieldsValue = await form.validateFields();
 
@@ -139,7 +145,11 @@ const CreateOrEdit : FC<ICreateOrEditProps> = (props: any)=>{
         >
             {
                 Object.keys(initialValues).length === 0 && editId !== undefined ? <Skeleton paragraph={{ rows: 4 }} /> : (
-                    <Form form={form} initialValues={initialValues} autoComplete="off">
+                    <Form
+                        form={form}
+                        initialValues={initialValues}
+                        autoComplete="off"
+                    >
                         <Form.Item
                             name="username"
                             label={

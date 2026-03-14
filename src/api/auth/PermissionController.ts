@@ -14,7 +14,7 @@ export async function queryPermissions(params: any = {}) {
  * 查询当前权限
  * @param id
  */
-export async function queryPermission(id: number) {
+export async function queryPermission(id: string | number) {
     return request.get(`/auth/permissions/${id}`);
 }
 
@@ -31,7 +31,7 @@ export async function createPermission(params: any = {}) {
  * @param id
  * @param params
  */
-export async function updatePermission(id: number, params: any = {}) {
+export async function updatePermission(id: string | number, params: any = {}) {
     return request.put(`/auth/permissions/${id}`, params);
 }
 
@@ -39,7 +39,7 @@ export async function updatePermission(id: number, params: any = {}) {
  * 删除权限
  * @param id
  */
-export async function destroyPermission(id: number) {
+export async function destroyPermission(id: string | number) {
     return request.delete(`/auth/permissions/${id}`);
 }
 
