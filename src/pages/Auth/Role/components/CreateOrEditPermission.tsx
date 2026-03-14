@@ -4,7 +4,7 @@ import type { TreeProps } from 'antd/es/tree';
 import {useTranslation} from "react-i18next";
 import {nanoid} from "nanoid";
 import {useAsyncEffect} from "ahooks";
-import {filterTreeLeafNode, listToTree} from "@/utils/utils.ts";
+import {filterTreeLeafNode, listToTree} from "@/utils/utils";
 import {queryAllPermissions} from "@/api/auth/PermissionController";
 import {getPermissionIdsByRoleId, updatePermissionByRoleId} from "@/api/auth/RoleController";
 
@@ -92,6 +92,7 @@ const CreateOrEditPermission: FC <ICreateOrEditProps> = ({
         form.setFieldsValue({ permissionIds: checkedKeysResult.length===0 ? [] : filterSameKeys });
     };
 
+    //确定
     const handleOk = async () =>{
         try {
             const fieldsValue = await form.validateFields();
@@ -112,9 +113,9 @@ const CreateOrEditPermission: FC <ICreateOrEditProps> = ({
         return (
             <div style={{ textAlign: "right" }}>
                 <Space>
-                    <Button onClick={()=>isShowDrawer(false)}>取消</Button>
+                    <Button onClick={()=>isShowDrawer(false)}>{t('global.cancel')}</Button>
                     <Button type="primary" onClick={handleOk}>
-                        确定
+                        {t('global.confirm')}
                     </Button>
                 </Space>
             </div>

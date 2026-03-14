@@ -6,7 +6,7 @@ import {App, Button, Popconfirm, Space} from "antd";
 import CustomerPageContainer from '@/components/CustomerPageContainer';
 import {PlusOutlined} from "@ant-design/icons";
 import {omit} from 'es-toolkit/compat';
-import {queryPosts} from "@/api/auth/PostController.ts";
+import {destroyPost, queryPosts} from "@/api/auth/PostController.ts";
 import CreateOrEdit  from './components/CreateOrEdit';
 
 export type TableListItem = {
@@ -19,7 +19,7 @@ export type TableListItem = {
 
 const Post: FC = () =>{
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [editId, setEditId] = useState<number | undefined>(0);
+    const [editId, setEditId] = useState<number | string | undefined>(0);
 
     const actionRef = useRef<ActionType>(null)
 
@@ -65,7 +65,12 @@ const Post: FC = () =>{
      * @param id
      */
     const confirmDel = async (id: number) => {
-
+        try{
+            await destroyPost(id);
+            message.success(t('global.delete.success'));
+        }catch (error: any){
+            message.error(error.message);
+        }
     }
 
     //列表

@@ -5,7 +5,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {nanoid} from "nanoid";
 import {Popconfirm, Space, Switch, Tag, App, Button} from 'antd';
 import {omit} from 'es-toolkit/compat'
-import {queryDictDatas} from '@/api/auth/DictDataController'
+import {destroyDictData, queryDictDatas} from '@/api/auth/DictDataController'
 import {PlusOutlined} from '@ant-design/icons'
 import CreateOrEditDictData from './CreateOrEditDictData'
 
@@ -83,11 +83,11 @@ const DictDataTable:FC<IDictDataTableProps>=(props: any)=>{
      * @param id
      */
     const confirmDel = async (id: number) => {
-        try {
-
-
+        try{
+            await destroyDictData(id);
+            message.success(t('global.delete.success'));
         }catch (error: any){
-
+            message.error(error.message);
         }
     }
 

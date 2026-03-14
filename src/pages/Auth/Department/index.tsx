@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import {App, Button, Popconfirm, Space, Tag} from "antd";
 import CustomerPageContainer from '@/components/CustomerPageContainer';
 import {PlusOutlined} from "@ant-design/icons";
-import {queryDepartments} from "@/api/auth/DepartmentController";
+import {destroyDepartment, queryDepartments} from "@/api/auth/DepartmentController";
 import CreateOrEdit from './components/CreateOrEdit'
 import {treeToList} from "@/utils/utils.ts";
 
@@ -67,7 +67,12 @@ const Department:FC = () =>{
      * @param id
      */
     const confirmDel = async (id: number) => {
-
+        try{
+            await destroyDepartment(id);
+            message.success(t('global.delete.success'));
+        }catch (error: any){
+            message.error(error.message);
+        }
     }
 
 

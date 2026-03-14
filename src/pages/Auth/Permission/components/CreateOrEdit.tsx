@@ -2,7 +2,7 @@ import {FC, useState} from 'react'
 import {App, Form, Input, Modal, Select, Skeleton} from "antd";
 import {useTranslation} from "react-i18next";
 import {useAsyncEffect} from "ahooks";
-import {buildAntdListToTreeData, treeToOrderList} from "@/utils/utils.ts";
+import {buildAntdListToTreeData, treeToOrderList} from "@/utils/utils";
 import {
     createPermission,
     queryAllPermissionRoutes,
@@ -16,7 +16,7 @@ import {
 export interface ICreateOrEditProps {
     isModalVisible: boolean,
     isShowModal: (show: boolean, id?: number | undefined) => void,
-    editId : number | string| undefined,
+    editId : number | string | undefined,
     permissionTreeData: any[],
     actionRef: any
 }

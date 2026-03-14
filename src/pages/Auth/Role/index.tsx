@@ -24,7 +24,7 @@ const Role: FC = () =>{
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
     const [isDataScopeModalVisible,setIsDataScopeModalVisible] = useState<boolean>(false);
     const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
-    const [editId, setEditId] = useState<number | undefined>(0);
+    const [editId, setEditId] = useState<number | string | undefined>(0);
 
     const { message } = App.useApp();
 

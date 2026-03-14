@@ -5,7 +5,7 @@ import { ProTable } from '@ant-design/pro-components';
 import { useTranslation } from 'react-i18next';
 import {App, Button, Space, Popconfirm, Tag} from "antd";
 import  {PlusOutlined} from "@ant-design/icons";
-import {queryPermissions} from '@/api/auth/PermissionController';
+import {queryPermissions,destroyPermission} from '@/api/auth/PermissionController';
 import CreateOrEdit from './components/CreateOrEdit'
 import {treeToList} from "@/utils/utils";
 
@@ -25,7 +25,7 @@ const Permission: FC = () =>{
     const [ permissionTreeData, setPermissionTreeData ] = useState<any>([]);
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
     const [defaultExpandedRowKeys, setDefaultExpandedRowKeys] = useState<any>([])
-    const [editId, setEditId] = useState<number | undefined>(0);
+    const [editId, setEditId] = useState<number | string | undefined>(0);
 
     const actionRef = useRef<ActionType>(null)
 
@@ -71,7 +71,12 @@ const Permission: FC = () =>{
      * @param id
      */
     const confirmDel = async (id: number) => {
-
+        try{
+            await destroyPermission(id);
+            message.success(t('global.delete.success'));
+        }catch (error: any){
+            message.error(error.message);
+        }
     }
 
     //列表

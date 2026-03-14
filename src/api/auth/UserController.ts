@@ -17,6 +17,13 @@ export async function queryUsers(params: any = {}) {
 }
 
 /**
+ * 阻止用户登录
+ */
+export async function blockUser(id: string | number){
+    return request.get(`/user/${id}/block`)
+}
+
+/**
  * 添加用户
  * @param params
  */

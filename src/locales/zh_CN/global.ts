@@ -8,6 +8,8 @@ export default {
     'global.delete': '删除',
     'global.success.text': '成功',
     'global.failure.text': '失败',
+    'global.confirm': '确定',
+    'global.cancel': '取消',
     'global.switch.checked.label': '开启',
     'global.switch.unChecked.label': '关闭',
     'global.true.label': '是',

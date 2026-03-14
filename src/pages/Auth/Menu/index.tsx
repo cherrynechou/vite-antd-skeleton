@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import {App, Button, Space,Popconfirm} from "antd";
 import * as icons from '@ant-design/icons';
 import Icon, {PlusOutlined} from '@ant-design/icons';
-import {queryMenus} from '@/api/auth/MenuController.ts';
+import {destroyMenu, queryMenus} from '@/api/auth/MenuController';
 import CreateOrEdit from './components/CreateOrEdit'
 import {treeToList} from "@/utils/utils";
 
@@ -26,7 +26,7 @@ const Menu: FC = () =>{
     const [ menuData, setMenuData ] = useState([]);
     const [ isModalVisible, setIsModalVisible ] = useState(false);
     const [defaultExpandedRowKeys, setDefaultExpandedRowKeys] = useState<any>([])
-    const [ editId, setEditId] = useState<number | undefined>(0);
+    const [editId, setEditId] = useState<number | string| undefined>(0);
 
     const actionRef = useRef<ActionType>(null)
 
@@ -70,7 +70,12 @@ const Menu: FC = () =>{
      * @param id
      */
     const confirmDel = async (id: number) => {
-
+        try{
+            await destroyMenu(id);
+            message.success(t('global.delete.success'));
+        }catch (error: any){
+            message.error(error.message);
+        }
     }
 
 

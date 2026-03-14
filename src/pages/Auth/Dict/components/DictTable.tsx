@@ -5,7 +5,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {PlusOutlined} from "@ant-design/icons";
 import {Button, App, type TableProps, Space, Popconfirm} from "antd";
 import {omit} from "es-toolkit/compat";
-import {queryDicts} from "@/api/auth/DictController";
+import {destroyDict, queryDicts} from "@/api/auth/DictController";
 import CreateOrEditDict from "./CreateOrEditDict";
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
@@ -23,7 +23,7 @@ export type TableListItem = {
 
 const DictTable:FC<IDictTableProps>=(props: any)=>{
     const { t } = useTranslation();
-    const [editId, setEditId] = useState<number | string>(0);
+    const [editId, setEditId] = useState<number | string | undefined>(0);
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
     const [tableData, setTableData] = useState<any>([]);
@@ -84,7 +84,7 @@ const DictTable:FC<IDictTableProps>=(props: any)=>{
      * @param show
      * @param id
      */
-    const isShowModal = (show: boolean, id?: number | undefined)=> {
+    const isShowModal = (show: boolean, id?: number | string | undefined)=> {
         setEditId(id);
         setIsModalVisible(show);
     }
@@ -105,11 +105,11 @@ const DictTable:FC<IDictTableProps>=(props: any)=>{
      * @param id
      */
     const confirmDel = async (id: number) => {
-        try {
-
-
+        try{
+            await destroyDict(id);
+            message.success(t('global.delete.success'));
         }catch (error: any){
-
+            message.error(error.message);
         }
     }
 

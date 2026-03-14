@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import {App, Button, Space, Popconfirm, Tag, Switch} from "antd";
 import  {PlusOutlined} from "@ant-design/icons";
 import {omit} from 'es-toolkit/compat';
-import {queryUsers} from "@/api/auth/UserController";
+import {destroyUser, queryUsers, blockUser} from "@/api/auth/UserController";
 import CustomerPageContainer from '@/components/CustomerPageContainer';
 import CreateOrEdit  from './components/CreateOrEdit';
 
@@ -32,7 +32,7 @@ export type RoleItem = {
 
 const User: FC = () =>{
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [editId, setEditId] = useState<number | undefined>(0);
+    const [editId, setEditId] = useState<number | string | undefined>(0);
     const actionRef = useRef<ActionType>(null)
     const { t } = useTranslation();
 
@@ -64,7 +64,12 @@ const User: FC = () =>{
      * @param uid
      */
     const handleBlockUser = async (uid: number) => {
-
+        try{
+            await blockUser(uid);
+            message.success(t('global.delete.success'));
+        }catch (error: any){
+            message.error(error.message);
+        }
     }
 
     /**
@@ -83,7 +88,12 @@ const User: FC = () =>{
      * @param id
      */
     const confirmDel = async (id: number) => {
-
+        try{
+            await destroyUser(id);
+            message.success(t('global.delete.success'));
+        }catch (error: any){
+            message.error(error.message);
+        }
     }
 
     //列表

@@ -35,6 +35,15 @@ export async function getPermissionIdsByRoleId(id: string | number) {
 }
 
 /**
+ * 查询角色部门信息
+ * @param id 
+ * @returns 
+ */
+export async function getDepartmentIdsByRoleId(id: string | number) {
+    return request.get(`/role/${id}/departments`);
+}
+
+/**
  * 更新角色权限
  * @param id
  * @param params
