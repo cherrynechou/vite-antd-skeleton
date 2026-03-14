@@ -23,7 +23,7 @@ export async function createRole(params: any = {}) {
  * @param roleId
  */
 export async function getRoleById(roleId: string | number) {
-    return request.get('/auth/roles/' + roleId);
+    return request.get(`/auth/roles/${roleId}`);
 }
 
 /**
