@@ -1,5 +1,5 @@
 import {FC, useState} from "react";
-import {App, Button, Card, Form, Input, InputNumber, Modal, Radio, Select, Skeleton, Space} from "antd";
+import {App, Form, Input, InputNumber, Modal, Radio, Select, Skeleton, Space} from "antd";
 import {useTranslation} from "react-i18next";
 import {createConfigData, getConfigData, updateConfigData} from "@/api/auth/ConfigController";
 import {useAsyncEffect} from "ahooks";
@@ -32,7 +32,6 @@ const CreateOrEditConfigFormData:FC<ICreateOrEditProps> = (props: any) =>{
     const fetchApi = async () => {
         const groupRes = await getGroup(groupId);
         const groupData = groupRes.data;
-
 
         const formType = [
             {
@@ -72,8 +71,6 @@ const CreateOrEditConfigFormData:FC<ICreateOrEditProps> = (props: any) =>{
         ]
         setVisibleOptions(visible);
 
-
-
         if (editId !== undefined) {
             const res = await getConfigData(editId);
             const currentData = res.data;
@@ -90,7 +87,6 @@ const CreateOrEditConfigFormData:FC<ICreateOrEditProps> = (props: any) =>{
             })
 
             setFormType(currentData.type);
-
         }else{
             form.setFieldsValue({
                 group_id: groupId,

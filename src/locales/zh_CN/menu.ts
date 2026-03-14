@@ -12,5 +12,7 @@ export default {
     'menu.admin.setting': "配置列表",
     'menu.admin.log': "日志",
     'menu.admin.log.login': "登录日志",
-    'menu.admin.log.operation': "操作日志"
+    'menu.admin.log.operation': "操作日志",
+    'menu.tool': '系统工具',
+    'menu.tool.config': '配置设计',
 }

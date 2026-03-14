@@ -32,6 +32,31 @@ const getAccessToken = async () =>{
     return `Bearer ${access_token}`;
 }
 
+//去掉null的数据
+const formatParams = (params: Record<string,any>): Record<string, any> =>{
+    const formatted: Record<string, any> = {};
+
+    Object.keys(params).forEach(key => {
+        const value = params[key];
+
+        // 移除空值
+        if (value === null || value === undefined || value === '') {
+            return;
+        }
+
+        // 处理数组
+        if (Array.isArray(value)) {
+            formatted[key] = value.join(',');
+        } else {
+            formatted[key] = value;
+        }
+    });
+
+    return formatted;
+}
+
+
+
 // Add a request interceptor
 request.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
     const accessToken = await getAccessToken();
@@ -48,11 +73,7 @@ request.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
 
     //删除属性值 为空 或者 undefined
     if(config.data){
-        Object.keys(config.data).forEach((val: string) => {
-            if( config.data[val] === null || config.data[val] === undefined){
-                delete config.data[val]
-            }
-        });
+        config.data = formatParams(config.data);
     }
 
     return config;

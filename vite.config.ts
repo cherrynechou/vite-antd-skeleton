@@ -36,32 +36,26 @@ export default defineConfig(({ mode })=>{
       }
     },
     build: {
-      outDir: 'dist',
-      minify: 'terser',
-      terserOptions:{
-        compress:{
-          drop_console: true,             // Remove console.*
-          drop_debugger: true,           // Remove debugger
-          pure_funcs: ['console.log'], // Remove specific functions
-        },
-        format: {
-          comments: false,         // Remove comments
-        },
-        mangle: {
-          toplevel: true,          // Mangle top-level names
-        }
-      },
+      // 将警告阈值从500KB提高到1500KB
+      chunkSizeWarningLimit: 1500,
       rollupOptions: {
+        // https://rollupjs.org/guide/en/#big-list-of-options
         output: {
-          manualChunks: {
-            vendor: ['react', 'react-dom'],
-            utils: ['lodash', 'axios']
+          codeSplitting: {
+            minSize: 20000,
+            groups: [
+              {
+                name: 'vendor',
+                test: /node_modules/,
+              },
+            ],
           },
-          chunkFileNames: 'assets/js/[name]-[hash].js',
-          entryFileNames: 'assets/js/[name]-[hash].js',
-          assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
-        }
-      }
+        },
+      },
+      // 其他构建配置
+      outDir: 'dist',
+      assetsDir: 'assets',
+      sourcemap: false, // 生产环境通常关闭sourcemap
     }
   }
 })

@@ -117,16 +117,16 @@ const routeConfig: RouteObject[] = [
                             }
                         ]
                     },{
-                        path: '/form-design',
+                        path: '/tool',
                         children: [
                             {
                                 index:true,
-                                element: <Navigate to='/form-deisgn/configs' />
+                                element: <Navigate to='/tool/config' />
                             },{
-                                path: '/form-design/configs',
-                                element: <LazyImport lazy={lazy(()=>import('@/pages/FormDesign/Config'))}/>,
+                                path: '/tool/config',
+                                element: <LazyImport lazy={lazy(()=>import('@/pages/Tool/Config'))}/>,
                                 handle: {
-                                    titleKey: 'router.form.design.config'
+                                    titleKey: 'router.tool.config'
                                 }
                             }
                         ]

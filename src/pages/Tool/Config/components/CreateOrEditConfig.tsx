@@ -112,7 +112,7 @@ const CreateOrEditConfig:FC<ICreateOrEditProps> = (props: any) =>{
                             ]}
                         >
                             <Input placeholder={
-                                t('modal.createOrUpdateForm.group.key.placeholder')
+                                t('modal.createOrUpdateForm.config.group.key.placeholder')
                             }
                             />
                         </Form.Item>

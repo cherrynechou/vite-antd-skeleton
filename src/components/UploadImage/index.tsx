@@ -119,7 +119,7 @@ const UploadImage : FC<IUploadImageProps> = (props)=>{
 
     // 自定义上传请求
     const customRequest = async (options: any) => {
-        const { file, onSuccess, onError, onProgress } = options;
+        const { file, onError, onProgress } = options;
         onProgress({ percent: 50 });
 
         getBase64(file).then((r: any) => {
@@ -128,23 +128,25 @@ const UploadImage : FC<IUploadImageProps> = (props)=>{
             formData.append('base64', r.split(',')[1]);
             formData.append('extension', file.name.split('.').pop());
 
-            uploadImageFile(formData).then((response: any)=>{
-                const uuid: string = nanoid();
-                const filteredFiles = fileList.filter((f: UploadFile<any>) => f.status === 'done');
-                const finalFiles:UploadFile<any>[] = [...filteredFiles,  {
-                    uid: uuid,
-                    name: response.data.path,
-                    status: 'done',
-                    url: response.data.fullPath,
-                } as UploadFile];
+            try {
+                uploadImageFile(formData).then((response: any)=>{
+                    const uuid: string = nanoid();
+                    const filteredFiles = fileList.filter((f: UploadFile<any>) => f.status === 'done');
+                    const finalFiles:UploadFile<any>[] = [...filteredFiles,  {
+                        uid: uuid,
+                        name: response.data.path,
+                        status: 'done',
+                        url: response.data.fullPath,
+                    } as UploadFile];
 
-                setFileList(finalFiles);
+                    setFileList(finalFiles);
 
-                if (onUploadChange) {
-                    onUploadChange(finalFiles);
-                }
-            }).catch(error:any){
-                onProgress({ percent: 100 });
+                    if (onUploadChange) {
+                        onUploadChange(finalFiles);
+                    }
+                })
+            }catch (error: any){
+                onError(error);
             }
         });
     }
@@ -157,7 +159,7 @@ const UploadImage : FC<IUploadImageProps> = (props)=>{
     }
 
     // 计算是否显示上传按钮
-    const showUploadButton = maxCount ? fileList.length < maxCount : true;
+    const showUploadButton: boolean = maxCount ? fileList.length < maxCount : true;
 
     return (
         <>

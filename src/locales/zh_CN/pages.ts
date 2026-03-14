@@ -51,4 +51,5 @@ export default {
     'pages.searchTable.updatedAt': '更新时间',
     'pages.searchTable.deletedAt': '更新时间',
     'pages.tree.dict': '字典',
+    'pages.tool.config': '配置表单'
 }

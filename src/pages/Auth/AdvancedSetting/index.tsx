@@ -1,7 +1,7 @@
 import {FC, useState, useEffect} from "react";
 import {Form, Button, Space, Input, App, Skeleton, InputNumber, Select, Radio, Switch} from 'antd';
 import CustomerPageContainer from '@/components/CustomerPageContainer';
-import { Card } from 'antd';
+import { Card,Empty } from 'antd';
 import {useTranslation} from "react-i18next";
 import {updateConfigByGroup, queryAllConfig} from "@/api/auth/SettingController";
 import {useNavigate} from "react-router-dom";
@@ -16,6 +16,7 @@ const AdvancedSetting: FC = () =>{
     const { t } = useTranslation();
     const [ initialValues, setInitialValues ] = useState<any>({});
     const [tabData, setTabData] = useState<any>([]);
+    const [isEmpty,setIsEmpty] = useState<boolean>(false);
     const [activeTabKey, setActiveTabKey] = useState('');
     const navigate = useNavigate();
 
@@ -27,6 +28,11 @@ const AdvancedSetting: FC = () =>{
             try{
                 const ret = await queryAllConfig();
                 const retData = ret.data;
+                if(retData.length == 0){
+                    setIsEmpty(true);
+                    return;
+                }
+
                 const tabs = retData.map((item: any)=>({
                     key: item.key,
                     tab: item.name,
@@ -152,18 +158,11 @@ const AdvancedSetting: FC = () =>{
         }catch (error: any){
             message.error(error.message);
         }
-
     }
 
-    return (
-        <CustomerPageContainer
-            title={
-                t('admin.config')
-            }
-            extra={[
-                <Button key="config" type="primary" onClick={()=>navigate('/form-design/configs')}>表单配置</Button>,
-            ]}
-        >
+
+    const FormCard = ()=>{
+        return (
             <Card
                 style={{ width: '100%' }}
                 tabList={tabData}
@@ -198,6 +197,20 @@ const AdvancedSetting: FC = () =>{
                     )
                 }
             </Card>
+        )
+    }
+
+    return (
+        <CustomerPageContainer
+            title={
+                t('admin.config')
+            }
+            extra={[
+                <Button key="config" type="primary" onClick={()=>navigate('/tool/config')}>{t('pages.tool.config')}</Button>,
+            ]}
+        >
+            {isEmpty && <Empty /> }
+            {!isEmpty && <FormCard /> }
         </CustomerPageContainer>
     )
 }

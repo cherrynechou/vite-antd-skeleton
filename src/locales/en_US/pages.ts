@@ -36,4 +36,5 @@ export default {
     'pages.searchTable.updatedAt': 'updatedAt',
     'pages.searchTable.deletedAt': 'deletedAt',
     'pages.tree.dict': 'Dictionary',
+    'pages.tool.config': 'Form Config',
 }

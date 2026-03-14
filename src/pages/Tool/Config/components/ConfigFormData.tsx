@@ -190,6 +190,9 @@ const ConfigFormTable: FC<IConfigDataTableProps> = (props: any) =>{
                 rowKey="id"
                 search={false}
                 actionRef={actionRef}
+                options={{
+                    reload: !!currentGroupId
+                }}
                 dateFormatter="string"
                 headerTitle={
                     t('admin.config.data.list')
@@ -200,7 +203,7 @@ const ConfigFormTable: FC<IConfigDataTableProps> = (props: any) =>{
                     showQuickJumper: true
                 }}
                 toolBarRender={() => [
-                    <Button key="button" type="primary" icon={<PlusOutlined />}  onClick={()=>isShowModal(true)}>
+                    !!currentGroupId && <Button key="button" type="primary" icon={<PlusOutlined />}  onClick={()=>isShowModal(true)}>
                         {t('pages.searchTable.new')}
                     </Button>,
                 ]}
