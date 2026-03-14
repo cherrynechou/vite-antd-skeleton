@@ -141,6 +141,7 @@ const UploadImage : FC<IUploadImageProps> = (props)=>{
 
                     setFileList(finalFiles);
 
+
                     if (onUploadChange) {
                         onUploadChange(finalFiles);
                     }
