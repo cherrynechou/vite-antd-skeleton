@@ -11,7 +11,7 @@ import {getPermissionIdsByRoleId, updatePermissionByRoleId} from "@/api/auth/Rol
 export interface ICreateOrEditProps  {
     isDrawerVisible: boolean;
     isShowDrawer: (show: boolean, id?: number | undefined) => void;
-    editId : number | string | undefined;
+    editId : number | string ;
     actionRef: any;
 }
 
