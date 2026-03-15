@@ -104,7 +104,7 @@ const MenuRender = () =>{
     const menuClick:MenuProps['onClick'] = useCallback((current: any)=>{
         const menu: IMenu = menuMap[current.key];
 
-        if(menu.isBackLink){
+        if(menu.is_back_link){
             window.open(menu.url, menu.target);
         }else{
             navigate({

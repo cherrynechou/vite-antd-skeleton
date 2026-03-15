@@ -9,7 +9,7 @@ export interface ICreateOrEditProps {
     isModalVisible: boolean,
     isShowModal: (show: boolean, id?: number | undefined) => void,
     editId : number | string | undefined,
-    dictId: number | undefined,
+    dictId: number | string,
     actionRef: any
 }
 
