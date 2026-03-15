@@ -25,16 +25,15 @@ export interface IUploadImageProps {
     maxSize?: number;
 }
 
-const UploadImage : FC<IUploadImageProps> = (props)=>{
-    const {
-        maxCount = 1,
-        initialFileList = [],
-        onUploadChange,
-        beforeUpload,
-        listType = 'picture-card',
-        accept = 'image/*',
-        maxSize = 5,
-    } = props;
+const UploadImage : FC<IUploadImageProps> = ({
+     maxCount = 1,
+     initialFileList = [],
+     onUploadChange,
+     beforeUpload,
+     listType = 'picture-card',
+     accept = 'image/*',
+     maxSize = 5,
+})=>{
 
     // 内部状态管理
     const { t } = useTranslation();

@@ -227,7 +227,8 @@ const listToTree = (data: ListNode[], options:{
         const parentId = node[parentIdKey];
         //通用字段
         node[titleKey] = node[nameKey];
-        node[treeKey] = parentId.toString().concat("-" +node[idKey]);
+        //node[treeKey] = parentId.toString().concat("-" +node[idKey]);
+        node[treeKey] = node[idKey];
         if(!keepNameField){
             delete node[nameKey];
         }

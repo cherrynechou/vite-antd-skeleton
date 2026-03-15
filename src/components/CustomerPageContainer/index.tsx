@@ -8,8 +8,12 @@ export interface ICustomerPageProps {
     extra?: ReactNode;
 }
 
-const CustomerPageContainer:FC<ICustomerPageProps> = (props: ICustomerPageProps )=>{
-    const {title,children,extra} = props;
+const CustomerPageContainer:FC<ICustomerPageProps> = ({
+  title,
+  children,
+  extra
+} )=>{
+
     return(
         <PageContainer
             header={{

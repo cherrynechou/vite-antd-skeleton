@@ -5,6 +5,7 @@ import { Card,Empty } from 'antd';
 import {useTranslation} from "react-i18next";
 import {updateConfigByGroup, queryAllConfig} from "@/api/auth/SettingController";
 import {useNavigate} from "react-router-dom";
+import {useAsyncEffect} from "ahooks";
 
 const tailLayout = {
     wrapperCol: { offset: 2, span: 16 },
@@ -23,41 +24,42 @@ const AdvancedSetting: FC = () =>{
     const [ form ] = Form.useForm();
     const { message } = App.useApp();
 
-    useEffect(() => {
-        const fetchData = async () =>{
-            try{
-                const ret = await queryAllConfig();
-                const retData = ret.data;
-                if(retData.length == 0){
-                    setIsEmpty(true);
-                    return;
-                }
-
-                const tabs = retData.map((item: any)=>({
-                    key: item.key,
-                    tab: item.name,
-                    content: renderFormItems(item.configs)
-                }));
-
-                //配置数组
-                const configData:any = {};
-                retData.forEach((sub: any) => {
-                    sub.configs.forEach((element: any) => {
-                        configData[element.key] = element.value;
-                    });
-                });
-
-                setInitialValues(configData);
-                setTabData(tabs);
-                if (tabs.length > 0) {
-                    setActiveTabKey(tabs[0].key);
-                }
-
-            }catch(error: any){
-                message.error(error.message);
+    const fetchApi = async () => {
+        try{
+            const ret = await queryAllConfig();
+            const retData = ret.data;
+            if(retData.length == 0){
+                setIsEmpty(true);
+                return;
             }
+
+            const tabs = retData.map((item: any)=>({
+                key: item.key,
+                tab: item.name,
+                content: renderFormItems(item.configs)
+            }));
+
+            //配置数组
+            const configData:any = {};
+            retData.forEach((sub: any) => {
+                sub.configs.forEach((element: any) => {
+                    configData[element.key] = element.value;
+                });
+            });
+
+            setInitialValues(configData);
+            setTabData(tabs);
+            if (tabs.length > 0) {
+                setActiveTabKey(tabs[0].key);
+            }
+
+        }catch(error: any){
+            message.error(error.message);
         }
-        fetchData();
+    }
+
+    useAsyncEffect(async () => {
+        await fetchApi();
     }, []);
 
 

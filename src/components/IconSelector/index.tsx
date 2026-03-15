@@ -51,7 +51,7 @@ const IconSelector: FC<IconSelectorProps> = (props: any)=>{
     setCurrentIcon(value);
   };
 
-  const handleOk = () =>{
+  const handleOk = async () =>{
     if(currentIcon === ''){
       const defaultIconErrorMessage = t('message.icon.empty.failure');
       message.error(defaultIconErrorMessage)

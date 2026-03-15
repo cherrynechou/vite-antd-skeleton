@@ -25,9 +25,12 @@ const NoAuthorized: FC = () => {
 };
 
 
-const Authorized:FC<AuthorizedProps> = (props: any) =>{
+const Authorized:FC<AuthorizedProps> = ({
+    children,
+    perms
+}) =>{
     const access = useAccess();
-    const { children,perms } = props;
+
     return (
         <Access accessible={access.hasPermissions(perms)} fallback={ <NoAuthorized/> }>
             {children}

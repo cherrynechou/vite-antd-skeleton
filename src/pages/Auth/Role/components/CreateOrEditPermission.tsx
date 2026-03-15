@@ -46,13 +46,15 @@ const CreateOrEditPermission: FC <ICreateOrEditProps> = ({
             setTreeData(listTreePermissionData);
             setTreeLeafRecord(filterTreeLeafNode(listTreePermissionData));
 
+            console.log(listTreePermissionData);
+
             if(editId !== undefined){
                 const res = await getPermissionIdsByRoleId(editId);
 
                 let permissionList: any[] = [];
                 if(res.data.length > 0){
                     permissionList = res.data.map((item: any) => {
-                        return item;
+                        return item.id;
                     });
                 }
 
@@ -72,24 +74,23 @@ const CreateOrEditPermission: FC <ICreateOrEditProps> = ({
     }, []);
 
 
+
+
+    //击树节点触发
     const onSelect: TreeProps['onSelect'] = (selectedKeys) => {
-        //找出叶子节点
-        const filterChildNodes = treeLeafRecord.map((item: any) => {
-            return item.id;
-        });
-        const filterSameKeys = filterChildNodes.filter((item: any) => selectedKeys.indexOf(item) > -1);
-        form.setFieldsValue({ permissionIds: JSON.stringify(filterSameKeys) });
+        const leafIds = treeLeafRecord.map((item: any) => item.id);
+        const selectedLeafIds = leafIds.filter((id: number) => selectedKeys.includes(id));
+
+        form.setFieldsValue({ permissionIds: JSON.stringify(selectedLeafIds) });
     };
 
+    //点击复选框触发
     const onCheck: TreeProps['onCheck'] = (checkedKeys) => {
-        // @ts-ignore
-        const checkedKeysResult = [...checkedKeys];
-        //找出叶子节点
-        const filterChildNodes = treeLeafRecord.map((item: any) => {
-            return item.id;
-        });
-        const filterSameKeys = filterChildNodes.filter((item: any) => checkedKeysResult?.indexOf(item) > -1);
-        form.setFieldsValue({ permissionIds: checkedKeysResult.length===0 ? [] : filterSameKeys });
+        const keyArray = Array.isArray(checkedKeys) ? checkedKeys : [checkedKeys];
+        const leafIds = treeLeafRecord.map((item:any) => item.id);
+        const selectedLeafIds = leafIds.filter((id:number) => keyArray.includes(id));
+
+        form.setFieldsValue({ permissionIds: JSON.stringify(selectedLeafIds) });
     };
 
     //确定

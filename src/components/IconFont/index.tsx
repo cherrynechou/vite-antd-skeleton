@@ -14,7 +14,7 @@ interface IconProps {
     /**
      * @description IconFont中上传的图标名称
      * */
-    name?: string;
+    name: string;
 
     /**
      * @description 图标样式
@@ -32,10 +32,13 @@ interface IconProps {
     onClick?: () => void;
 }
 
-const IconFont: FC<IconProps> = (props: any) => {
+const IconFont: FC<IconProps> = ({
+   name,
+   style
+}) => {
 
     return (
-        React.createElement(allIcons[props.name] , {style: props.style})
+        React.createElement(allIcons[name] , {style: style})
     );
 }
 

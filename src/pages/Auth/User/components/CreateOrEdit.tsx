@@ -91,7 +91,7 @@ const CreateOrEdit : FC<ICreateOrEditProps> = ({
                     username: currentData.username,
                     name: currentData.name,
                     avatar: currentData.avatar,
-                    roles: roleList,
+                    roleIds: roleList,
                     permissions: JSON.stringify(permissionList),
                 });
             }
@@ -389,7 +389,7 @@ const CreateOrEdit : FC<ICreateOrEditProps> = ({
                         </Form.Item>
 
                         <Form.Item
-                            name="roles"
+                            name="roleIds"
                             label={
                                 t('modal.createOrUpdateForm.role')
                             }

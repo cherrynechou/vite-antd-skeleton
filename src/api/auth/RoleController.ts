@@ -26,21 +26,31 @@ export async function getRoleById(roleId: string | number) {
     return request.get(`/auth/roles/${roleId}`);
 }
 
+
+/**
+ * 获取角色数据权限
+ * @param roleId
+ */
+export async function getDataScopeByRoleId(roleId: string | number) {
+    return request.get(`/role/${roleId}/dataScopes`);
+}
+
+/**
+ * 查询角色部门信息
+ * @param id
+ * @param params
+ * @returns 
+ */
+export async function updateDataScopeByRoleId(id: string | number,params: any = {}) {
+    return request.put(`/role/${id}/dataScopes`,params);
+}
+
 /**
  * 查询角色权限
  * @param id
  */
 export async function getPermissionIdsByRoleId(id: string | number) {
     return request.get(`/role/${id}/permissions`);
-}
-
-/**
- * 查询角色部门信息
- * @param id 
- * @returns 
- */
-export async function getDepartmentIdsByRoleId(id: string | number) {
-    return request.get(`/role/${id}/departments`);
 }
 
 /**
