@@ -178,20 +178,24 @@ const Role: FC = () =>{
                         {t('pages.searchTable.edit')}
                     </a>
                     {!record.is_administrator &&
-                        <Popconfirm
-                            key="del"
-                            placement="top"
-                            title={t('pages.searchTable.okConfirm')}
-                            onConfirm={ () => confirmDel(record.id) }
-                            okText={t('pages.searchTable.ok')}
-                            cancelText={t('pages.searchTable.cancel')}
-                        >
-                            <a key="delete" className="text-blue-500">
-                                {t('pages.searchTable.delete')}
-                            </a>
-                        </Popconfirm>
+                        <>
+                            <Popconfirm
+                                key="del"
+                                placement="top"
+                                title={t('pages.searchTable.okConfirm')}
+                                onConfirm={ () => confirmDel(record.id) }
+                                okText={t('pages.searchTable.ok')}
+                                cancelText={t('pages.searchTable.cancel')}
+                            >
+                                <a key="delete" className="text-blue-500">
+                                    {t('pages.searchTable.delete')}
+                                </a>
+                            </Popconfirm>
+                            <MoreAction key='more' record={record}/>
+                        </>
+               
                     }
-                    <MoreAction key='more' record={record}/>
+               
                 </Space>
             )
         },
