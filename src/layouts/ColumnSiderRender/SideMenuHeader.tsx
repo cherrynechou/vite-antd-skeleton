@@ -1,10 +1,12 @@
 import { FC } from 'react'
 import {useGlobalStore} from "@/stores";
 
-const SiderMenuHeader:FC = ()=>{
+const SideMenuHeader:FC = ()=>{
     const logo = useGlobalStore(state => state.logo);
     const title = useGlobalStore(state => state.title);
     const collapsed = useGlobalStore(state => state.collapsed);
+
+    console.log(logo)
 
     return (
         <div className={"flex items-center h-14 justify-center"}>
@@ -14,5 +16,5 @@ const SiderMenuHeader:FC = ()=>{
     )
 }
 
-export default SiderMenuHeader;
+export default SideMenuHeader;
 

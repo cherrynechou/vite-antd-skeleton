@@ -20,7 +20,7 @@ export const createSiteSlice: StateCreator<GlobalStore, [], [], SiteSlice> = (se
         try {
             const response = await getWebConfig();
             if(response.success){
-                if(response.data.length>0){
+                if(Object.keys(response.data).length>0){
                     set(response.data);
                 }
             }
