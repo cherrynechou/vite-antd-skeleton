@@ -79,7 +79,7 @@ const CreateOrEditPermission: FC <ICreateOrEditProps> = ({
     //击树节点触发
     const onSelect: TreeProps['onSelect'] = (selectedKeys) => {
         const leafIds = treeLeafRecord.map((item: any) => item.id);
-        const selectedLeafIds = leafIds.filter((id: number) => selectedKeys.includes(id));
+        const selectedLeafIds = leafIds.filter((id: any) => selectedKeys.includes(id));
 
         form.setFieldsValue({ permissionIds: JSON.stringify(selectedLeafIds) });
     };
@@ -88,7 +88,7 @@ const CreateOrEditPermission: FC <ICreateOrEditProps> = ({
     const onCheck: TreeProps['onCheck'] = (checkedKeys) => {
         const keyArray = Array.isArray(checkedKeys) ? checkedKeys : [checkedKeys];
         const leafIds = treeLeafRecord.map((item:any) => item.id);
-        const selectedLeafIds = leafIds.filter((id:number) => keyArray.includes(id));
+        const selectedLeafIds = leafIds.filter((id:any) => keyArray.includes(id));
 
         form.setFieldsValue({ permissionIds: JSON.stringify(selectedLeafIds) });
     };
@@ -97,7 +97,10 @@ const CreateOrEditPermission: FC <ICreateOrEditProps> = ({
     const handleOk = async () =>{
         try {
             const fieldsValue = await form.validateFields();
-            await updatePermissionByRoleId(editId, fieldsValue);
+            if(editId !== undefined){
+                await updatePermissionByRoleId(editId, fieldsValue);
+            }
+
             isShowDrawer(false);
             const defaultUpdateSuccessMessage = editId === undefined ? t('global.create.success'): t('global.update.success');
             message.success(defaultUpdateSuccessMessage);

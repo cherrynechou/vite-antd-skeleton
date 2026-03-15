@@ -1,10 +1,10 @@
-import {FC, Key, useCallback, useState} from 'react'
+import {FC, useState} from 'react'
 import { App, Form, Input, Modal, Select, Skeleton,Tree } from "antd";
 import { useTranslation } from "react-i18next";
 import {nanoid} from "nanoid";
 import type { TreeProps } from 'antd/es/tree';
 import { useAsyncEffect } from "ahooks";
-import {getDataScopeByRoleId, getRoleById, updateDataScopeByRoleId} from "@/api/auth/RoleController";
+import {getDataScopeByRoleId, updateDataScopeByRoleId} from "@/api/auth/RoleController";
 import { queryAllDepartments } from '@/api/auth/DepartmentController';
 import {listToTree,filterTreeLeafNode} from '@/utils/utils'
 
@@ -107,7 +107,7 @@ const CreateOrEditDataScope:FC<ICreateOrEditProps> = ({
 
     const onSelect: TreeProps['onSelect'] = (selectedKeys) => {
         const leafIds = treeLeafRecord.map((item: any) => item.id);
-        const selectedLeafIds = leafIds.filter((id: number) => selectedKeys.includes(id));
+        const selectedLeafIds = leafIds.filter((id: any) => selectedKeys.includes(id));
 
         form.setFieldsValue({ departmentIds: JSON.stringify(selectedLeafIds) });
     };
@@ -115,7 +115,7 @@ const CreateOrEditDataScope:FC<ICreateOrEditProps> = ({
     const onCheck: TreeProps['onCheck'] = (checkedKeys) => {
         const keyArray = Array.isArray(checkedKeys) ? checkedKeys : [checkedKeys];
         const leafIds = treeLeafRecord.map((item:any) => item.id);
-        const selectedLeafIds = leafIds.filter((id: number) => keyArray.includes(id));
+        const selectedLeafIds = leafIds.filter((id: any) => keyArray.includes(id));
 
         form.setFieldsValue({ departmentIds: JSON.stringify(selectedLeafIds) });
     };
@@ -133,7 +133,10 @@ const CreateOrEditDataScope:FC<ICreateOrEditProps> = ({
                 data_scope: fieldsValue.data_scope,
                 departmentIds: fieldsValue.data_scope== 2 ? fieldsValue.departmentIds: ''
             }
-            await updateDataScopeByRoleId(editId, transformedData);
+            if(editId !== undefined){
+                await updateDataScopeByRoleId(editId, transformedData);
+            }
+
             isShowModal(false);
             const defaultUpdateSuccessMessage = editId === undefined ? t('global.create.success'): t('global.update.success');
             message.success(defaultUpdateSuccessMessage);
