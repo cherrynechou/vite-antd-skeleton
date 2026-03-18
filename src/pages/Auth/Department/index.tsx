@@ -47,7 +47,7 @@ const Department:FC = () =>{
                 success: ret.success,
             };
         }catch (error: any){
-            message.error(error.message);
+            message.error(error.data.message);
         }
     };
 
@@ -71,7 +71,7 @@ const Department:FC = () =>{
             await destroyDepartment(id);
             message.success(t('global.delete.success'));
         }catch (error: any){
-            message.error(error.message);
+            message.error(error.data.message);
         }
     }
 

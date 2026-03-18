@@ -37,7 +37,6 @@ const Login: FC = () =>{
                 window.location.href = '/';
             }, 1000);
         }catch (error: any){
-            console.log(error);
             setIsLoading(false);
             message.error(error.data.message);
         }

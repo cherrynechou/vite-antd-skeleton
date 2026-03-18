@@ -88,8 +88,6 @@ request.interceptors.response.use( (response: AxiosResponse)  => {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
 
-    //console.log(response);
-
     if(response.status === HttpStatusCode.Ok){
         return response.data;
     }
@@ -97,6 +95,7 @@ request.interceptors.response.use( (response: AxiosResponse)  => {
     return  Promise.reject(response.data);
 
 },  async (error: AxiosError) => {
+
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     // 请求被取消（去重或手动取消）
@@ -108,7 +107,7 @@ request.interceptors.response.use( (response: AxiosResponse)  => {
         }
     }
 
-    return Promise.reject(error);
+    return Promise.reject(error.response);
 });
 
 

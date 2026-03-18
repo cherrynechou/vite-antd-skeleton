@@ -111,7 +111,7 @@ const CreateOrEdit : FC<ICreateOrEditProps>=({
             actionRef.current.reload();
 
         }catch (error: any){
-            message.error(error.message);
+            message.error(error.data.message);
         }
     }
 

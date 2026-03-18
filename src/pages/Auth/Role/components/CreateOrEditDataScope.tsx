@@ -96,7 +96,7 @@ const CreateOrEditDataScope:FC<ICreateOrEditProps> = ({
 
             }
         }catch (error: any){
-            message.error(error.message);
+            message.error(error.data.message);
         }
     }
 

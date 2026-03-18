@@ -63,7 +63,7 @@ const DictDataTable:FC<IDictDataTableProps>=(props: any)=>{
             }
 
         }catch (error: any){
-            message.error(error.message);
+            message.error(error.data.message);
         }
     }
 
@@ -87,7 +87,7 @@ const DictDataTable:FC<IDictDataTableProps>=(props: any)=>{
             await destroyDictData(id);
             message.success(t('global.delete.success'));
         }catch (error: any){
-            message.error(error.message);
+            message.error(error.data.message);
         }
     }
 

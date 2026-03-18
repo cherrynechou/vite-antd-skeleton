@@ -54,7 +54,7 @@ const AdvancedSetting: FC = () =>{
             }
 
         }catch(error: any){
-            message.error(error.message);
+            message.error(error.data.message);
         }
     }
 
@@ -158,7 +158,7 @@ const AdvancedSetting: FC = () =>{
             await updateConfigByGroup(activeTabKey, values);
             message.success(t('global.update.success'));
         }catch (error: any){
-            message.error(error.message);
+            message.error(error.data.message);
         }
     }
 

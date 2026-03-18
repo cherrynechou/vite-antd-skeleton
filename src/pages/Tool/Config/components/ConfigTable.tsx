@@ -68,7 +68,7 @@ const ConfigTable:FC<IConfigGroupTableProps> = (props: any) =>{
                 success: ret.success,
             }
         }catch (error: any){
-            message.error(error.message);
+            message.error(error.data.message);
         }
     }
 

@@ -31,7 +31,7 @@ const CreateOrEdit:FC<ICreateOrEditProps> = ({
                 })
             }
         }catch (error: any){
-
+            message.error(error.data.message);
         }
     }
 
@@ -40,7 +40,11 @@ const CreateOrEdit:FC<ICreateOrEditProps> = ({
     }, []);
 
     const handleOk = () =>{
+        try{
 
+        }catch(error: any){
+            message.error(error.data.message);
+        }
     }
 
 

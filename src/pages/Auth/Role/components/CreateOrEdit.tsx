@@ -39,7 +39,7 @@ const CreateOrEdit : FC<ICreateOrEditProps> = ({
                 })
             }
         }catch (error: any){
-            console.log(error);
+            message.error(error.data.message);
         }
     }
 

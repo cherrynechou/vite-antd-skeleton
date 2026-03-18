@@ -55,7 +55,7 @@ const CreateOrEditConfig:FC<ICreateOrEditProps> = (props: any) =>{
             message.success(defaultUpdateSuccessMessage);
             actionRef.current.reload();
         }catch (error: any){
-            message.error(error.message);
+            message.error(error.data.message);
         }
     }
 

@@ -5,8 +5,6 @@ import {useAsyncEffect} from "ahooks";
 import {buildAntdListToTreeData, treeToOrderList} from "@/utils/utils";
 import {createDepartment, getDepartment, updateDepartment} from "@/api/auth/DepartmentController";
 
-
-
 export interface ICreateOrEditProps {
     isModalVisible: boolean,
     isShowModal: (show: boolean, id?: number | undefined) => void,
@@ -83,7 +81,7 @@ const CreateOrEdit : FC<ICreateOrEditProps> = ({
 
             actionRef.current.reload();
         }catch (error: any){
-            message.error(error.message);
+            message.error(error.data.message);
         }
     }
 
