@@ -5,6 +5,7 @@ export default {
     'pages.403.buttonText': '返回首页',
     'pages.searchTable.username': '用户名',
     'pages.searchTable.name': '名称',
+    'pages.searchTable.title': '标题',
     'pages.searchTable.telephone': '电话',
     'pages.searchTable.status': '状态',
     'pages.searchTable.new': '添加',

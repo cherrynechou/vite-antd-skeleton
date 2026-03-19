@@ -5,6 +5,7 @@ export default {
     'pages.403.buttonText': 'Back Home',
     'pages.searchTable.username': 'UserName',
     'pages.searchTable.name': "Name",
+    'pages.searchTable.title': 'Title',
     'pages.searchTable.telephone': 'Telephone',
     'pages.searchTable.status': 'Status',
     'pages.searchTable.new': "New",
