@@ -35,7 +35,6 @@ const DictDataTable:FC<IDictDataTableProps>=(props: any)=>{
         currentDictId
     } = props;
 
-
     useEffect(() => {
         actionRef?.current?.reload();
     }, [currentDictId]);
@@ -208,7 +207,7 @@ const DictDataTable:FC<IDictDataTableProps>=(props: any)=>{
                     showQuickJumper: true
                 }}
                 toolBarRender={() => [
-                    <Button key="button" type="primary" icon={<PlusOutlined />}  onClick={()=>isShowDataModal(true)}>
+                    !!currentDictId && <Button key="button" type="primary" icon={<PlusOutlined />}  onClick={()=>isShowDataModal(true)}>
                         {t('pages.searchTable.new')}
                     </Button>,
                 ]}

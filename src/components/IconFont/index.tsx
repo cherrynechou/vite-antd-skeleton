@@ -33,8 +33,9 @@ interface IconProps {
 }
 
 const IconFont: FC<IconProps> = ({
-   name,
-   style
+    name,
+    className,
+    style
 }) => {
 
     return (

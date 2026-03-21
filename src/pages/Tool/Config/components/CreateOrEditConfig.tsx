@@ -11,6 +11,8 @@ export interface ICreateOrEditProps {
     actionRef: any
 }
 
+const { TextArea } = Input;
+
 const CreateOrEditConfig:FC<ICreateOrEditProps> = (props: any) =>{
     const { t } = useTranslation();
     const [initialValues, setInitialValues] = useState<any>({});
@@ -27,7 +29,8 @@ const CreateOrEditConfig:FC<ICreateOrEditProps> = (props: any) =>{
             const currentData = res.data;
             setInitialValues({
                 name: currentData.name,
-                key: currentData.key
+                key: currentData.key,
+                remark: currentData.remark
             })
         }else{
             form.setFieldsValue({
@@ -115,6 +118,21 @@ const CreateOrEditConfig:FC<ICreateOrEditProps> = (props: any) =>{
                                 t('modal.createOrUpdateForm.config.group.key.placeholder')
                             }
                             />
+                        </Form.Item>
+
+                        <Form.Item
+                            name="remark"
+                            label={
+                                t('modal.createOrUpdateForm.remark')
+                            }
+                            labelCol={{ span: 4 }}
+                        >
+                            <TextArea
+                                placeholder={
+                                    t('modal.createOrUpdateForm.remark.placeholder')
+                                }
+                            />
+
                         </Form.Item>
 
 

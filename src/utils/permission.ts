@@ -1,7 +1,9 @@
+export const ALL_PERMISSION = '*:*:*';
+
 export function matchPermission(permissions: string[] | undefined, value: any): boolean {
-    if (permissions === undefined) return false;
-    const type = typeof value;
-    if (type === 'string') {
+    if (!permissions || permissions.length === 0) return false;
+
+    if (typeof value === 'string') {
         return matchPerm(permissions, value);
     }
     return matchPerms(permissions, value);
@@ -9,14 +11,12 @@ export function matchPermission(permissions: string[] | undefined, value: any): 
 
 
 export function matchPerm(permissions: string[], checkValue: string) {
-    if (checkValue && checkValue.length > 0) {
-        const all_permission = '[]';
-        return permissions.some((permission) => {
-            return all_permission === permission || checkValue === permission;
-        });
+    if (!checkValue || checkValue.length === 0) return false;
 
-    }
-    return false;
+    // 检查是否拥有所有权限
+    if (permissions.includes(ALL_PERMISSION)) return true;
+
+    return permissions.includes(checkValue);
 }
 
 // /**
@@ -25,13 +25,12 @@ export function matchPerm(permissions: string[], checkValue: string) {
 //  * @returns {Boolean}
 //  */
 export function matchPerms(permissions: string[], checkValues: string[]) {
-    if (checkValues && checkValues.length > 0) {
-        const all_permission = '[]';
-        return permissions.some((permission) => {
-            return all_permission === permission || checkValues.includes(permission);
-        });
+    if (!checkValues || checkValues.length === 0) return false;
 
-    }
-    return false;
+    // 检查是否拥有所有权限
+    if (permissions.includes(ALL_PERMISSION)) return true;
+
+    // 检查是否拥有所需的所有权限
+    return checkValues.every(permission => permissions.includes(permission));
 }
 

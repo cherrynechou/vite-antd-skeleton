@@ -6,12 +6,14 @@ export interface ICustomerPageProps {
     title: string;
     children: ReactNode;
     extra?: ReactNode;
+    style?: CSSProperties;
 }
 
 const CustomerPageContainer:FC<ICustomerPageProps> = ({
   title,
   children,
-  extra
+  extra,
+  style
 } )=>{
 
     return(
@@ -21,6 +23,7 @@ const CustomerPageContainer:FC<ICustomerPageProps> = ({
                 breadcrumb: <BreadcrumbRender />
             }}
             extra={extra}
+            style={style}
         >
             {children}
         </PageContainer>
