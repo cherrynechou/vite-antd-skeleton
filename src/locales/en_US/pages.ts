@@ -36,6 +36,10 @@ export default {
     'pages.searchTable.createdAt': 'createdAt',
     'pages.searchTable.updatedAt': 'updatedAt',
     'pages.searchTable.deletedAt': 'deletedAt',
+    'pages.tree.expand': 'Expand',
+    'pages.tree.collapse': 'Collapse',
+    'pages.tree.save': 'Save',
+    'pages.tree.refresh': 'Refresh',
     'pages.tree.dict': 'Dictionary',
     'pages.tool.config': 'Form Config',
 }
