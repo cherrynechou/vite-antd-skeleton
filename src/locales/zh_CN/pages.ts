@@ -51,10 +51,11 @@ export default {
     'pages.searchTable.createdAt': '添加时间',
     'pages.searchTable.updatedAt': '更新时间',
     'pages.searchTable.deletedAt': '更新时间',
-    'pages.tree.expand': '展开',
-    'pages.tree.collapse': '收起',
-    'pages.tree.save': '保存',
-    'pages.tree.refresh': '刷新',
+    'pages.menu.add': '新增',
+    'pages.menu.tree.expand': '展开',
+    'pages.menu.tree.collapse': '收起',
+    'pages.menu.tree.save': '保存',
+    'pages.menu.tree.refresh': '刷新',
     'pages.tree.dict': '字典',
     'pages.tool.config': '配置表单'
 }

@@ -1,224 +1,47 @@
-import {FC, useRef, useState} from 'react';
-import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import {ProTable} from '@ant-design/pro-components';
-import CustomerPageContainer from '@/components/CustomerPageContainer';
+import {FC} from "react";
+import {Button, Card, Col, Row, Space} from "antd";
 import { useTranslation } from 'react-i18next';
-import {App, Button, Space,Popconfirm} from "antd";
-import * as icons from '@ant-design/icons';
-import Icon, {PlusOutlined} from '@ant-design/icons';
-import {destroyMenu, queryMenus} from '@/api/auth/MenuController';
-import CreateOrEdit from './components/CreateOrEdit'
-import {treeToList} from "@/utils/utils";
+import {
+    MinusSquareOutlined,
+    PlusSquareOutlined, ReloadOutlined,
+    SaveOutlined
+} from "@ant-design/icons";
 
-
-export type TableListItem = {
-    id: number;
-    icon: string;
-    name: string;
-    router: string;
-    sort: number;
-    status: number;
-    created_at: number;
-    update_at: number;
-};
-
-const Menu: FC = () =>{
-    const [ menuData, setMenuData ] = useState([]);
-    const [ isModalVisible, setIsModalVisible ] = useState(false);
-    const [defaultExpandedRowKeys, setDefaultExpandedRowKeys] = useState<any>([])
-    const [editId, setEditId] = useState<number | string| undefined>(0);
-
-    const actionRef = useRef<ActionType>(null)
-
+const Menu:FC = () =>{
     const { t } = useTranslation();
-
-    const { message } = App.useApp();
-
-    //自定查询
-    const requestData = async (): Promise<any> =>{
-        try{
-            const ret = await queryMenus();
-            setMenuData(ret.data);
-
-            const treeList = treeToList(ret.data);
-            const _defaultExpandedRowKeys = treeList.map((item)=>{
-                return item.id;
-            })
-
-            setDefaultExpandedRowKeys(_defaultExpandedRowKeys);
-            return {
-                data: ret.data,
-                success: ret.success,
-            }
-        }catch (error: any){
-            message.error(error.data.message);
-        }
-    }
-
-    /**
-     *  显示对话框
-     * @param show
-     * @param id
-     */
-    const isShowModal = (show: boolean, id?: number | undefined)=> {
-        setEditId(id);
-        setIsModalVisible(show);
-    }
-
-    /**
-     * 删除id
-     * @param id
-     */
-    const confirmDel = async (id: number) => {
-        try{
-            await destroyMenu(id);
-            message.success(t('global.delete.success'));
-        }catch (error: any){
-            message.error(error.data.message);
-        }
-    }
-
-
-    //列表
-    const columns: ProColumns<TableListItem>[] = [
-        {
-            title: 'ID',
-            width: 80,
-            dataIndex: 'id',
-            align: 'center',
-            sorter: (a, b) => a.id - b.id,
-            hideInSearch: true,
-        }, {
-            title: (
-                t('pages.searchTable.icon')
-            ),
-            width: 20,
-            align: 'center',
-            dataIndex: 'icon',
-            hideInSearch: true,
-            render:(_,record)=>(
-                record.icon && <Icon component={(icons as any)[record.icon]} style={{ fontSize: '16px' }} />
-            )
-        }, {
-            title: (
-                t('pages.searchTable.name')
-            ),
-            width: 80,
-            align: 'center',
-            dataIndex: 'name'
-        },{
-            title: (
-                t('pages.searchTable.locale')
-            ),
-            width: 80,
-            align: 'center',
-            dataIndex: 'locale'
-        },{
-            title: (
-                t('pages.searchTable.router')
-            ),
-            width: 80,
-            align: 'center',
-            dataIndex: 'path',
-            hideInSearch: true,
-        }, {
-            title: (
-               t('pages.searchTable.sort')
-            ),
-            width: 80,
-            align: 'center',
-            dataIndex: 'sort',
-            hideInSearch: true,
-        },
-        {
-            title: (
-                t('pages.searchTable.createdAt')
-            ),
-            width: 120,
-            align: 'center',
-            dataIndex: 'created_at',
-            hideInSearch: true,
-        }, {
-            title: (
-                t('pages.searchTable.updatedAt')
-            ),
-            width: 120,
-            align: 'center',
-            dataIndex: 'updated_at',
-            hideInSearch: true,
-        }, {
-            title: (
-                t('pages.searchTable.action')
-            ),
-            width: 80,
-            key: 'option',
-            valueType: 'option',
-            align: 'center',
-            render: (_,record) => (
-                <Space>
-                    <a key="link" className="text-blue-500" onClick={() => isShowModal(true, record.id)}>
-                        {t('pages.searchTable.edit')}
-                    </a>
-                    <Popconfirm
-                        key="del"
-                        placement="top"
-                        title={
-                            t('pages.searchTable.okConfirm')
-                        }
-                        onConfirm={ () => confirmDel(record.id) }
-                        okText={
-                            t('pages.searchTable.ok')
-                        }
-                        cancelText={
-                            t('pages.searchTable.cancel')
-                        }
-                    >
-                        <a key="delete" className="text-blue-500">
-                            {t('pages.searchTable.delete')}
-                        </a>
-                    </Popconfirm>
-                </Space>
-            )
-        },
-    ];
-
     return (
-        <CustomerPageContainer
-            title={
-                t('admin.menu')
-            }
+        <Row
+            gutter={24}
+            className={'h-full'}
         >
-            <ProTable<TableListItem>
-                columns={columns}
-                actionRef={actionRef}
-                request={requestData}
-                rowKey="id"
-                dateFormatter="string"
-                headerTitle={
-                    t('admin.menu.list')
-                }
-                expandable={{
-                    expandedRowKeys: defaultExpandedRowKeys
-                }}
-                rowSelection={{ fixed: true }}
-                pagination={false}
-                toolBarRender={() => [
-                    <Button key="button" type="primary" icon={<PlusOutlined />} onClick={() => isShowModal(true)}>
-                        {t('pages.searchTable.new')}
-                    </Button>,
-                ]}
-            />
+            <Col
+                span={14}
+                className={'h-full'}
+            >
+                <Card
+                    title={
+                        <Space>
+                            <Button  type="primary" icon={<PlusSquareOutlined />}>{t('pages.menu.tree.expand')}</Button>
+                            <Button  type="primary" icon={<MinusSquareOutlined />}>{t('pages.menu.tree.collapse')}</Button>
+                            <Button  icon={<SaveOutlined />}>{t('pages.menu.tree.save')}</Button>
+                            <Button  icon={<ReloadOutlined />}>{t('pages.menu.tree.refresh')}</Button>
+                        </Space>
+                    }
+                >
 
-            {isModalVisible &&
-                <CreateOrEdit
-                    isModalVisible={isModalVisible}
-                    isShowModal={isShowModal}
-                    actionRef = {actionRef}
-                    menuData={menuData}
-                    editId = {editId}
-                />
-            }
-        </CustomerPageContainer>
+                </Card>
+            </Col>
+            <Col
+                span={10}
+                className={'h-full'}
+            >
+                <Card title={
+                    t('pages.menu.add')
+                }>
+
+                </Card>
+            </Col>
+        </Row>
     )
 }
 
