@@ -16,15 +16,14 @@ export interface ICreateOrEditProps {
     isShowModal: (show: boolean, id?: number | undefined) => void,
     editId : number | string| undefined,
     menuData: any[];
-    actionRef: any
 }
 
 const CreateOrEdit : FC<ICreateOrEditProps>=({
-    isModalVisible, 
-    isShowModal, 
-    editId, 
-    menuData
-})=>{
+     isModalVisible,
+     isShowModal,
+     editId,
+     menuData
+ })=>{
     const { t } = useTranslation();
     const [treeData, setTreeData] = useState<any>([]);
     const [initialValues, setInitialValues] = useState<any>({});
