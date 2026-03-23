@@ -32,6 +32,31 @@ export async function destroyMenu(id: string | number) {
 }
 
 /**
+ * 删除
+ * @param id
+ */
+export async function hideMenu(id: string | number) {
+    return request.put(`/menu/${id}/hide`);
+}
+
+/**
+ * 显示
+ * @param id
+ */
+export async function displayMenu(id: string | number) {
+    return request.put(`/menu/${id}/display`);
+}
+
+/**
+ *
+ * @param id
+ */
+export async function switchMenu(id: string | number) {
+    return request.put(`/menu/${id}/switch`);
+}
+
+
+/**
  * 更新
  * @param id
  * @param params

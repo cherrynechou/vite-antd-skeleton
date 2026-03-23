@@ -1,9 +1,10 @@
-import {FC} from "react";
+import {FC, useState} from "react";
 import {Button, Card, Col, Row, Space} from "antd";
 import { useTranslation } from 'react-i18next';
-import {SortableMenuTree} from './components'
+import SortableMenuTree from './components/SortableMenuTree'
 import {
-    MinusSquareOutlined, PlusOutlined,
+    MinusSquareOutlined,
+    PlusOutlined,
     PlusSquareOutlined,
     ReloadOutlined,
     SaveOutlined
@@ -12,10 +13,18 @@ import {
 
 const Menu:FC = () =>{
     const { t } = useTranslation();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [editId, setEditId] = useState<number | string | undefined>(0);
 
+    /**
+     *  显示对话框
+     * @param show
+     * @param id
+     */
     const isShowModal = (show: boolean, id?: number | undefined) => {
-
-    }
+        setEditId(id);
+        setIsModalVisible(show);
+    };
 
     return (
         <>
@@ -50,7 +59,12 @@ const Menu:FC = () =>{
                             </Button>
                         }
                     >
-                        <SortableMenuTree />
+                        <SortableMenuTree
+                            isModalVisible={isModalVisible}
+                            setIsModalVisible={setIsModalVisible}
+                            editId={editId}
+                            setEditId={setEditId}
+                        />
                     </Card>
                 </Col>
             </Row>

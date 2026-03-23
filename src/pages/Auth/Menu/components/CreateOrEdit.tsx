@@ -145,29 +145,22 @@ const CreateOrEdit : FC<ICreateOrEditProps>=({
     const handleOk = async () => {
         try {
             const fieldsValue = await form.validateFields();
-
             //最终提交数据格式化
             const transformedData  = {
                 ...fieldsValue,
                 status: fieldsValue.status ? 1 : 0
             }
-
             if (editId === undefined) {
                 await createMenu(transformedData );
             } else {
                 await updateMenu(editId, transformedData );
             }
-
             isShowModal(false);
-
             const defaultUpdateSuccessMessage = editId === undefined ? t('global.create.success'): t('global.update.success');
-
             message.success(defaultUpdateSuccessMessage);
-
             setTimeout(() => {
                 window.location.reload();
             }, 100);
-
         }catch (error: any){
             message.error(error.data.message);
         }

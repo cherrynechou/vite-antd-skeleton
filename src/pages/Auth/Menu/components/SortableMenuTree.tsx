@@ -1,94 +1,51 @@
 import {FC, useCallback, useState} from "react";
-import {queryMenus} from "@/api/auth/MenuController.ts";
+import {queryMenus,hideMenu,displayMenu} from "@/api/auth/MenuController.ts";
 import {useAsyncEffect} from "ahooks";
-import IconFont from "@/components/IconFont";
-import {Button, Space, Tag} from "antd";
-import {DeleteOutlined, EditOutlined, EyeInvisibleOutlined, EyeOutlined} from "@ant-design/icons";
-import {closestCorners, DndContext, DragEndEvent} from "@dnd-kit/core";
-import {SortableContext, useSortable, verticalListSortingStrategy} from "@dnd-kit/sortable";
-import {CreateOrEdit} from ".";
+import {
+    closestCorners,
+    DndContext,
+    DragEndEvent,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors
+} from "@dnd-kit/core";
+import {
+    SortableContext,
+    sortableKeyboardCoordinates,
+    useSortable,
+    verticalListSortingStrategy
+} from "@dnd-kit/sortable";
+import {useTranslation} from "react-i18next";
+import {App} from "antd";
+import CreateOrEdit from "./CreateOrEdit";
+import SortableMenuItem from "./SortableMenuItem";
 
-export interface IMenuItemProps  {
-    item: any,
-    level: number
+export interface ISortableMenuTreeProps {
+    isModalVisible: boolean,
+    setIsModalVisible: (isModalVisible: boolean) => void,
+    editId : number | string | undefined,
+    setEditId: (id?: string | number | undefined  ) => void,
 }
 
-const SortableMenuItem:FC<IMenuItemProps>=({
-   item,
-   level
-})=>{
-    const [expanded, setExpanded] = useState(true);
-    const hasChildren = item.children && item.children.length > 0;
-
-    // 初始化sortable
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition,
-        isDragging,
-    } = useSortable({
-        id: item.id,
-        data: {
-            type: 'category',
-            item,
-            parentId: item.parent_id,
-        },
-    });
-
-    return (
-        <li
-            className={"my-1"}
-            style={{ paddingLeft: `${level * 20}px` }}
-            ref={setNodeRef}
-            {...attributes}
-            {...listeners}
-        >
-            <div
-                className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-blue-50 cursor-pointer"
-            >
-                {item.icon && <IconFont name={item.icon}/>}
-                <div className={"flex-1"}>
-                    <Space>
-                        <span>{item.name}</span>
-                        <Tag color="blue">{item.path}</Tag>
-                    </Space>
-                </div>
-                <div className="flex gap-1">
-                    <Button
-                        icon={<EditOutlined />}
-                        className="px-1.5 py-0.5 text-xs border-none hover:bg-gray-50"
-                    />
-                    <Button
-                        icon={<DeleteOutlined />}
-                        className="px-1.5 py-0.5 text-xs border-none hover:bg-gray-50"
-                    />
-                    {item.visible && <Button
-                        icon={<EyeInvisibleOutlined />}
-                        className="px-1.5 py-0.5 text-xs border-none hover:bg-gray-50"
-                    />}
-                    {!item.visible && <Button
-                        icon={<EyeOutlined />}
-                        className="px-1.5 py-0.5 text-xs border-none hover:bg-gray-50"
-                    />}
-                </div>
-            </div>
-            {item.children && item.children.length > 0 && (
-                <ol className="list-none p-0 m-0 mt-1">
-                    {item.children.map((child:any)=>(
-                        <SortableMenuItem key={child.id} item={child} level={level+1}/>
-                    ))}
-                </ol>
-            )}
-        </li>
-    )
-}
-
-const SortableMenuTree:FC = () =>{
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [editId, setEditId] = useState<number | string | undefined>(0);
+//
+const SortableMenuTree:FC<ISortableMenuTreeProps> = ({
+    isModalVisible,
+    setIsModalVisible,
+    editId,
+    setEditId
+ }) =>{
+    const { t } = useTranslation();
     const [menuData,setMenuData] = useState<any>([])
+
+    const { message } = App.useApp();
+
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
 
     //自定查询
     const requestData = async () =>{
@@ -107,21 +64,48 @@ const SortableMenuTree:FC = () =>{
      * @param show
      * @param id
      */
-    const isShowModal = (show: boolean, id?: number | undefined) => {
-        setEditId(id);
+    const isShowModal = (show: boolean, id?: number | string| undefined) => {
         setIsModalVisible(show);
+        setEditId(id);
     };
 
+    //显示菜单
+    const onDisplayMenu = async (id: number | string) =>{
+        try{
+            await displayMenu(id);
+            message.success(t('global.update.success'));
+        }catch (error: any){
+            message.error(error.message);
+        }
+    }
 
-    const handleDragEnd = useCallback((event: DragEndEvent)=>{
+    //关闭菜单
+    const onHideMenu = async (id: number | string) =>{
+        try{
+            await hideMenu(id);
+            message.success(t('global.update.success'));
+        }catch (error: any){
+            message.error(error.message);
+        }
+    }
 
-    },[])
+    const handleDragEnd = (event: any)=>{
+        const { active, over } = event;
+
+        console.log(active,over);
+
+    }
+
+
+
+
 
     return (
         <>
             <DndContext
+                sensors={sensors}
                 collisionDetection={closestCorners}
-                onDragEnd={(event) => handleDragEnd(event)}
+                onDragEnd={handleDragEnd}
             >
                 <SortableContext
                     items={menuData.map((item: any) => item.id)}
@@ -129,7 +113,14 @@ const SortableMenuTree:FC = () =>{
                 >
                     <ol className={"p-0 m-0 mt-1"}>
                         {menuData.map((item:any) => (
-                            <SortableMenuItem key={item.id} item={item} level={1}/>
+                            <SortableMenuItem
+                                key={item.id}
+                                item={item}
+                                isShowModal={isShowModal}
+                                onDisplayMenu ={onDisplayMenu}
+                                onHideMenu={onHideMenu}
+                                level={1}
+                            />
                         ))}
                     </ol>
                 </SortableContext>
@@ -144,7 +135,6 @@ const SortableMenuTree:FC = () =>{
                 />
             }
         </>
-
     )
 }
 

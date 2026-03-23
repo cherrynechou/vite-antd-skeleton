@@ -6,8 +6,6 @@ const SideMenuHeader:FC = ()=>{
     const title = useGlobalStore(state => state.title);
     const collapsed = useGlobalStore(state => state.collapsed);
 
-    console.log(logo)
-
     return (
         <div className={"flex items-center h-14 justify-center"}>
             <img className={"w-10 h-auto"} src={logo} alt="logo"/>
