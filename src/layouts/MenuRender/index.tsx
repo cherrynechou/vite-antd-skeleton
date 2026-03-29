@@ -114,7 +114,6 @@ const MenuRender = () =>{
     },[menuMap, navigate])
 
     const onOpenChange=(newOpenKeys: any)=>{
-        console.log(newOpenKeys);
         setOpenKeys(newOpenKeys);
     }
 

@@ -32,7 +32,7 @@ const treeToOrderList=(trees : TreeNode[], options: {
        keepChildren?: boolean;
        rootParentId?: number | string | null; // 根节点的父ID
    } = {}
-):ListNode[] =>{
+): ListNode[] =>{
     const {
         idKey = 'id',
         parentKey = 'parent_id',
